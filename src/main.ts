@@ -5,11 +5,11 @@ import App from './App.vue'
 import './assets/style/index.scss'
 import './assets/style/cyanosis.markdown.scss' // markdown主题 掘金
 // import 'github-markdown-css'
-import BlUi from '../packages/components'
+import ZHUI from '../packages/components'
 
 import router from './router'
 
-const app = createApp(App).use(router).use(BlUi)
+const app = createApp(App).use(router).use(ZHUI)
 
 // 注册全局预览组件
 app.component('ShowCode', ShowCode)
