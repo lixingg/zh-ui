@@ -27,7 +27,7 @@ export default defineConfig({
   build: {
     target: 'modules',
     // polyfillDynamicImport: true, // 自动注入 动态导入 polyfill
-    outDir: 'BiLuoUiDoc',
+    outDir: 'ZHUiDoc',
     assetsDir: 'static/img',
     assetsInlineLimit: 8192, // 小于 8kb 的导入或引用资源将内联为 base64 编码
     cssCodeSplit: false, // 在异步 chunk 中导入的 CSS 将内联到异步 chunk 本身，并在其被加载时插入

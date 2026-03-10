@@ -1,7 +1,7 @@
 let copydir = require('copy-dir')
 copydir.sync(
   process.cwd() + '/src/docs',
-  process.cwd() + '/BiLuoUiDoc/docs',
+  process.cwd() + '/ZHUiDoc/docs',
   {
     utimes: true,
     mode: true,

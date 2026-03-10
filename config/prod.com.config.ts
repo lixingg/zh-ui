@@ -8,7 +8,7 @@ export default defineConfig({
   // 打包配置
   build: {
     sourcemap: false, //不开启镜像
-    outDir: 'BiLuoUI',
+    outDir: 'ZHUI',
     assetsInlineLimit: 8192, // 小于 8kb 的导入或引用资源将内联为 base64 编码
     terserOptions: {
       // 生产环境移除console
@@ -19,8 +19,8 @@ export default defineConfig({
     },
     lib: {
       entry: resolve(process.cwd(), './packages/components/index.ts'), // 设置入口文件
-      name: 'biluo-ui', // 起个名字，安装、引入用
-      fileName: (format) => `biluo-ui.${format}.js` // 打包后的文件名
+      name: 'zh-ui', // 起个名字，安装、引入用
+      fileName: (format) => `zh-ui.${format}.js` // 打包后的文件名
     },
     rollupOptions: {
       // 确保外部化处理那些你不想打包进库的依赖

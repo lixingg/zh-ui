@@ -1,6 +1,6 @@
 {
-  "name": "biluo-ui",
-  "auther": "biluo. Email: 1633420846@qq.com",
+  "name": "zh-ui",
+  "auther": "zh",
   "private": false,
   "version": "1.0.6",
   "description": "这是一个模仿element ui写的ui组件。用以练手和学习。",
@@ -8,7 +8,7 @@
   "files": ["BiLuoUI"],
   "main": "./BiLuoUI/biluo-ui.es.js",
   "module": "./BiLuoUI/biluo-ui.es.js",
-  "repository": "https://gitee.com/biluo_x/biluo-ui",
+  "repository": "https://gitee.com/lixindekongjian/zh-ui.git",
   "scripts": {
     "dev": "vite --host --mode development --config ./config/dev.config.ts",
     "build:doc": "vue-tsc --noEmit --skipLibCheck && vite build --mode production --config ./config/prod.doc.config.ts && node ./config/copyDocs.js",
