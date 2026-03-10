@@ -1,0 +1,52 @@
+@import "./animation";
+@import "./media";
+
+@mixin animation_($name,$time,$isRes:false) {
+  @if($isRes) {
+    animation: $name $time reverse;
+  } @else {
+    animation: $name $time;
+  }
+}
+
+.is-rtl .bl-drawer,
+.is-ltr .bl-drawer {
+  width: 30%;
+  @apply h-full;
+}
+
+.is-ttb .bl-drawer,
+.is-btt .bl-drawer {
+  //min-height: 200px;
+  height: 30%;
+  @apply w-full;
+}
+
+.is-rtl {
+  @apply flex justify-end;
+  .bl-drawer {
+    @include animation_(rTol,0.5s);
+  }
+}
+
+.is-ltr {
+  @apply flex;
+  .bl-drawer {
+    @include animation_(lTor,0.5s);
+  }
+}
+
+.is-btt {
+  @apply flex flex-col-reverse;
+  .bl-drawer {
+    @include animation_(bTot,0.5s);
+  }
+}
+
+.is-ttb {
+  @apply flex flex-col;
+  .bl-drawer {
+    @include animation_(tTob,0.5s);
+  }
+}
+

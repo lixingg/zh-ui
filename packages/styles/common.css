@@ -1,0 +1,24 @@
+#bl-message__function {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+}
+
+.message-enter-active {
+    animation: 0.5s message-open-close;
+}
+.message-leave-active {
+    animation: 0.5s message-open-close;
+    animation-direction: reverse;
+}
+
+@keyframes message-open-close {
+    from {
+        transform: translateY(-40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
