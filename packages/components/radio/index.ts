@@ -1,10 +1,10 @@
-import BlRadio from './src/bl-radio.vue'
+import ZhRadio from './src/zh-radio.vue'
 import { App } from 'vue'
 
 export default {
   install(app: App) {
-    app.component('BlRadio', BlRadio)
+    app.component('ZhRadio', ZhRadio)
   }
 }
 
-export { BlRadio }
+export { ZhRadio }

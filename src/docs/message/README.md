@@ -57,7 +57,7 @@ Message 可以接收一个字符串或一个 html 作为参数，它会被显示
 
 ## 单独引用
  ```javascript
- import { BlMessageFn } from 'BiLuoUI'
+ import { BlMessageFn } from 'ZHUI'
  ```
 
 此时调用方法为 `ElMessage(options)`。 我们也为每个 type 定义了各自的方法，如 `ElMessage.success(options)`
@@ -73,4 +73,4 @@ Message 可以接收一个字符串或一个 html 作为参数，它会被显示
 | `grouping` | 合并内容相同的消息 | `boolean` | `false` |
 
 ## 源代码
-[gitee message](https://gitee.com/biluo_x/biluo-ui/tree/develop/packages/components/message)
+[gitee message](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/message)

@@ -1,53 +1,53 @@
 import { mount } from '@vue/test-utils'
-import { BlButton } from '../index'
-import { BlIcon } from '../../icon'
+import { ZhButton } from '../index'
+import { ZhIcon } from '../../icon'
 
-const DEFAULT_TEXT = 'BiLuo is the third layer of Taoist sky'
-describe('bl-button.vue', () => {
+const DEFAULT_TEXT = 'ZH is the third layer of Taoist sky'
+describe('zh-button.vue', () => {
   it('create', () => {
-    const wrapper = mount(BlButton)
-    expect(wrapper.classes()).toContain('bl-button')
-    expect(wrapper.classes()).toContain('bl-button-default')
+    const wrapper = mount(ZhButton)
+    expect(wrapper.classes()).toContain('zh-button')
+    expect(wrapper.classes()).toContain('zh-button-default')
   })
   it('size', function () {
-    const wrapperPrimary = mount(BlButton, {
+    const wrapperPrimary = mount(ZhButton, {
       props: { size: 'large' }
     })
-    expect(wrapperPrimary.classes()).toContain('bl-is-large')
+    expect(wrapperPrimary.classes()).toContain('zh-is-large')
   })
   it('plain', function () {
-    const wrapperPrimary = mount(BlButton, {
+    const wrapperPrimary = mount(ZhButton, {
       props: { plain: true }
     })
-    expect(wrapperPrimary.classes()).toContain('bl-is-plain')
+    expect(wrapperPrimary.classes()).toContain('zh-is-plain')
   })
   it('round', function () {
-    const wrapperPrimary = mount(BlButton, {
+    const wrapperPrimary = mount(ZhButton, {
       props: { round: true }
     })
-    expect(wrapperPrimary.classes()).toContain('bl-is-round')
+    expect(wrapperPrimary.classes()).toContain('zh-is-round')
   })
   it('circle', function () {
-    const wrapperPrimary = mount(BlButton, {
+    const wrapperPrimary = mount(ZhButton, {
       props: { circle: true }
     })
-    expect(wrapperPrimary.classes()).toContain('bl-is-circle')
+    expect(wrapperPrimary.classes()).toContain('zh-is-circle')
   })
   it('nativeType', function () {
-    const wrapper = mount(BlButton, {
+    const wrapper = mount(ZhButton, {
       props: { nativeType: 'submit' }
     })
     expect(wrapper.attributes('type')).toBe('submit')
   })
   it('loading', async function () {
-    const wrapper = mount(BlButton, {
+    const wrapper = mount(ZhButton, {
       props: { loading: true }
     })
-    expect(wrapper.classes()).toContain('bl-is-disabled')
-    expect(wrapper.findComponent(BlIcon).exists()).toBeTruthy()
+    expect(wrapper.classes()).toContain('zh-is-disabled')
+    expect(wrapper.findComponent(ZhIcon).exists()).toBeTruthy()
   })
   it('should render text', function () {
-    const wrapper = mount(BlButton, {
+    const wrapper = mount(ZhButton, {
       slots: {
         default: DEFAULT_TEXT
       }
@@ -55,7 +55,7 @@ describe('bl-button.vue', () => {
     expect(wrapper.text()).toEqual(DEFAULT_TEXT)
   })
   it('should handle click', async function () {
-    const wrapper = mount(BlButton, {
+    const wrapper = mount(ZhButton, {
       slots: {
         default: DEFAULT_TEXT
       }
@@ -64,7 +64,7 @@ describe('bl-button.vue', () => {
     expect(wrapper.emitted()).toBeDefined()
   })
   test('handle click inside', async () => {
-    const wrapper = mount(BlButton, {
+    const wrapper = mount(ZhButton, {
       slots: {
         default: '<span class="inner-slot"></span>'
       }
@@ -73,7 +73,7 @@ describe('bl-button.vue', () => {
     expect(wrapper.emitted()).toBeDefined()
   })
   test('loading implies disabled', async () => {
-    const wrapper = mount(BlButton, {
+    const wrapper = mount(ZhButton, {
       slots: {
         default: DEFAULT_TEXT
       },
@@ -83,10 +83,10 @@ describe('bl-button.vue', () => {
     expect(wrapper.emitted('click')).toBeUndefined()
   })
   it('disabled', async () => {
-    const wrapper = mount(BlButton, {
+    const wrapper = mount(ZhButton, {
       props: { disabled: true }
     })
-    expect(wrapper.classes()).toContain('bl-is-disabled')
+    expect(wrapper.classes()).toContain('zh-is-disabled')
     await wrapper.trigger('click')
     expect(wrapper.emitted('click')).toBeUndefined()
   })

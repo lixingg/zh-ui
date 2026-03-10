@@ -1,29 +1,29 @@
 <template>
-  <bl-row :gutter="20">
-    <bl-col :span="16"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="8"><div class="grid-content bg-purple" /></bl-col>
-  </bl-row>
-  <bl-row :gutter="20">
-    <bl-col :span="8"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="8"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="4"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="4"><div class="grid-content bg-purple" /></bl-col>
-  </bl-row>
-  <bl-row :gutter="20">
-    <bl-col :span="4"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="16"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="4"><div class="grid-content bg-purple" /></bl-col>
-  </bl-row>
+  <zh-row :gutter="20">
+    <zh-col :span="16"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="8"><div class="grid-content bg-purple" /></zh-col>
+  </zh-row>
+  <zh-row :gutter="20">
+    <zh-col :span="8"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="8"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="4"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="4"><div class="grid-content bg-purple" /></zh-col>
+  </zh-row>
+  <zh-row :gutter="20">
+    <zh-col :span="4"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="16"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="4"><div class="grid-content bg-purple" /></zh-col>
+  </zh-row>
 </template>
 
 <style>
-  .bl-row {
+  .zh-row {
     margin-bottom: 20px;
   }
-  .bl-row:last-child {
+  .zh-row:last-child {
     margin-bottom: 0;
   }
-  .bl-col {
+  .zh-col {
     border-radius: 4px;
   }
 

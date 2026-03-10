@@ -1,10 +1,10 @@
-import BlIcon from './src/bl-icon.vue'
+import ZhIcon from './src/zh-icon.vue'
 import { App } from 'vue'
 
 export default {
   install(app: App) {
-    app.component('BlIcon', BlIcon)
+    app.component('ZhIcon', ZhIcon)
   }
 }
 
-export { BlIcon }
+export { ZhIcon }

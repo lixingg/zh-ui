@@ -1,42 +1,42 @@
 <script setup lang="ts"></script>
 
 <template>
-  <bl-row>
-    <bl-col :span="24"><div class="grid-content bg-purple-dark" /></bl-col>
-  </bl-row>
-  <bl-row>
-    <bl-col :span="12"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="12"><div class="grid-content bg-purple-light" /></bl-col>
-  </bl-row>
-  <bl-row>
-    <bl-col :span="8"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="8"><div class="grid-content bg-purple-light" /></bl-col>
-    <bl-col :span="8"><div class="grid-content bg-purple" /></bl-col>
-  </bl-row>
-  <bl-row>
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple-light" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple-light" /></bl-col>
-  </bl-row>
-  <bl-row>
-    <bl-col :span="4"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="4"><div class="grid-content bg-purple-light" /></bl-col>
-    <bl-col :span="4"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="4"><div class="grid-content bg-purple-light" /></bl-col>
-    <bl-col :span="4"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="4"><div class="grid-content bg-purple-light" /></bl-col>
-  </bl-row>
+  <zh-row>
+    <zh-col :span="24"><div class="grid-content bg-purple-dark" /></zh-col>
+  </zh-row>
+  <zh-row>
+    <zh-col :span="12"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="12"><div class="grid-content bg-purple-light" /></zh-col>
+  </zh-row>
+  <zh-row>
+    <zh-col :span="8"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="8"><div class="grid-content bg-purple-light" /></zh-col>
+    <zh-col :span="8"><div class="grid-content bg-purple" /></zh-col>
+  </zh-row>
+  <zh-row>
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple-light" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple-light" /></zh-col>
+  </zh-row>
+  <zh-row>
+    <zh-col :span="4"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="4"><div class="grid-content bg-purple-light" /></zh-col>
+    <zh-col :span="4"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="4"><div class="grid-content bg-purple-light" /></zh-col>
+    <zh-col :span="4"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="4"><div class="grid-content bg-purple-light" /></zh-col>
+  </zh-row>
 </template>
 
 <style lang="scss">
-  .bl-row {
+  .zh-row {
     margin-bottom: 20px;
   }
-  .bl-row:last-child {
+  .zh-row:last-child {
     margin-bottom: 0;
   }
-  .bl-col {
+  .zh-col {
     border-radius: 4px;
   }
 

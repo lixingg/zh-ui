@@ -1,4 +1,4 @@
-// import BlMessageBox from './src/bl-messagebox.vue'
+// import BlMessageBox from './src/zh-messagebox.vue'
 // import { App } from 'vue'
 
 export * from './src/messageBox'

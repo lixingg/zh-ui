@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import BlButton from '../../../packages/components/button/src/bl-button.vue'
+  import BlButton from '../../../packages/components/button/src/zh-button.vue'
   import { MessageBoxFn } from '../../../packages/components/message-box'
   import { BlMessageFn } from '../../../packages/components'
   const open = () => {
@@ -23,7 +23,7 @@
 </script>
 
 <template>
-  <bl-button type="text" @click="open">Click to open the Message Box</bl-button>
+  <zh-button type="text" @click="open">Click to open the Message Box</zh-button>
 </template>
 
 <style lang=""></style>

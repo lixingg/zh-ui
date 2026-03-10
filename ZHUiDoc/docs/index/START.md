@@ -1,6 +1,6 @@
 # 快速开始
 
-本节将介绍如何在项目中使用 BiluoUI。
+本节将介绍如何在项目中使用 ZHUI。
 
 ## 用法
 
@@ -12,11 +12,11 @@
 import {createApp} from 'vue'
 import App from './App.vue'
 // 引入组件
-import BlUi from 'biluo-ui'
+import BlUi from 'zh-ui'
 // 引入图标 没有下载需要npm下载
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 引入样式
-import 'biluo-ui/BiLuoUI/style.css'
+import 'zh-ui/ZHUI/style.css'
 // 注册组件
 const app = createApp(App).use(BlUi)
 // 注册图标
@@ -27,7 +27,7 @@ app.mount('#app')
 
 ```
 > **Tip**<br>
-> 注意：umd版本无法正常工作，es版本才可以，请使用es版本，即 `biluo-ui.es.js`。
+> 注意：umd版本无法正常工作，es版本才可以，请使用es版本，即 `zh-ui.es.js`。
 
 > **Tip**<br>
 > 如果你使用的是直接在代码仓库下载的方式，直接引入对应文件即可(`es.js`和`css`)

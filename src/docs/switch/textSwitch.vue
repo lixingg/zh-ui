@@ -1,7 +1,7 @@
 <template>
-  <bl-switch v-model="value1" class="mb-2" active-text="Pay by month" inactive-text="Pay by year" />
+  <zh-switch v-model="value1" class="mb-2" active-text="Pay by month" inactive-text="Pay by year" />
   <br />
-  <bl-switch
+  <zh-switch
     v-model="value2"
     class="mb-2"
     active-color="#13ce66"
@@ -10,8 +10,8 @@
     inactive-text="Pay by year"
   />
   <br />
-  <bl-switch v-model="value3" inline-prompt active-text="是" inactive-text="否" />
-  <bl-switch
+  <zh-switch v-model="value3" inline-prompt active-text="是" inactive-text="否" />
+  <zh-switch
     v-model="value4"
     class="ml-2"
     inline-prompt

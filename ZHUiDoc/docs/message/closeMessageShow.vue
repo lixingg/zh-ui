@@ -1,8 +1,8 @@
 <template>
-  <bl-button :plain="true" @click="open1">message</bl-button>
-  <bl-button :plain="true" @click="open2">success</bl-button>
-  <bl-button :plain="true" @click="open3">warning</bl-button>
-  <bl-button :plain="true" @click="open4">error</bl-button>
+  <zh-button :plain="true" @click="open1">message</zh-button>
+  <zh-button :plain="true" @click="open2">success</zh-button>
+  <zh-button :plain="true" @click="open3">warning</zh-button>
+  <zh-button :plain="true" @click="open4">error</zh-button>
 </template>
 
 <script lang="ts" setup>

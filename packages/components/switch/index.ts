@@ -1,10 +1,10 @@
-import BlSwitch from './src/bl-switch.vue'
+import ZhSwitch from './src/zh-switch.vue'
 import { App } from 'vue'
 
 export default {
   install(app: App) {
-    app.component('BlSwitch', BlSwitch)
+    app.component('ZhSwitch', ZhSwitch)
   }
 }
 
-export { BlSwitch }
+export { ZhSwitch }

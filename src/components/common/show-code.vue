@@ -7,7 +7,7 @@
   const props = defineProps({
     linkCode: {
       type: String,
-      default: 'https://gitee.com/biluo_x/biluo-ui/tree/develop/packages/components'
+      default: 'https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components'
     },
     showPath: {
       type: String,
@@ -57,7 +57,7 @@
   <div class="border box-border rounded">
     <div class="box-border p-6">
       <slot>
-        <bl-button>测试一下</bl-button>
+        <zh-button>测试一下</zh-button>
       </slot>
     </div>
     <div class="border-t h-10 flex items-center justify-end p-2">

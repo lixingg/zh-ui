@@ -1,46 +1,46 @@
 import { mount } from '@vue/test-utils'
-import { BlButton, BlButtonGroup } from '../index'
+import { ZhButton, ZhButtonGroup } from '../index'
 import { nextTick, ref } from 'vue'
 
 describe('Button Group', () => {
   it('create', () => {
-    const wrapper = mount(BlButtonGroup, {
+    const wrapper = mount(ZhButtonGroup, {
       slots: {
-        default: [BlButton, BlButton]
+        default: [ZhButton, ZhButton]
       }
     })
-    expect(wrapper.classes()).toContain('bl-button-group')
+    expect(wrapper.classes()).toContain('zh-button-group')
     expect(wrapper.findAll('button').length).toBe(2)
   })
   it('should button group size', async function () {
     const size = ref<'default' | 'large' | 'small'>('small')
-    const wrapper = mount(BlButtonGroup, {
+    const wrapper = mount(ZhButtonGroup, {
       props: {
         size: size.value
       },
       slots: {
-        default: [BlButton, BlButton]
+        default: [ZhButton, ZhButton]
       }
     })
-    expect(wrapper.classes()).toContain('bl-button-group')
-    expect(wrapper.findComponent(BlButton).classes()).toContain('bl-is-small')
+    expect(wrapper.classes()).toContain('zh-button-group')
+    expect(wrapper.findComponent(ZhButton).classes()).toContain('zh-is-small')
     size.value = 'large'
     await nextTick()
-    expect(wrapper.findComponent(BlButton).classes()).toContain('bl-is-large')
+    expect(wrapper.findComponent(ZhButton).classes()).toContain('zh-is-large')
   })
   it('should button group type', async function () {
     const type = ref('default')
-    const wrapper = mount(BlButtonGroup, {
+    const wrapper = mount(ZhButtonGroup, {
       props: {
         type: type.value
       },
       slots: {
-        default: [BlButton, BlButton]
+        default: [ZhButton, ZhButton]
       }
     })
-    expect(wrapper.findComponent(BlButton).classes()).toContain('bl-button-default')
+    expect(wrapper.findComponent(ZhButton).classes()).toContain('zh-button-default')
     type.value = 'primary'
     await nextTick()
-    expect(wrapper.findComponent(BlButton).classes()).toContain('bl-button-primary')
+    expect(wrapper.findComponent(ZhButton).classes()).toContain('zh-button-primary')
   })
 })

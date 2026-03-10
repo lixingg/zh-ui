@@ -34,7 +34,7 @@
 ## 按需引入
 如果您需要按需引入 MessageBox
 ```ts
- import { MessageBoxFn } from 'BiLuoUI'
+ import { MessageBoxFn } from 'ZHUI'
 ```
 
 ## MessageBox 配置项
@@ -52,7 +52,7 @@
 > 因为ts类型写起来实在是太麻烦，受不了了，所以功能没有完全和Element一致，最明显的，没有像上一个message那样每个类型出一个单独的方法了。。。
 
 ## 源代码
-[gitee message-box](https://gitee.com/biluo_x/biluo-ui/tree/develop/packages/components/message-box)
+[gitee message-box](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/message-box)
 
 
 <script setup>

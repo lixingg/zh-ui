@@ -4,5 +4,5 @@
 </script>
 
 <template>
-  <bl-input v-model="input" type="text" placeholder="Please input" clearable />
+  <zh-input v-model="input" type="text" placeholder="Please input" clearable />
 </template>

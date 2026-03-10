@@ -1,10 +1,10 @@
-import BlDrawer from './src/bl-drawer.vue'
+import ZhDrawer from './src/zh-drawer.vue'
 import { App } from 'vue'
 
 export default {
   install(app: App) {
-    app.component('BlDrawer', BlDrawer)
+    app.component('ZhDrawer', ZhDrawer)
   }
 }
 
-export { BlDrawer }
+export { ZhDrawer }

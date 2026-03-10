@@ -1,10 +1,10 @@
-import BlInput from './src/bl-input.vue'
+import ZhInput from './src/zh-input.vue'
 import { App } from 'vue'
 
 export default {
   install(app: App) {
-    app.component('BlInput', BlInput)
+    app.component('ZhInput', ZhInput)
   }
 }
 
-export { BlInput }
+export { ZhInput }

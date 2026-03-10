@@ -2,7 +2,7 @@
   // 文章下方导航组件
   import { routerType } from '../../router/routerConfig'
   import { computed } from 'vue'
-  import BlIcon from '../../../packages/components/icon/src/bl-icon.vue'
+  import BlIcon from '../../../packages/components/icon/src/zh-icon.vue'
 
   const props = defineProps({
     asideData: {
@@ -33,7 +33,7 @@
 <template>
   <div class="h-20 border-t px-2 pt-2.5 pb-12 flex justify-between box-border">
     <router-link v-if="useNext.prev" class="next-com" :to="`${baseLink}/${useNext.prev.path}`">
-      <bl-icon name="ArrowLeft" />
+      <zh-icon name="ArrowLeft" />
       <span>{{ useNext.prev.meta.title }}</span>
     </router-link>
     <router-link
@@ -42,7 +42,7 @@
       :to="`${baseLink}/${useNext.next.path}`"
     >
       <span>{{ useNext.next.meta.title }}</span>
-      <bl-icon name="ArrowRight" />
+      <zh-icon name="ArrowRight" />
     </router-link>
   </div>
 </template>

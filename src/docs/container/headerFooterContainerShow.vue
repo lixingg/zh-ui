@@ -1,14 +1,14 @@
 <script setup lang="ts"></script>
 
 <template>
-  <bl-container class="layout-com">
-    <bl-header>Header</bl-header>
-    <bl-container>
-      <bl-aside width="200px">Aside</bl-aside>
-      <bl-container>
-        <bl-main>Main</bl-main>
-        <bl-footer>Footer</bl-footer>
-      </bl-container>
-    </bl-container>
-  </bl-container>
+  <zh-container class="layout-com">
+    <zh-header>Header</zh-header>
+    <zh-container>
+      <zh-aside width="200px">Aside</zh-aside>
+      <zh-container>
+        <zh-main>Main</zh-main>
+        <zh-footer>Footer</zh-footer>
+      </zh-container>
+    </zh-container>
+  </zh-container>
 </template>

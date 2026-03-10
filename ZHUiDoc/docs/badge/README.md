@@ -60,4 +60,4 @@ import dotBadgeShow from './dotBadgeShow.vue';
 | `default` | 自定义默认内容 |
 
 ## 源代码
-[gitee badge](https://gitee.com/biluo_x/biluo-ui/tree/develop/packages/components/badge)
+[gitee badge](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/badge)

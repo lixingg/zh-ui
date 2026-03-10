@@ -66,7 +66,7 @@
 
 ## 源代码
 
-[gitee button](https://gitee.com/biluo_x/biluo-ui/tree/develop/packages/components/switch)
+[gitee button](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/switch)
 
 
 <script setup>

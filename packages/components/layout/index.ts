@@ -1,12 +1,12 @@
-import BlRow from './src/bl-row'
-import BlCol from './src/bl-col'
+import ZhRow from './src/zh-row'
+import ZhCol from './src/zh-col'
 import { App } from 'vue'
 
 export default {
   install(app: App) {
-    app.component(BlRow.name, BlRow)
-    app.component(BlCol.name, BlCol)
+    app.component(ZhRow.name, ZhRow)
+    app.component(ZhCol.name, ZhCol)
   }
 }
 
-export { BlRow, BlCol }
+export { ZhRow, ZhCol }

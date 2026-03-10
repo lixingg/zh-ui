@@ -6,8 +6,8 @@
 </script>
 
 <template>
-  <bl-button :plain="true" @click="open('fuck')">Show message</bl-button>
-  <bl-button :plain="true" @click="open('<i>HTML</i>')">HTML</bl-button>
+  <zh-button :plain="true" @click="open('fuck')">Show message</zh-button>
+  <zh-button :plain="true" @click="open('<i>HTML</i>')">HTML</zh-button>
 </template>
 
 <style lang=""></style>

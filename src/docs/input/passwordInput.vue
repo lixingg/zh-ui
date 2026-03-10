@@ -4,5 +4,5 @@
 </script>
 
 <template>
-  <bl-input v-model="input" type="password" placeholder="Please input" show-password />
+  <zh-input v-model="input" type="password" placeholder="Please input" show-password />
 </template>

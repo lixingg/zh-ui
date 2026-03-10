@@ -1,34 +1,34 @@
 <template>
-  <bl-row class="row-bg" tag="ul">
-    <bl-col :span="6" tag="li"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple-light" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-  </bl-row>
-  <bl-row class="row-bg" justify="center">
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple-light" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-  </bl-row>
-  <bl-row class="row-bg" justify="end">
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple-light" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-  </bl-row>
-  <bl-row class="row-bg" justify="space-between">
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple-light" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-  </bl-row>
-  <bl-row class="row-bg" justify="space-around">
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple-light" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-  </bl-row>
-  <bl-row class="row-bg" justify="space-evenly">
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple-light" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-  </bl-row>
+  <zh-row class="row-bg" tag="ul">
+    <zh-col :span="6" tag="li"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple-light" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+  </zh-row>
+  <zh-row class="row-bg" justify="center">
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple-light" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+  </zh-row>
+  <zh-row class="row-bg" justify="end">
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple-light" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+  </zh-row>
+  <zh-row class="row-bg" justify="space-between">
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple-light" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+  </zh-row>
+  <zh-row class="row-bg" justify="space-around">
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple-light" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+  </zh-row>
+  <zh-row class="row-bg" justify="space-evenly">
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple-light" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+  </zh-row>
 </template>
 <style>
   .row-bg {

@@ -75,4 +75,4 @@ import asideAllContainerShow from './asideAllContainerShow.vue';
 | height | 底栏高度 | string | -- | 64px |
 
 ## 源代码
-[gitee container](https://gitee.com/biluo_x/biluo-ui/tree/develop/packages/components/container)
+[gitee container](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/container)

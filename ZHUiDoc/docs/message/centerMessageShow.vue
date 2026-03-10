@@ -1,5 +1,5 @@
 <template>
-  <bl-button plain @click="openCenter">Centered text</bl-button>
+  <zh-button plain @click="openCenter">Centered text</zh-button>
 </template>
 
 <script lang="ts" setup>

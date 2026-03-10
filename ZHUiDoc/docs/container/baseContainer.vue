@@ -1,11 +1,11 @@
 <script setup lang="ts"></script>
 
 <template>
-  <bl-container class="layout-com">
-    <bl-header>Header</bl-header>
-    <bl-main>Main</bl-main>
-    <bl-footer>Footer</bl-footer>
-  </bl-container>
+  <zh-container class="layout-com">
+    <zh-header>Header</zh-header>
+    <zh-main>Main</zh-main>
+    <zh-footer>Footer</zh-footer>
+  </zh-container>
 </template>
 
 <style lang="scss">
@@ -17,19 +17,19 @@
   .layout-com {
     height: 300px;
   }
-  .bl-header {
+  .zh-header {
     background-color: #c6e2ff;
     @extend .center-util;
   }
-  .bl-aside {
+  .zh-aside {
     background-color: #d9ecff;
     @extend .center-util;
   }
-  .bl-main {
+  .zh-main {
     background-color: #ecf5ff;
     @extend .center-util;
   }
-  .bl-footer {
+  .zh-footer {
     background-color: #c6e2ff;
     @extend .center-util;
   }

@@ -1,4 +1,4 @@
-.bl-input__wrapper {
+.zh-input__wrapper {
   box-shadow: 0 0 0 1px #ccc;
   @apply inline-flex rounded transition box-border flex-grow items-center justify-center px-2;
   &:not(.is-disabled):focus-within {
@@ -9,7 +9,7 @@
   }
 }
 
-.bl-input__inner {
+.zh-input__inner {
   height: 30px;
   @apply w-full;
   &:focus {
@@ -20,11 +20,11 @@
 .is-disabled {
   background-color: #F5F7FA;
   @apply cursor-not-allowed;
-  .bl-input__inner {
+  .zh-input__inner {
     @apply cursor-not-allowed;
   }
 }
 
-.bl-right__suffix {
+.zh-right__suffix {
   @apply self-end h-full inline-flex items-center;
 }

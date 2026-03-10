@@ -11,19 +11,19 @@ css做过前缀兼容，对不同浏览器支持度都挺高，js就没有专门
 目前还处于快速开发迭代中。
 
 ## 直接下载使用
-项目跟目录下的 `BiLuoUI` 文件夹就是打包生成的插件,可以直接copy到项目中使用。
-[项目仓库](https://gitee.com/biluo_x/biluo-ui/tree/develop)
+项目跟目录下的 `ZHUI` 文件夹就是打包生成的插件,可以直接copy到项目中使用。
+[项目仓库](https://gitee.com/lixindekongjian/zh-ui/tree/master)
 
 ## 使用包管理器
 ```
 # 选择一个你喜欢的包管理器
 
 # NPM
-$ npm install biluo-ui --save
+$ npm install zh-ui --save
 
 # Yarn
-$ yarn add biluo-ui
+$ yarn add zh-ui
 
 # pnpm
-$ pnpm install biluo-ui
+$ pnpm install zh-ui
 ```

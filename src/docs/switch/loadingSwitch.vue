@@ -1,6 +1,6 @@
 <template>
-  <bl-switch v-model="value1" loading />
-  <bl-switch v-model="value2" loading class="ml-2" />
+  <zh-switch v-model="value1" loading />
+  <zh-switch v-model="value2" loading class="ml-2" />
 </template>
 
 <script lang="ts" setup>

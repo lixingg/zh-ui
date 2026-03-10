@@ -1,5 +1,5 @@
 import { ComponentPublicInstance, createVNode, h, render, VNode } from 'vue'
-import BlMessage from './bl-message.vue'
+import BlMessage from './zh-message.vue'
 import {
   Message,
   MessageFn,
@@ -9,7 +9,7 @@ import {
   messageTypes
 } from './message.type'
 
-const boxId = 'bl-message__function'
+const boxId = 'zh-message__function'
 const container = document.createElement('div')
 document.body.appendChild(container)
 container.id = boxId

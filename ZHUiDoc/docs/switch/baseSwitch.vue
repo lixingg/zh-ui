@@ -6,6 +6,6 @@
 </script>
 
 <template>
-  <bl-switch v-model="switch_1" />
-  <bl-switch v-model="switch_2" active-color="#13ce66" inactive-color="#ff4949" />
+  <zh-switch v-model="switch_1" />
+  <zh-switch v-model="switch_2" active-color="#13ce66" inactive-color="#ff4949" />
 </template>

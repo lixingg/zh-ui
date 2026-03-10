@@ -1,30 +1,30 @@
 <template>
   <div>
-    <bl-row :gutter="20">
-      <bl-col :span="3">
+    <zh-row :gutter="20">
+      <zh-col :span="3">
         <span>Using slots</span>
-      </bl-col>
-      <bl-col :span="10">
-        <bl-input v-model="input3" placeholder="Pick a date">
+      </zh-col>
+      <zh-col :span="10">
+        <zh-input v-model="input3" placeholder="Pick a date">
           <template #suffix>
-            <bl-icon name="calendar"></bl-icon>
+            <zh-icon name="calendar"></zh-icon>
           </template>
-        </bl-input>
-      </bl-col>
-      <bl-col :span="10">
-        <bl-input v-model="input4" placeholder="Type something">
+        </zh-input>
+      </zh-col>
+      <zh-col :span="10">
+        <zh-input v-model="input4" placeholder="Type something">
           <template #prefix>
-            <bl-icon name="search"></bl-icon>
+            <zh-icon name="search"></zh-icon>
           </template>
-        </bl-input>
-      </bl-col>
-    </bl-row>
+        </zh-input>
+      </zh-col>
+    </zh-row>
 
-<!--    <bl-row>-->
-<!--      <bl-col>2</bl-col>-->
-<!--      <bl-col>2</bl-col>-->
-<!--      <bl-col>3</bl-col>-->
-<!--    </bl-row>-->
+<!--    <zh-row>-->
+<!--      <zh-col>2</zh-col>-->
+<!--      <zh-col>2</zh-col>-->
+<!--      <zh-col>3</zh-col>-->
+<!--    </zh-row>-->
   </div>
 </template>
 

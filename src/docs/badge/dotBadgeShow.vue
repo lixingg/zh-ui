@@ -1,12 +1,12 @@
 <script setup lang="ts"></script>
 
 <template>
-  <bl-badge is-dot class="item">query</bl-badge>
-  <bl-badge is-dot class="item">
-    <bl-button class="share-button" type="primary">
-      <bl-icon name="share" color="white" />
-    </bl-button>
-  </bl-badge>
+  <zh-badge is-dot class="item">query</zh-badge>
+  <zh-badge is-dot class="item">
+    <zh-button class="share-button" type="primary">
+      <zh-icon name="share" color="white" />
+    </zh-button>
+  </zh-badge>
 </template>
 
 <style scoped>

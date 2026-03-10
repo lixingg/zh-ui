@@ -1,10 +1,10 @@
-import BlBadge from './src/bl-badge.vue'
+import ZhBadge from './src/zh-badge.vue'
 import { App } from 'vue'
 
 export default {
   install(app: App) {
-    app.component('BlBadge', BlBadge)
+    app.component('ZhBadge', ZhBadge)
   }
 }
 
-export { BlBadge }
+export { ZhBadge }

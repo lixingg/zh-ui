@@ -1,12 +1,12 @@
 <script setup lang="ts"></script>
 
 <template>
-  <bl-badge value="new" class="item">
-    <bl-button>comments</bl-button>
-  </bl-badge>
-  <bl-badge value="hot" class="item">
-    <bl-button>replies</bl-button>
-  </bl-badge>
+  <zh-badge value="new" class="item">
+    <zh-button>comments</zh-button>
+  </zh-badge>
+  <zh-badge value="hot" class="item">
+    <zh-button>replies</zh-button>
+  </zh-badge>
 </template>
 
 <style scoped>

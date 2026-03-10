@@ -1,6 +1,6 @@
 <template>
-  <bl-radio v-model="radio" disabled label="disabled">Option A</bl-radio>
-  <bl-radio v-model="radio" disabled label="selected and disabled">Option B</bl-radio>
+  <zh-radio v-model="radio" disabled label="disabled">Option A</zh-radio>
+  <zh-radio v-model="radio" disabled label="selected and disabled">Option B</zh-radio>
 </template>
 
 <script lang="ts" setup>

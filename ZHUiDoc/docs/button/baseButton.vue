@@ -1,51 +1,51 @@
 <script setup lang="ts"></script>
 <template>
-  <bl-row class="mb-4">
-    <bl-button>Default</bl-button>
-    <bl-button type="primary">Primary</bl-button>
-    <bl-button type="success">Success</bl-button>
-    <bl-button type="info">Info</bl-button>
-    <bl-button type="warning">Warning</bl-button>
-    <bl-button type="danger">Danger</bl-button>
-    <bl-button>中文</bl-button>
-  </bl-row>
+  <zh-row class="mb-4">
+    <zh-button>Default</zh-button>
+    <zh-button type="primary">Primary</zh-button>
+    <zh-button type="success">Success</zh-button>
+    <zh-button type="info">Info</zh-button>
+    <zh-button type="warning">Warning</zh-button>
+    <zh-button type="danger">Danger</zh-button>
+    <zh-button>中文</zh-button>
+  </zh-row>
 
-  <bl-row class="mb-4">
-    <bl-button plain>Plain</bl-button>
-    <bl-button type="primary" plain>Primary</bl-button>
-    <bl-button type="success" plain>Success</bl-button>
-    <bl-button type="info" plain>Info</bl-button>
-    <bl-button type="warning" plain>Warning</bl-button>
-    <bl-button type="danger" plain>Danger</bl-button>
-  </bl-row>
+  <zh-row class="mb-4">
+    <zh-button plain>Plain</zh-button>
+    <zh-button type="primary" plain>Primary</zh-button>
+    <zh-button type="success" plain>Success</zh-button>
+    <zh-button type="info" plain>Info</zh-button>
+    <zh-button type="warning" plain>Warning</zh-button>
+    <zh-button type="danger" plain>Danger</zh-button>
+  </zh-row>
 
-  <bl-row class="mb-4">
-    <bl-button round>Round</bl-button>
-    <bl-button type="primary" round>Primary</bl-button>
-    <bl-button type="success" round>Success</bl-button>
-    <bl-button type="info" round>Info</bl-button>
-    <bl-button type="warning" round>Warning</bl-button>
-    <bl-button type="danger" round>Danger</bl-button>
-  </bl-row>
+  <zh-row class="mb-4">
+    <zh-button round>Round</zh-button>
+    <zh-button type="primary" round>Primary</zh-button>
+    <zh-button type="success" round>Success</zh-button>
+    <zh-button type="info" round>Info</zh-button>
+    <zh-button type="warning" round>Warning</zh-button>
+    <zh-button type="danger" round>Danger</zh-button>
+  </zh-row>
 
-  <bl-row class="mb-4">
-    <bl-button circle>
-      <bl-icon name="search" />
-    </bl-button>
-    <bl-button type="primary" circle>
-      <bl-icon name="edit" color="white" />
-    </bl-button>
-    <bl-button type="success" circle>
-      <bl-icon name="check" color="white" />
-    </bl-button>
-    <bl-button type="info" circle>
-      <bl-icon name="message" color="white" />
-    </bl-button>
-    <bl-button type="warning" circle>
-      <bl-icon name="star" color="white" />
-    </bl-button>
-    <bl-button type="danger" circle>
-      <bl-icon name="delete" color="white" />
-    </bl-button>
-  </bl-row>
+  <zh-row class="mb-4">
+    <zh-button circle>
+      <zh-icon name="search" />
+    </zh-button>
+    <zh-button type="primary" circle>
+      <zh-icon name="edit" color="white" />
+    </zh-button>
+    <zh-button type="success" circle>
+      <zh-icon name="check" color="white" />
+    </zh-button>
+    <zh-button type="info" circle>
+      <zh-icon name="message" color="white" />
+    </zh-button>
+    <zh-button type="warning" circle>
+      <zh-icon name="star" color="white" />
+    </zh-button>
+    <zh-button type="danger" circle>
+      <zh-icon name="delete" color="white" />
+    </zh-button>
+  </zh-row>
 </template>

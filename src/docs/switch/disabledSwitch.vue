@@ -1,6 +1,6 @@
 <template>
-  <bl-switch v-model="value1" disabled />
-  <bl-switch v-model="value2" class="ml-2" />
+  <zh-switch v-model="value1" disabled />
+  <zh-switch v-model="value2" class="ml-2" />
 </template>
 
 <script lang="ts" setup>

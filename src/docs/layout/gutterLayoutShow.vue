@@ -1,10 +1,10 @@
 <template>
-  <bl-row :gutter="20">
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-    <bl-col :span="6"><div class="grid-content bg-purple" /></bl-col>
-  </bl-row>
+  <zh-row :gutter="20">
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+    <zh-col :span="6"><div class="grid-content bg-purple" /></zh-col>
+  </zh-row>
 </template>
 
 <style>

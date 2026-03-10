@@ -98,4 +98,4 @@ import tagLayoutShow from './tagLayoutShow.vue';
 
 ## 源代码
 
-[gitee Layout](https://gitee.com/biluo_x/biluo-ui/tree/develop/packages/components/layout)
+[gitee Layout](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/layout)

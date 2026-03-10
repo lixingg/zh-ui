@@ -41,7 +41,7 @@ import sizeButtonShow from './sizeButtonShow.vue';
 
 ## 图标按钮
 使用图标为按钮添加更多的含义。 你也可以单独使用图标不添加文字来节省显示区域占用。<br>
-使用 `icon` 属性来为按钮添加图标。 你可以在 `bl-icon` 组件里找到提供的内置图标。
+使用 `icon` 属性来为按钮添加图标。 你可以在 `zh-icon` 组件里找到提供的内置图标。
 <show-code showPath="button/iconButtonShow">
 <iconButtonShow></iconButtonShow>
 </show-code>
@@ -109,4 +109,4 @@ import sizeButtonShow from './sizeButtonShow.vue';
 | --- | 自定义默认内容 | Button |
 
 ## 源代码
-[gitee button](https://gitee.com/biluo_x/biluo-ui/tree/develop/packages/components/button)
+[gitee button](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/button)

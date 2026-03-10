@@ -1,16 +1,16 @@
 <template>
-  <bl-button-group>
-    <bl-button type="primary"><bl-icon name="arrow-left" color="white" />Previous Page </bl-button>
-    <bl-button type="primary">
+  <zh-button-group>
+    <zh-button type="primary"><zh-icon name="arrow-left" color="white" />Previous Page </zh-button>
+    <zh-button type="primary">
       Next Page
-      <bl-icon name="arrow-right" color="white" />
-    </bl-button>
-  </bl-button-group>
+      <zh-icon name="arrow-right" color="white" />
+    </zh-button>
+  </zh-button-group>
 
-  <bl-button-group class="ml-4">
-    <bl-button type="primary"><bl-icon name="edit" color="white" /></bl-button>
-    <bl-button type="primary"><bl-icon name="share" color="white" /></bl-button>
-    <bl-button type="primary"><bl-icon name="delete" color="white" /></bl-button>
-  </bl-button-group>
+  <zh-button-group class="ml-4">
+    <zh-button type="primary"><zh-icon name="edit" color="white" /></zh-button>
+    <zh-button type="primary"><zh-icon name="share" color="white" /></zh-button>
+    <zh-button type="primary"><zh-icon name="delete" color="white" /></zh-button>
+  </zh-button-group>
 </template>
 <script setup lang="ts"></script>

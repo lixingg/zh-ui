@@ -9,14 +9,14 @@
   }
 }
 
-.is-rtl .bl-drawer,
-.is-ltr .bl-drawer {
+.is-rtl .zh-drawer,
+.is-ltr .zh-drawer {
   width: 30%;
   @apply h-full;
 }
 
-.is-ttb .bl-drawer,
-.is-btt .bl-drawer {
+.is-ttb .zh-drawer,
+.is-btt .zh-drawer {
   //min-height: 200px;
   height: 30%;
   @apply w-full;
@@ -24,28 +24,28 @@
 
 .is-rtl {
   @apply flex justify-end;
-  .bl-drawer {
+  .zh-drawer {
     @include animation_(rTol,0.5s);
   }
 }
 
 .is-ltr {
   @apply flex;
-  .bl-drawer {
+  .zh-drawer {
     @include animation_(lTor,0.5s);
   }
 }
 
 .is-btt {
   @apply flex flex-col-reverse;
-  .bl-drawer {
+  .zh-drawer {
     @include animation_(bTot,0.5s);
   }
 }
 
 .is-ttb {
   @apply flex flex-col;
-  .bl-drawer {
+  .zh-drawer {
     @include animation_(tTob,0.5s);
   }
 }

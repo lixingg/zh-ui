@@ -35,7 +35,7 @@
 | `footer` | 尾部 |
 
 ## 源代码
-[gitee drawer](https://gitee.com/biluo_x/biluo-ui/tree/develop/packages/components/drawer)
+[gitee drawer](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/drawer)
 
 <script setup>
 import baseDrawer from './baseDrawer.vue';

@@ -1,10 +1,10 @@
 <script setup lang="ts"></script>
 <template>
-  <bl-button type="primary">卧槽</bl-button>
-  <bl-button type="" icon="edit" loading-icon="setting" round> 测试 </bl-button>
-  <bl-button-group>
-    <bl-button type="success" icon="edit" loading loading-icon="setting"> </bl-button>
-    <bl-button type="primary" icon="edit" loading loading-icon="setting"> </bl-button>
-    <bl-button type="danger" icon="edit" loading loading-icon="setting"> </bl-button>
-  </bl-button-group>
+  <zh-button type="primary">卧槽</zh-button>
+  <zh-button type="" icon="edit" loading-icon="setting" round> 测试 </zh-button>
+  <zh-button-group>
+    <zh-button type="success" icon="edit" loading loading-icon="setting"> </zh-button>
+    <zh-button type="primary" icon="edit" loading loading-icon="setting"> </zh-button>
+    <zh-button type="danger" icon="edit" loading loading-icon="setting"> </zh-button>
+  </zh-button-group>
 </template>

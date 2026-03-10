@@ -69,7 +69,7 @@
 
 ## 源代码
 
-[gitee input](https://gitee.com/biluo_x/biluo-ui/tree/develop/packages/components/input)
+[gitee input](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/input)
 
 
 

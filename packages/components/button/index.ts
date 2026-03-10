@@ -1,11 +1,11 @@
-import BlButton from './src/bl-button.vue'
-import BlButtonGroup from './src/bl-button-group.vue'
+import ZhButton from './src/zh-button.vue'
+import ZhButtonGroup from './src/zh-button-group.vue'
 import { App } from 'vue'
 
 export default {
   install(app: App) {
-    app.component('BlButton', BlButton)
-    app.component('BlButtonGroup', BlButtonGroup)
+    app.component('ZhButton', ZhButton)
+    app.component('ZhButtonGroup', ZhButtonGroup)
   }
 }
-export { BlButtonGroup, BlButton }
+export { ZhButtonGroup, ZhButton }

@@ -59,4 +59,4 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 
 ## 源代码
-[gitee icon](https://gitee.com/biluo_x/biluo-ui/tree/develop/packages/components/icon)
+[gitee icon](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/icon)

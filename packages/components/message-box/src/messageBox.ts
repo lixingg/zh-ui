@@ -1,6 +1,6 @@
 import { Action, Callback, MessageBoxData, MessageBoxState } from './messageBox.help'
 import { ComponentPublicInstance, h, render } from 'vue'
-import BlMessageBox from './bl-message-box.vue'
+import ZhMessageBox from './zh-message-box.vue'
 
 const messageInstance = new Map<
   ComponentPublicInstance<{
@@ -20,7 +20,7 @@ const container = document.createElement('div')
 document.body.appendChild(container)
 
 const initInstance = (props: any, container: HTMLDivElement) => {
-  const vNode = h(BlMessageBox, props)
+  const vNode = h(ZhMessageBox, props)
   render(vNode, container)
   return vNode.component
 }

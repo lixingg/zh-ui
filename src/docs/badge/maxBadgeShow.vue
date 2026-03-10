@@ -1,12 +1,12 @@
 <script setup lang="ts"></script>
 
 <template>
-  <bl-badge :value="200" :max="99" class="item">
-    <bl-button>comments</bl-button>
-  </bl-badge>
-  <bl-badge :value="100" :max="10" class="item">
-    <bl-button>replies</bl-button>
-  </bl-badge>
+  <zh-badge :value="200" :max="99" class="item">
+    <zh-button>comments</zh-button>
+  </zh-badge>
+  <zh-badge :value="100" :max="10" class="item">
+    <zh-button>replies</zh-button>
+  </zh-badge>
 </template>
 
 <style scoped>

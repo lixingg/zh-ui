@@ -3,6 +3,6 @@
 </script>
 
 <template>
-  <bl-button type="primary" loading @click="test">Loading</bl-button>
-  <bl-button type="primary" loading-icon="setting" loading @click="test">Loading</bl-button>
+  <zh-button type="primary" loading @click="test">Loading</zh-button>
+  <zh-button type="primary" loading-icon="setting" loading @click="test">Loading</zh-button>
 </template>

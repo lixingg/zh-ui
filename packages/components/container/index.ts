@@ -1,17 +1,17 @@
-import BlContainer from './src/bl-container.vue'
-import BlHeader from './src/bl-header.vue'
-import BlMain from './src/bl-main.vue'
-import BlFooter from './src/bl-footer.vue'
-import BlAside from './src/bl-aside.vue'
+import ZhContainer from './src/zh-container.vue'
+import ZhHeader from './src/zh-header.vue'
+import ZhMain from './src/zh-main.vue'
+import ZhFooter from './src/zh-footer.vue'
+import ZhAside from './src/zh-aside.vue'
 import { App } from 'vue'
 
 export default {
   install(app: App) {
-    app.component('BlContainer', BlContainer)
-    app.component('BlHeader', BlHeader)
-    app.component('BlMain', BlMain)
-    app.component('BlFooter', BlFooter)
-    app.component('BlAside', BlAside)
+    app.component('ZhContainer', ZhContainer)
+    app.component('ZhHeader', ZhHeader)
+    app.component('ZhMain', ZhMain)
+    app.component('ZhFooter', ZhFooter)
+    app.component('ZhAside', ZhAside)
   }
 }
-export { BlContainer, BlHeader, BlMain, BlFooter, BlAside }
+export { ZhContainer, ZhHeader, ZhMain, ZhFooter, ZhAside }

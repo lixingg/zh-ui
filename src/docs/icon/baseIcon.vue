@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <bl-icon name="Edit" />
-  <bl-icon name="Edit" color="red" />
-  <bl-icon name="Edit" color="blue" size="50" />
+  <zh-icon name="Edit" />
+  <zh-icon name="Edit" color="red" />
+  <zh-icon name="Edit" color="blue" size="50" />
 </template>

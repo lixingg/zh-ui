@@ -30,39 +30,39 @@
 </script>
 
 <template>
-  <bl-radio v-model="direction" label="ltr">left to right</bl-radio>
-  <bl-radio v-model="direction" label="rtl">right to left</bl-radio>
-  <bl-radio v-model="direction" label="ttb">top to bottom</bl-radio>
-  <bl-radio v-model="direction" label="btt">bottom to top</bl-radio>
-  <bl-button type="primary" style="margin-left: 16px" @click="drawer = true"> open </bl-button>
-  <bl-button type="primary" style="margin-left: 16px" @click="drawer2 = true">
+  <zh-radio v-model="direction" label="ltr">left to right</zh-radio>
+  <zh-radio v-model="direction" label="rtl">right to left</zh-radio>
+  <zh-radio v-model="direction" label="ttb">top to bottom</zh-radio>
+  <zh-radio v-model="direction" label="btt">bottom to top</zh-radio>
+  <zh-button type="primary" style="margin-left: 16px" @click="drawer = true"> open </zh-button>
+  <zh-button type="primary" style="margin-left: 16px" @click="drawer2 = true">
     with footer
-  </bl-button>
-  <bl-drawer
+  </zh-button>
+  <zh-drawer
     v-model="drawer"
     title="I am the title"
     :direction="direction"
     :before-close="handleClose"
   >
     <span>Hi, there!</span>
-  </bl-drawer>
-  <bl-drawer v-model="drawer2" :direction="direction">
+  </zh-drawer>
+  <zh-drawer v-model="drawer2" :direction="direction">
     <template #title>
       <h4>set title by slot</h4>
     </template>
     <template #default>
       <div>
-        <bl-radio v-model="radio1" label="Option 1" size="large">Option 1</bl-radio>
-        <bl-radio v-model="radio1" label="Option 2" size="large">Option 2</bl-radio>
+        <zh-radio v-model="radio1" label="Option 1" size="large">Option 1</zh-radio>
+        <zh-radio v-model="radio1" label="Option 2" size="large">Option 2</zh-radio>
       </div>
     </template>
     <template #footer>
       <div class="flex justify-end">
-        <bl-button @click="cancelClick">cancel</bl-button>
-        <bl-button type="primary" @click="confirmClick">confirm</bl-button>
+        <zh-button @click="cancelClick">cancel</zh-button>
+        <zh-button type="primary" @click="confirmClick">confirm</zh-button>
       </div>
     </template>
-  </bl-drawer>
+  </zh-drawer>
 </template>
 
 <style></style>

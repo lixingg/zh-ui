@@ -17,47 +17,11 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { defineComponent, computed, openBlock, createBlock, resolveDynamicComponent, normalizeStyle, unref, inject, ref, createElementBlock, normalizeClass, createElementVNode, createCommentVNode, renderSlot, provide, toRef, createVNode, withDirectives, toDisplayString, vShow, onMounted, watch, Transition, withCtx, render, useSlots, onUnmounted, withModifiers, reactive, toRefs, nextTick, resolveComponent, createTextVNode, h, Teleport } from "vue";
+import { defineComponent, computed, inject, ref, resolveComponent, openBlock, createElementBlock, normalizeClass, unref, createElementVNode, createBlock, createCommentVNode, renderSlot, provide, toRef, resolveDynamicComponent, normalizeStyle, createVNode, withDirectives, toDisplayString, vShow, onMounted, watch, Transition, withCtx, render, useSlots, onUnmounted, withModifiers, reactive, toRefs, nextTick, createTextVNode, h, Teleport } from "vue";
 import { CircleCheckFilled, InfoFilled, WarningFilled, CircleCloseFilled, Close } from "@element-plus/icons-vue";
-const _sfc_main$g = /* @__PURE__ */ defineComponent({
-  props: {
-    name: {
-      type: String
-    },
-    color: {
-      type: String,
-      default: ""
-    },
-    size: {
-      type: [Number, String],
-      default: 16
-    }
-  },
-  setup(__props) {
-    const props2 = __props;
-    const sizeComputed = computed(() => {
-      let size = "";
-      if (typeof props2.size === "number") {
-        size = props2.size + "px";
-      } else {
-        size = props2.size;
-      }
-      return {
-        height: size,
-        width: size
-      };
-    });
-    return (_ctx, _cache) => {
-      return openBlock(), createBlock(resolveDynamicComponent(__props.name), {
-        style: normalizeStyle(__spreadProps(__spreadValues({}, unref(sizeComputed)), { color: __props.color })),
-        class: "inline"
-      }, null, 8, ["style"]);
-    };
-  }
-});
-var blButton_vue_vue_type_style_index_0_lang = "";
+var zhButton_vue_vue_type_style_index_0_lang = "";
 const _hoisted_1$8 = ["type", "disabled"];
-const _sfc_main$f = /* @__PURE__ */ defineComponent({
+const _sfc_main$g = /* @__PURE__ */ defineComponent({
   props: {
     size: {
       type: String,
@@ -110,13 +74,13 @@ const _sfc_main$f = /* @__PURE__ */ defineComponent({
     const props2 = __props;
     const classComputed = computed(() => {
       const typeInject = inject("button-group-type", ref(void 0));
-      const typeClass = props2.type === "default" && typeInject.value ? "bl-button-" + typeInject.value : "bl-button-" + props2.type;
-      const isPlain = props2.plain ? "bl-is-plain" : "";
-      const isRound = props2.round ? "bl-is-round" : "";
-      const isLoading = props2.loading ? "bl-is-disabled is-Loading" : "";
-      const isDisabled = props2.disabled || props2.loading ? "bl-is-disabled" : "";
-      const isCircle = props2.circle ? "bl-is-circle" : "";
-      const isSize = props2.size ? `bl-is-${props2.size}` : "";
+      const typeClass = props2.type === "default" && typeInject.value ? "zh-button-" + typeInject.value : "zh-button-" + props2.type;
+      const isPlain = props2.plain ? "zh-is-plain" : "";
+      const isRound = props2.round ? "zh-is-round" : "";
+      const isLoading = props2.loading ? "zh-is-disabled is-Loading" : "";
+      const isDisabled = props2.disabled || props2.loading ? "zh-is-disabled" : "";
+      const isCircle = props2.circle ? "zh-is-circle" : "";
+      const isSize = props2.size ? `zh-is-${props2.size}` : "";
       return [typeClass, isPlain, isRound, isDisabled, isLoading, isCircle, isSize];
     });
     const disabledComputed = computed(() => {
@@ -132,11 +96,11 @@ const _sfc_main$f = /* @__PURE__ */ defineComponent({
       const classData = [];
       if (sizeInject.value) {
         const size = (_a = props2.size ? props2.size : sizeInject.value) != null ? _a : "";
-        classData.push(`bl-is-${size}`);
+        classData.push(`zh-is-${size}`);
       }
       if (typeInject.value) {
         const type = props2.type === "default" ? typeInject.value : props2.type;
-        classData.push(`bl-button-${type}`);
+        classData.push(`zh-button-${type}`);
       }
       return classData;
     });
@@ -146,14 +110,15 @@ const _sfc_main$f = /* @__PURE__ */ defineComponent({
         $emit("click", event);
     };
     return (_ctx, _cache) => {
+      const _component_zh_icon = resolveComponent("zh-icon");
       return openBlock(), createElementBlock("button", {
-        class: normalizeClass(["bl-button", ...unref(groupInjectComputed), ...unref(classComputed)]),
+        class: normalizeClass(["zh-button", ...unref(groupInjectComputed), ...unref(classComputed)]),
         type: __props.nativeType,
         disabled: unref(disabledComputed).isDisabled,
         onClick: _cache[0] || (_cache[0] = ($event) => clickEmit($event))
       }, [
         createElementVNode("span", null, [
-          __props.loading ? (openBlock(), createBlock(_sfc_main$g, {
+          __props.loading ? (openBlock(), createBlock(_component_zh_icon, {
             key: 0,
             name: __props.loadingIcon,
             color: __props.iconColor,
@@ -165,9 +130,9 @@ const _sfc_main$f = /* @__PURE__ */ defineComponent({
     };
   }
 });
-var blButtonGroup_vue_vue_type_style_index_0_lang = "";
-const _hoisted_1$7 = { class: "bl-button-group inline-block align-middle" };
-const _sfc_main$e = /* @__PURE__ */ defineComponent({
+var zhButtonGroup_vue_vue_type_style_index_0_lang = "";
+const _hoisted_1$7 = { class: "zh-button-group inline-block align-middle" };
+const _sfc_main$f = /* @__PURE__ */ defineComponent({
   props: {
     size: {
       type: String,
@@ -197,13 +162,49 @@ const _sfc_main$e = /* @__PURE__ */ defineComponent({
 });
 var button = {
   install(app) {
-    app.component("BlButton", _sfc_main$f);
-    app.component("BlButtonGroup", _sfc_main$e);
+    app.component("ZhButton", _sfc_main$g);
+    app.component("ZhButtonGroup", _sfc_main$f);
   }
 };
+const _sfc_main$e = /* @__PURE__ */ defineComponent({
+  props: {
+    name: {
+      type: String
+    },
+    color: {
+      type: String,
+      default: ""
+    },
+    size: {
+      type: [Number, String],
+      default: 16
+    }
+  },
+  setup(__props) {
+    const props2 = __props;
+    const sizeComputed = computed(() => {
+      let size = "";
+      if (typeof props2.size === "number") {
+        size = props2.size + "px";
+      } else {
+        size = props2.size;
+      }
+      return {
+        height: size,
+        width: size
+      };
+    });
+    return (_ctx, _cache) => {
+      return openBlock(), createBlock(resolveDynamicComponent(__props.name), {
+        style: normalizeStyle(__spreadProps(__spreadValues({}, unref(sizeComputed)), { color: __props.color })),
+        class: "inline"
+      }, null, 8, ["style"]);
+    };
+  }
+});
 var icon = {
   install(app) {
-    app.component("BlIcon", _sfc_main$g);
+    app.component("ZhIcon", _sfc_main$e);
   }
 };
 var row = "";
@@ -226,7 +227,7 @@ const props$1 = {
     default: "top"
   }
 };
-const BlRow = defineComponent({
+const ZhRow = defineComponent({
   name: "BlRow",
   props: props$1,
   setup(props2, {
@@ -250,7 +251,7 @@ const BlRow = defineComponent({
       return [justifyClass, alignClass];
     });
     return () => createVNode(props2.tag, {
-      "class": ["bl-row", ...flex.value],
+      "class": ["zh-row", ...flex.value],
       "style": style2.value
     }, {
       default: () => {
@@ -282,7 +283,7 @@ const props = {
     default: 0
   }
 };
-const BlCol = defineComponent({
+const ZhCol = defineComponent({
   name: "BlCol",
   props,
   setup(props2, {
@@ -325,7 +326,7 @@ const BlCol = defineComponent({
       return all;
     });
     return () => createVNode(props2.tag, {
-      "class": "bl-col",
+      "class": "zh-col",
       "style": style2.value
     }, {
       default: () => {
@@ -337,12 +338,12 @@ const BlCol = defineComponent({
 });
 var layout = {
   install(app) {
-    app.component(BlRow.name, BlRow);
-    app.component(BlCol.name, BlCol);
+    app.component(ZhRow.name, ZhRow);
+    app.component(ZhCol.name, ZhCol);
   }
 };
-var blBadge_vue_vue_type_style_index_0_lang = "";
-const _hoisted_1$6 = { class: "bl-badge relative inline-block align-middle" };
+var zhBadge_vue_vue_type_style_index_0_lang = "";
+const _hoisted_1$6 = { class: "zh-badge relative inline-block align-middle" };
 const _hoisted_2$5 = ["textContent"];
 const _sfc_main$d = /* @__PURE__ */ defineComponent({
   props: {
@@ -380,15 +381,15 @@ const _sfc_main$d = /* @__PURE__ */ defineComponent({
       return `${props2.value}`;
     });
     const classCom = computed(() => {
-      const isDot = props2.isDot ? "bl-badge__dot" : "bl-badge__content";
-      const type = props2.type ? `bl-badge__type--${props2.type}` : "";
+      const isDot = props2.isDot ? "zh-badge__dot" : "zh-badge__content";
+      const type = props2.type ? `zh-badge__type--${props2.type}` : "";
       return [isDot, type];
     });
     return (_ctx, _cache) => {
       return openBlock(), createElementBlock("div", _hoisted_1$6, [
         renderSlot(_ctx.$slots, "default"),
         withDirectives(createElementVNode("sub", {
-          class: normalizeClass(["bl-sup__base", ...unref(classCom)]),
+          class: normalizeClass(["zh-sup__base", ...unref(classCom)]),
           textContent: toDisplayString(unref(content))
         }, null, 10, _hoisted_2$5), [
           [vShow, !__props.hidden && (unref(content) || unref(content) === "0" || __props.isDot)]
@@ -399,7 +400,7 @@ const _sfc_main$d = /* @__PURE__ */ defineComponent({
 });
 var badge = {
   install(app) {
-    app.component("BlBadge", _sfc_main$d);
+    app.component("ZhBadge", _sfc_main$d);
   }
 };
 const style = {
@@ -483,7 +484,7 @@ const _sfc_main$c = /* @__PURE__ */ defineComponent({
   }
 });
 var MessageIcon = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["__scopeId", "data-v-32fc5d86"]]);
-var blMessage_vue_vue_type_style_index_0_scoped_true_lang = "";
+var zhMessage_vue_vue_type_style_index_0_scoped_true_lang = "";
 const _hoisted_1$5 = ["innerHTML"];
 const _sfc_main$b = /* @__PURE__ */ defineComponent({
   props: {
@@ -550,6 +551,7 @@ const _sfc_main$b = /* @__PURE__ */ defineComponent({
       startTimer();
     });
     return (_ctx, _cache) => {
+      const _component_zh_badge = resolveComponent("zh-badge");
       return openBlock(), createBlock(Transition, { name: "message" }, {
         default: withCtx(() => [
           visible.value ? (openBlock(), createElementBlock("div", {
@@ -557,13 +559,13 @@ const _sfc_main$b = /* @__PURE__ */ defineComponent({
             ref_key: "messageRef",
             ref: messageRef,
             style: normalizeStyle(unref(style)[__props.type]),
-            class: normalizeClass(["bl-message w-80 h-12 rounded flex items-center px-6 mb-4", { "justify-center": __props.center }])
+            class: normalizeClass(["zh-message w-80 h-12 rounded flex items-center px-6 mb-4", { "justify-center": __props.center }])
           }, [
-            __props.repeatNum > 1 ? (openBlock(), createBlock(_sfc_main$d, {
+            __props.repeatNum > 1 ? (openBlock(), createBlock(_component_zh_badge, {
               key: 0,
               value: __props.repeatNum,
               type: __props.type,
-              class: "bl-message__badge"
+              class: "zh-message__badge"
             }, null, 8, ["value", "type"])) : createCommentVNode("", true),
             createVNode(MessageIcon, { type: __props.type }, null, 8, ["type"]),
             createElementVNode("span", {
@@ -582,9 +584,9 @@ const _sfc_main$b = /* @__PURE__ */ defineComponent({
     };
   }
 });
-var BlMessage = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["__scopeId", "data-v-3a20aa04"]]);
+var BlMessage = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["__scopeId", "data-v-5f80b5c0"]]);
 const messageTypes = ["success", "info", "warning", "danger"];
-const boxId = "bl-message__function";
+const boxId = "zh-message__function";
 const container$2 = document.createElement("div");
 document.body.appendChild(container$2);
 container$2.id = boxId;
@@ -675,7 +677,7 @@ const useNamespace = (namespace) => {
     }
   };
 };
-var blContainer_vue_vue_type_style_index_0_lang = "";
+var zhContainer_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$a = /* @__PURE__ */ defineComponent({
   props: {
     direction: {
@@ -712,7 +714,7 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent({
     };
   }
 });
-var blHeader_vue_vue_type_style_index_0_lang = "";
+var zhHeader_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$9 = defineComponent({
   name: "BlHeader",
   props: {
@@ -738,8 +740,8 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     renderSlot(_ctx.$slots, "default")
   ], 6);
 }
-var BlHeader = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$4]]);
-var blMain_vue_vue_type_style_index_0_lang = "";
+var ZhHeader = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$4]]);
+var zhMain_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$8 = defineComponent({
   name: "ElMain",
   setup() {
@@ -756,8 +758,8 @@ function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     renderSlot(_ctx.$slots, "default")
   ], 2);
 }
-var BlMain = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$3]]);
-var blFooter_vue_vue_type_style_index_0_lang = "";
+var ZhMain = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$3]]);
+var zhFooter_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$7 = defineComponent({
   name: "BlFooter",
   props: {
@@ -783,8 +785,8 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     renderSlot(_ctx.$slots, "default")
   ], 6);
 }
-var BlFooter = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$2]]);
-var blAside_vue_vue_type_style_index_0_lang = "";
+var ZhFooter = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$2]]);
+var zhAside_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$6 = defineComponent({
   name: "BlAside",
   props: {
@@ -810,14 +812,14 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     renderSlot(_ctx.$slots, "default")
   ], 6);
 }
-var BlAside = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$1]]);
+var ZhAside = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$1]]);
 var container$1 = {
   install(app) {
-    app.component("BlContainer", _sfc_main$a);
-    app.component("BlHeader", BlHeader);
-    app.component("BlMain", BlMain);
-    app.component("BlFooter", BlFooter);
-    app.component("BlAside", BlAside);
+    app.component("ZhContainer", _sfc_main$a);
+    app.component("ZhHeader", ZhHeader);
+    app.component("ZhMain", ZhMain);
+    app.component("ZhFooter", ZhFooter);
+    app.component("ZhAside", ZhAside);
   }
 };
 var utilModal_vue_vue_type_style_index_0_scoped_true_lang = "";
@@ -873,14 +875,14 @@ const _sfc_main$5 = /* @__PURE__ */ defineComponent({
   }
 });
 var UtilModal = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["__scopeId", "data-v-041a9a03"]]);
-var blMessageBox_vue_vue_type_style_index_0_scoped_true_lang = "";
+var zhMessageBox_vue_vue_type_style_index_0_scoped_true_lang = "";
 const _sfc_main$4 = defineComponent({
   name: "BlMessageBox",
   components: {
     UtilModal,
     Close,
     MessageIcon,
-    BlButton: _sfc_main$f
+    BlButton: _sfc_main$g
   },
   setup(props2, { emit }) {
     const ns = useNamespace("message-box");
@@ -933,7 +935,7 @@ const _hoisted_5$2 = { class: "flex justify-end pt-0.5" };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_Close = resolveComponent("Close");
   const _component_message_icon = resolveComponent("message-icon");
-  const _component_bl_button = resolveComponent("bl-button");
+  const _component_zh_button = resolveComponent("zh-button");
   const _component_util_modal = resolveComponent("util-modal");
   return openBlock(), createBlock(_component_util_modal, {
     visible: _ctx.visible_,
@@ -967,7 +969,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
               }, null, 8, _hoisted_4$2)
             ]),
             createElementVNode("div", _hoisted_5$2, [
-              _ctx.showCancelButton ? (openBlock(), createBlock(_component_bl_button, {
+              _ctx.showCancelButton ? (openBlock(), createBlock(_component_zh_button, {
                 key: 0,
                 onClick: _cache[1] || (_cache[1] = ($event) => _ctx.confirmAll("cancel"))
               }, {
@@ -976,7 +978,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                 ]),
                 _: 1
               })) : createCommentVNode("", true),
-              createVNode(_component_bl_button, {
+              createVNode(_component_zh_button, {
                 type: "primary",
                 onClick: _cache[2] || (_cache[2] = ($event) => _ctx.confirmAll("confirm"))
               }, {
@@ -996,12 +998,12 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
   }, 8, ["visible", "onClosed"]);
 }
-var BlMessageBox = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render], ["__scopeId", "data-v-7d56b0fd"]]);
+var ZhMessageBox = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render], ["__scopeId", "data-v-6bccd106"]]);
 const messageInstance = /* @__PURE__ */ new Map();
 const container = document.createElement("div");
 document.body.appendChild(container);
 const initInstance = (props2, container2) => {
-  const vNode = h(BlMessageBox, props2);
+  const vNode = h(ZhMessageBox, props2);
   render(vNode, container2);
   return vNode.component;
 };
@@ -1080,7 +1082,7 @@ MessageBox.close = () => {
   });
   messageInstance.clear();
 };
-var blDrawer_vue_vue_type_style_index_0_scoped_true_lang = "";
+var zhDrawer_vue_vue_type_style_index_0_scoped_true_lang = "";
 const _hoisted_1$3 = { class: "p-2 py-4 flex justify-between items-center" };
 const _hoisted_2$3 = { class: "p-2 flex-1" };
 const _sfc_main$3 = /* @__PURE__ */ defineComponent({
@@ -1120,6 +1122,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
       }
     };
     return (_ctx, _cache) => {
+      const _component_zh_icon = resolveComponent("zh-icon");
       return openBlock(), createBlock(Teleport, { to: "body" }, [
         createVNode(UtilModal, {
           visible: __props.modelValue,
@@ -1139,7 +1142,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
                 renderSlot(_ctx.$slots, "title", {}, () => [
                   createElementVNode("span", null, toDisplayString(__props.title), 1)
                 ], true),
-                createVNode(_sfc_main$g, {
+                createVNode(_component_zh_icon, {
                   name: "close",
                   class: "cursor-pointer text-gray-600 hover:text-gray-400 ml-auto",
                   size: "20",
@@ -1160,13 +1163,13 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-var BlDrawer = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-f0f65cc6"]]);
+var ZhDrawer = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-606f7de5"]]);
 var drawer = {
   install(app) {
-    app.component("BlDrawer", BlDrawer);
+    app.component("ZhDrawer", ZhDrawer);
   }
 };
-var blRadio_vue_vue_type_style_index_0_scoped_true_lang = "";
+var zhRadio_vue_vue_type_style_index_0_scoped_true_lang = "";
 const _hoisted_1$2 = { class: "flex items-center" };
 const _hoisted_2$2 = ["value", "name", "checked", "disabled"];
 const _hoisted_3$2 = { class: "ml-1.5 text-sm" };
@@ -1235,23 +1238,23 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-var BlRadio = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-14734d90"]]);
+var ZhRadio = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-4fc8c620"]]);
 var radio = {
   install(app) {
-    app.component("BlRadio", BlRadio);
+    app.component("ZhRadio", ZhRadio);
   }
 };
-var blSwitch_vue_vue_type_style_index_0_scoped_true_lang = "";
+var zhSwitch_vue_vue_type_style_index_0_scoped_true_lang = "";
 const _hoisted_1$1 = ["onClick"];
 const _hoisted_2$1 = ["checked", "disabled"];
 const _hoisted_3$1 = {
   key: 0,
-  class: "bl-switch__in left-1.5"
+  class: "zh-switch__in left-1.5"
 };
-const _hoisted_4$1 = { class: "bl-switch__action" };
+const _hoisted_4$1 = { class: "zh-switch__action" };
 const _hoisted_5$1 = {
   key: 1,
-  class: "bl-switch__in right-1.5"
+  class: "zh-switch__in right-1.5"
 };
 const _sfc_main$1 = /* @__PURE__ */ defineComponent({
   props: {
@@ -1321,7 +1324,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       handleInput();
     };
     return (_ctx, _cache) => {
-      const _component_bl_icon = resolveComponent("bl-icon");
+      const _component_zh_icon = resolveComponent("zh-icon");
       return openBlock(), createElementBlock("div", {
         class: normalizeClass([
           unref(ns).b(),
@@ -1332,7 +1335,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         onClick: withModifiers(switchValue, ["prevent"])
       }, [
         createElementVNode("input", {
-          id: "bl-switch__input",
+          id: "zh-switch__input",
           ref_key: "input",
           ref: input2,
           type: "checkbox",
@@ -1347,12 +1350,12 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
           style: normalizeStyle(unref(textStyle)(false))
         }, toDisplayString(__props.activeText), 5)) : createCommentVNode("", true),
         createElementVNode("span", {
-          class: "bl-switch__main-core",
+          class: "zh-switch__main-core",
           style: normalizeStyle(unref(bgColorStyle))
         }, [
           unref(checked) && __props.inlinePrompt && __props.activeText ? (openBlock(), createElementBlock("span", _hoisted_3$1, toDisplayString(__props.activeText[0]), 1)) : createCommentVNode("", true),
           createElementVNode("div", _hoisted_4$1, [
-            __props.loading ? (openBlock(), createBlock(_component_bl_icon, {
+            __props.loading ? (openBlock(), createBlock(_component_zh_icon, {
               key: 0,
               name: "loading",
               class: "text-gray-400 animate-spin",
@@ -1370,10 +1373,10 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-var BlSwitch$1 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["__scopeId", "data-v-239710b5"]]);
+var ZhSwitch = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["__scopeId", "data-v-0aa447ee"]]);
 var BlSwitch = {
   install(app) {
-    app.component("BlSwitch", BlSwitch$1);
+    app.component("ZhSwitch", ZhSwitch);
   }
 };
 const useMouseEnterLeave = () => {
@@ -1402,23 +1405,23 @@ const useShowPassword = () => {
     changePasswordShow
   };
 };
-var blInput_vue_vue_type_style_index_0_scoped_true_lang = "";
+var zhInput_vue_vue_type_style_index_0_scoped_true_lang = "";
 const _hoisted_1 = {
   key: 0,
-  class: "bl-right__suffix mr-1"
+  class: "zh-right__suffix mr-1"
 };
 const _hoisted_2 = ["disabled", "type", "value", "placeholder"];
 const _hoisted_3 = {
   key: 1,
-  class: "bl-right__suffix"
+  class: "zh-right__suffix"
 };
 const _hoisted_4 = {
   key: 2,
-  class: "bl-right__suffix"
+  class: "zh-right__suffix"
 };
 const _hoisted_5 = {
   key: 3,
-  class: "bl-right__suffix"
+  class: "zh-right__suffix"
 };
 const _sfc_main = /* @__PURE__ */ defineComponent({
   props: {
@@ -1461,11 +1464,12 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     };
     const { passwordVisible, changePasswordShow } = useShowPassword();
     return (_ctx, _cache) => {
+      const _component_zh_icon = resolveComponent("zh-icon");
       return openBlock(), createElementBlock("div", {
         class: normalizeClass([unref(ns).b()])
       }, [
         createElementVNode("div", {
-          class: normalizeClass(["bl-input__wrapper", [unref(ns).is(__props.disabled, "disabled")]]),
+          class: normalizeClass(["zh-input__wrapper", [unref(ns).is(__props.disabled, "disabled")]]),
           onMouseenter: _cache[1] || (_cache[1] = (...args) => unref(enter) && unref(enter)(...args)),
           onMouseleave: _cache[2] || (_cache[2] = (...args) => unref(leave) && unref(leave)(...args))
         }, [
@@ -1473,7 +1477,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             renderSlot(_ctx.$slots, "prefix", {}, void 0, true)
           ])) : createCommentVNode("", true),
           createElementVNode("input", {
-            class: "bl-input__inner",
+            class: "zh-input__inner",
             disabled: __props.disabled,
             type: __props.showPassword ? unref(passwordVisible) ? "text" : "password" : __props.type,
             value: __props.modelValue,
@@ -1482,14 +1486,14 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             onChange: _cache[0] || (_cache[0] = ($event) => $emit("change"))
           }, null, 40, _hoisted_2),
           __props.clearable && unref(mouse_is) ? (openBlock(), createElementBlock("span", _hoisted_3, [
-            createVNode(_sfc_main$g, {
+            createVNode(_component_zh_icon, {
               name: "close",
               class: "text-gray-400 hover:text-gray-600 hover:border-gray-600 transition cursor-pointer border rounded-full",
               onClick: unref(clearModel)
             }, null, 8, ["onClick"])
           ])) : createCommentVNode("", true),
           __props.showPassword ? (openBlock(), createElementBlock("span", _hoisted_4, [
-            createVNode(_sfc_main$g, {
+            createVNode(_component_zh_icon, {
               class: "text-gray-400 hover:text-gray-600 transition cursor-pointer",
               name: "view",
               onClick: unref(changePasswordShow)
@@ -1503,10 +1507,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     };
   }
 });
-var BlInput = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-4c261da6"]]);
+var ZhInput = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-637e6d0c"]]);
 var input = {
   install(app) {
-    app.component("BlInput", BlInput);
+    app.component("ZhInput", ZhInput);
   }
 };
 var index$1 = "";
@@ -1516,4 +1520,4 @@ var index = {
     components.map((item) => item.install(app));
   }
 };
-export { BlAside, _sfc_main$d as BlBadge, _sfc_main$f as BlButton, _sfc_main$e as BlButtonGroup, BlCol, _sfc_main$a as BlContainer, BlDrawer, BlFooter, BlHeader, _sfc_main$g as BlIcon, BlInput, BlMain, BlMessageFn, BlRadio, BlRow, BlSwitch$1 as BlSwitch, MessageBoxFn, index as default };
+export { BlMessageFn, MessageBoxFn, ZhAside, _sfc_main$d as ZhBadge, _sfc_main$g as ZhButton, _sfc_main$f as ZhButtonGroup, ZhCol, _sfc_main$a as ZhContainer, ZhDrawer, ZhFooter, ZhHeader, _sfc_main$e as ZhIcon, ZhInput, ZhMain, ZhRadio, ZhRow, ZhSwitch, index as default };

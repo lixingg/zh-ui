@@ -1,9 +1,9 @@
 <template>
-  <bl-button type="primary" style="margin-left: 16px" @click="drawer = true"> open </bl-button>
+  <zh-button type="primary" style="margin-left: 16px" @click="drawer = true"> open </zh-button>
 
-  <bl-drawer v-model="drawer" title="I am the title" :with-header="false">
+  <zh-drawer v-model="drawer" title="I am the title" :with-header="false">
     <span>Hi there!</span>
-  </bl-drawer>
+  </zh-drawer>
 </template>
 
 <script lang="ts" setup>

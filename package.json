@@ -5,9 +5,9 @@
   "version": "1.0.6",
   "description": "这是一个模仿element ui写的ui组件。用以练手和学习。",
   "keyword": "typescript tailwindcss ui element",
-  "files": ["BiLuoUI"],
-  "main": "./BiLuoUI/biluo-ui.es.js",
-  "module": "./BiLuoUI/biluo-ui.es.js",
+  "files": ["ZHUI"],
+  "main": "./ZHUI/zh-ui.es.js",
+  "module": "./ZHUI/zh-ui.es.js",
   "repository": "https://gitee.com/lixindekongjian/zh-ui.git",
   "scripts": {
     "dev": "vite --host --mode development --config ./config/dev.config.ts",
