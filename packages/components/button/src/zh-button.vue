@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { computed, inject, ref, Ref } from 'vue'
-  import BlIcon from '../../icon/src/zh-icon.vue'
+  import ZhIcon from '../../icon/src/zh-icon.vue'
   // 定义名称
   // 定义事件
   const $emit = defineEmits(['click'])

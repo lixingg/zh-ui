@@ -17,11 +17,47 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { defineComponent, computed, inject, ref, resolveComponent, openBlock, createElementBlock, normalizeClass, unref, createElementVNode, createBlock, createCommentVNode, renderSlot, provide, toRef, resolveDynamicComponent, normalizeStyle, createVNode, withDirectives, toDisplayString, vShow, onMounted, watch, Transition, withCtx, render, useSlots, onUnmounted, withModifiers, reactive, toRefs, nextTick, createTextVNode, h, Teleport } from "vue";
+import { defineComponent, computed, openBlock, createBlock, resolveDynamicComponent, normalizeStyle, unref, inject, ref, createElementBlock, normalizeClass, createElementVNode, createCommentVNode, renderSlot, provide, toRef, createVNode, withDirectives, toDisplayString, vShow, onMounted, watch, resolveComponent, Transition, withCtx, render, useSlots, onUnmounted, withModifiers, reactive, toRefs, nextTick, createTextVNode, h, Teleport } from "vue";
 import { CircleCheckFilled, InfoFilled, WarningFilled, CircleCloseFilled, Close } from "@element-plus/icons-vue";
+const _sfc_main$g = /* @__PURE__ */ defineComponent({
+  props: {
+    name: {
+      type: String
+    },
+    color: {
+      type: String,
+      default: ""
+    },
+    size: {
+      type: [Number, String],
+      default: 16
+    }
+  },
+  setup(__props) {
+    const props2 = __props;
+    const sizeComputed = computed(() => {
+      let size = "";
+      if (typeof props2.size === "number") {
+        size = props2.size + "px";
+      } else {
+        size = props2.size;
+      }
+      return {
+        height: size,
+        width: size
+      };
+    });
+    return (_ctx, _cache) => {
+      return openBlock(), createBlock(resolveDynamicComponent(__props.name), {
+        style: normalizeStyle(__spreadProps(__spreadValues({}, unref(sizeComputed)), { color: __props.color })),
+        class: "inline"
+      }, null, 8, ["style"]);
+    };
+  }
+});
 var zhButton_vue_vue_type_style_index_0_lang = "";
 const _hoisted_1$8 = ["type", "disabled"];
-const _sfc_main$g = /* @__PURE__ */ defineComponent({
+const _sfc_main$f = /* @__PURE__ */ defineComponent({
   props: {
     size: {
       type: String,
@@ -110,7 +146,6 @@ const _sfc_main$g = /* @__PURE__ */ defineComponent({
         $emit("click", event);
     };
     return (_ctx, _cache) => {
-      const _component_zh_icon = resolveComponent("zh-icon");
       return openBlock(), createElementBlock("button", {
         class: normalizeClass(["zh-button", ...unref(groupInjectComputed), ...unref(classComputed)]),
         type: __props.nativeType,
@@ -118,7 +153,7 @@ const _sfc_main$g = /* @__PURE__ */ defineComponent({
         onClick: _cache[0] || (_cache[0] = ($event) => clickEmit($event))
       }, [
         createElementVNode("span", null, [
-          __props.loading ? (openBlock(), createBlock(_component_zh_icon, {
+          __props.loading ? (openBlock(), createBlock(_sfc_main$g, {
             key: 0,
             name: __props.loadingIcon,
             color: __props.iconColor,
@@ -132,7 +167,7 @@ const _sfc_main$g = /* @__PURE__ */ defineComponent({
 });
 var zhButtonGroup_vue_vue_type_style_index_0_lang = "";
 const _hoisted_1$7 = { class: "zh-button-group inline-block align-middle" };
-const _sfc_main$f = /* @__PURE__ */ defineComponent({
+const _sfc_main$e = /* @__PURE__ */ defineComponent({
   props: {
     size: {
       type: String,
@@ -162,49 +197,13 @@ const _sfc_main$f = /* @__PURE__ */ defineComponent({
 });
 var button = {
   install(app) {
-    app.component("ZhButton", _sfc_main$g);
-    app.component("ZhButtonGroup", _sfc_main$f);
+    app.component("ZhButton", _sfc_main$f);
+    app.component("ZhButtonGroup", _sfc_main$e);
   }
 };
-const _sfc_main$e = /* @__PURE__ */ defineComponent({
-  props: {
-    name: {
-      type: String
-    },
-    color: {
-      type: String,
-      default: ""
-    },
-    size: {
-      type: [Number, String],
-      default: 16
-    }
-  },
-  setup(__props) {
-    const props2 = __props;
-    const sizeComputed = computed(() => {
-      let size = "";
-      if (typeof props2.size === "number") {
-        size = props2.size + "px";
-      } else {
-        size = props2.size;
-      }
-      return {
-        height: size,
-        width: size
-      };
-    });
-    return (_ctx, _cache) => {
-      return openBlock(), createBlock(resolveDynamicComponent(__props.name), {
-        style: normalizeStyle(__spreadProps(__spreadValues({}, unref(sizeComputed)), { color: __props.color })),
-        class: "inline"
-      }, null, 8, ["style"]);
-    };
-  }
-});
 var icon = {
   install(app) {
-    app.component("ZhIcon", _sfc_main$e);
+    app.component("ZhIcon", _sfc_main$g);
   }
 };
 var row = "";
@@ -882,7 +881,7 @@ const _sfc_main$4 = defineComponent({
     UtilModal,
     Close,
     MessageIcon,
-    BlButton: _sfc_main$g
+    BlButton: _sfc_main$f
   },
   setup(props2, { emit }) {
     const ns = useNamespace("message-box");
@@ -1520,4 +1519,4 @@ var index = {
     components.map((item) => item.install(app));
   }
 };
-export { BlMessageFn, MessageBoxFn, ZhAside, _sfc_main$d as ZhBadge, _sfc_main$g as ZhButton, _sfc_main$f as ZhButtonGroup, ZhCol, _sfc_main$a as ZhContainer, ZhDrawer, ZhFooter, ZhHeader, _sfc_main$e as ZhIcon, ZhInput, ZhMain, ZhRadio, ZhRow, ZhSwitch, index as default };
+export { BlMessageFn, MessageBoxFn, ZhAside, _sfc_main$d as ZhBadge, _sfc_main$f as ZhButton, _sfc_main$e as ZhButtonGroup, ZhCol, _sfc_main$a as ZhContainer, ZhDrawer, ZhFooter, ZhHeader, _sfc_main$g as ZhIcon, ZhInput, ZhMain, ZhRadio, ZhRow, ZhSwitch, index as default };
