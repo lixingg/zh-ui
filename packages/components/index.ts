@@ -1,4 +1,5 @@
 import { App } from 'vue'
+import ElementPlus from 'element-plus'
 export * from './button'
 export * from './icon'
 export * from './layout'
@@ -22,11 +23,11 @@ import BlSwitch from './switch'
 import input from './input'
 
 import '../../src/assets/style/index.scss'
-
 const components = [button, icon, layout, badge, container, drawer, radio, BlSwitch, input]
 
 export default {
   install(app: App) {
+    ElementPlus.install(app);
     components.map((item) => item.install(app))
   }
 }
