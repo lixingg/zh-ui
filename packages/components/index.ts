@@ -1,5 +1,7 @@
 import { App } from 'vue'
 import ElementPlus from 'element-plus'
+export * from 'element-plus'
+export * from 'element-plus/dist/locale/zh-cn.mjs'
 export * from './button'
 export * from './icon'
 export * from './layout'
@@ -22,12 +24,14 @@ import radio from './radio'
 import BlSwitch from './switch'
 import input from './input'
 
+import 'dayjs/locale/zh-cn';
+import 'element-plus/dist/index.css'
 import '../../src/assets/style/index.scss'
 const components = [button, icon, layout, badge, container, drawer, radio, BlSwitch, input]
 
 export default {
-  install(app: App) {
-    ElementPlus.install(app);
+  install(app: App, options?: any) {
+    ElementPlus.install(app, options);
     components.map((item) => item.install(app))
   }
 }
