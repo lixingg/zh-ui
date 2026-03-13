@@ -2,7 +2,13 @@
 欢迎使用 ZHUI
 ## 介绍
 
-这是一个模仿element ui写的ui组件。用以练手和学习，能力有限，很多重要的功能并没有实现，已经实现的功能有一部分并没有完全按照element的功能来。
+这是一个在ElementPlus基础上进行二次封装的UI组件库，
+已内置 ElementPlus、@element-plus/icons-vue、echarts、echarts-gl等组件
+如使用elementPlus原有组件，
+请前往elementPlus官网查看用法[elementPlus官网](https://element-plus.org/zh-CN/component/overview)
+如使用echarts原有组件，
+请前往echarts官网查看用法[echarts官网](https://echarts.apache.org/zh/index.html)
+
 
 以下是使用的技术栈 **vue3, typescript, vite, vite-plugin-md, tailwindcss, scss**
 

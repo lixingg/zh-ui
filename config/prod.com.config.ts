@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 // import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import baseConfig from './base.config' // 主要用于alias文件路径别名
-
+import copyPlugin from 'rollup-plugin-copy'
 export default defineConfig({
   ...baseConfig,
   // 打包配置
@@ -23,6 +23,11 @@ export default defineConfig({
       fileName: (format) => `zh-ui.${format}.js` // 打包后的文件名
     },
     rollupOptions: {
+      plugins: [
+        copyPlugin({
+          targets: [{ src: 'node_modules/element-plus/dist/locale/*', dest: 'dist/locale' }],
+        }),
+      ],
       // 确保外部化处理那些你不想打包进库的依赖
       external: ['vue', 'tailwindcss', '@element-plus/icons-vue'],
       output: {

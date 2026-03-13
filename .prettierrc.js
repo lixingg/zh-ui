@@ -2,9 +2,9 @@ module.exports = {
     printWidth: 100,
     tabWidth: 2,
     useTabs: false,
-    semi: false, // 未尾分号
+    semi: true, // 未尾分号
     vueIndentScriptAndStyle: true,
-    singleQuote: true, // 单引号
+    // singleQuote: true, // 单引号
     quoteProps: 'as-needed',
     bracketSpacing: true,
     trailingComma: 'none',
@@ -15,5 +15,5 @@ module.exports = {
     requirePragma: false,
     proseWrap: 'never',
     htmlWhitespaceSensitivity: 'strict',
-    endOfLine: 'lf'
+    endOfLine: 'crlf'
 }

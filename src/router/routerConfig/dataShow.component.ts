@@ -6,5 +6,10 @@ export const dataShowComponent: RouteRecordRaw[] = [
     path: 'badge',
     meta: { title: 'Badge 角标' },
     component: () => import('../../docs/badge/README.md')
+  },
+  {
+    path: 'image',
+    meta: { title: 'Image 图片' },
+    component: () => import('../../docs/image/README.md')
   }
 ]
