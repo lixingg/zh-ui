@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import baseConfig from './base.config' // 主要用于alias文件路径别名
 import copyPlugin from 'rollup-plugin-copy'
+import { fileURLToPath, URL } from "node:url";
 export default defineConfig({
   ...baseConfig,
   // 打包配置

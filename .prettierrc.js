@@ -4,7 +4,8 @@ module.exports = {
     useTabs: false,
     semi: true, // 未尾分号
     vueIndentScriptAndStyle: true,
-    // singleQuote: true, // 单引号
+    singleQuote: 'off', // 单引号
+    quotes:'off',
     quoteProps: 'as-needed',
     bracketSpacing: true,
     trailingComma: 'none',

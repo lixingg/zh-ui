@@ -18,7 +18,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     // 'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
-    'prettier'
+    // 'prettier'
   ],
   rules: {
     // 'prettier/prettier': 'error', // 开启规则
@@ -64,7 +64,7 @@ module.exports = {
       }
     ],
     'space-before-function-paren': 'off',
-    quotes: ['error', 'single'],
+    quotes: ['error', 'single','double'],
     'comma-dangle': ['error', 'never']
   }
 }
