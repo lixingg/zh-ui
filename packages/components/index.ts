@@ -1,9 +1,9 @@
 import { App } from 'vue'
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-
 import * as echarts from 'echarts'
 import * as echartsGl from 'echarts-gl'
+
 export * from 'element-plus'
 export * from './button'
 export * from './icon'
