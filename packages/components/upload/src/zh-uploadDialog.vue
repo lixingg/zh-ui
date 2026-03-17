@@ -77,10 +77,11 @@ const downloadFile = async () => {
      param+=`${k}=${props?.options?.params[k]}&`
   }
   param=param.substring(0,param.length-1)
-  fetch( props?.options?.exportOptions?.url+'?'+param,{
-    method: props?.options?.exportOptions?.method ||'post',
+  fetch( props?.options?.exportOptions?.url+'?'+param,
+    props?.options?.exportOptions?.method=='post'?{
+    method: props?.options?.exportOptions?.method,
     body: JSON.stringify(props?.options?.params ||{}),
-  }).then(response=>response.blob())
+  }:{}).then(response=>response.blob())
     .then((res) => {
     loadingInstance.close();
     jsFileDownload(res, `${props.options.fileName}`);
@@ -117,10 +118,11 @@ function uploadSubmit() {
     formData.append(key, props?.options?.params[key]);
   }
   formData.append("excel_file", excel_file.value);
-  fetch(props?.options?.importOptions?.url,{
+  fetch(props?.options?.importOptions?.url,
+    props?.options?.importOptions?.method=='post'?{
     method: props?.options?.importOptions?.method || "post",
     body: JSON.stringify(formData)
-  }).then((res) => {
+  }:{}).then((res) => {
     if (res) {
       ElMessage.success("添加成功");
     }

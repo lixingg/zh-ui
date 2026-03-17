@@ -1,0 +1,4 @@
+<template>
+<zh-nodata />
+</template>
+

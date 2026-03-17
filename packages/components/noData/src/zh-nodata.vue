@@ -1,10 +1,26 @@
 <template>
   <div class="nodata">
-    <img src="@/assets/images/no_data.svg" alt="">
-    <p>暂无数据</p>
+    <img :class="imgClass" :src="src" alt="">
+    <p v-if="showText" :class="textClass">{{text}}</p>
   </div>
 </template>
-
+<script setup lang="ts">
+import { defineProps } from 'vue'
+import noDataIcon from "@/assets/images/no_data.svg"
+const props = withDefaults(defineProps<{
+  src?:string,
+  showText?:boolean,
+  text?:string,
+  textClass?: any,
+  imgClass?:any,
+}>(),{
+  src:noDataIcon,
+  showText:true,
+  text:'暂无数据',
+  imgClass:{},
+  textClass:{}
+})
+</script>
 <style lang="scss" scoped>
 .nodata {
   width: 100%;

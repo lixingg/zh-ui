@@ -76,7 +76,8 @@ const defaultOptions={
   limit:1,
   downLoadUrl:`/api/back/goveruser/exportmodel`,
   uploadUrl:`/api/back/goveruser/import`,
-  fileName:'人员导入模板.xlsx'
+  fileName:'人员导入模板.xlsx',
+  downloadMethod:"get"
 }
 const visible = computed({
   get() {
@@ -104,6 +105,9 @@ function uploadSubmit() {
   apiLoading.value = true;
   let formData = new FormData();
   formData.append("excel_file", excel_file);
+  for(let k in props?.options?.params){
+    formData.append(k, props?.options?.params?.[k]);
+  }
   if(!props.useUpCustomApi){
     fetch(newOptions.value.uploadUrl,{
       method: "post",
@@ -126,7 +130,16 @@ function uploadSubmit() {
 function downModel() {
   if(!props.useDownCustomApi){
     const loadingInstance = ElLoading.service({ fullscreen: true });
-    fetch(newOptions.value.downLoadUrl)
+    let param=''
+    for(let k in props?.options?.params){
+      param+=`${k}=${props?.options?.params[k]}&`
+    }
+    param=param.substring(0,param.length-1)
+    fetch(`${newOptions.value.downLoadUrl}?${param}`,
+      newOptions.value.downloadMethod=='post'?{
+      method:'post',
+      body:JSON.stringify(props?.options?.params)
+    }:{method:newOptions.value.downloadMethod})
       .then(response=> response.blob())
       .then((res) => {
         loadingInstance.close();
