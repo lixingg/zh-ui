@@ -4,3 +4,5 @@ interface ZHVueProps {
     default: any
   }
 }
+declare module 'echarts'
+declare module 'echarts-gl'

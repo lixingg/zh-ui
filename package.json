@@ -23,6 +23,7 @@
     "echarts-gl": "^2.0.9",
     "element-plus": "^2.13.5",
     "github-markdown-css": "^5.1.0",
+    "js-file-download": "^0.4.12",
     "rollup-plugin-copy": "^3.5.0",
     "sass": "^1.43.4",
     "vue": "^3.5.22",
