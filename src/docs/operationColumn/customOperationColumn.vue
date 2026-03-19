@@ -60,9 +60,9 @@
       <el-table-column prop="age" label="年龄"></el-table-column>
       <el-table-column prop="address" label="地址"></el-table-column>
       <zh-operation-column :list-data-length="tableData1.length"
-                           label="内容超出可配置"
+                           label="非button组件展示内容"
                            :min-width="10"
-                           :showOverflowTooltip="true">
+                           showOverflowTooltip>
         <template #default="{ row }">
           <span class="context-item">{{row.address}}</span>
           <span class="context-item">{{row.name}}</span>

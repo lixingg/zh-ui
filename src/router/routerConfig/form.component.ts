@@ -17,4 +17,9 @@ export const formComponent: RouteRecordRaw[] = [
     meta: { title: 'Input 输入框' },
     component: () => import('../../docs/input/README.md')
   },
+  {
+    path: 'upload',
+    meta: { title: 'upload 上传器' },
+    component: () => import('../../docs/upload/README.md')
+  },
 ]

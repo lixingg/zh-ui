@@ -1,22 +1,31 @@
 <script setup>
-import baseOperationColumn from './baseOperationColumn.vue';
-import customOperationColumn from './customOperationColumn.vue';
+import baseUplaodFile from './baseUplaodFile.vue';
+import cardUploadFile from './cardUploadFile.vue';
+import configUploadfile from './configUploadfile.vue';
 </script>
 
-# operationColumn 自适应列
+# upload 文件上传
 
->用于element table组件，根据数据长度自动计算操作栏列宽达到自适应目的，
-> 应用场景：例如：权限控制一个表格多个角色使用时，按钮多少不定
+>基于element upload组件二次封装，支持上传文件、图片等格式文件，支持上传数据双向传值图片可预览等功能
+> 应用场景：例如：上传文件、上传图片、上传头像
 
 ## 基础用法
-传递listDataLength属性内部计算出需要的列宽
-<show-code showPath="operationColumn/baseOperationColumn">
-<baseOperationColumn></baseOperationColumn>
+使用uploadFn属性配置要上传的异步函数，比如obs直传方法 或者 代理上传接口上传；
+v-model接收传递以逗号分割的url链接字符串
+<show-code showPath="upload/baseUplaodFile">
+<baseUplaodFile></baseUplaodFile>
 </show-code>
 
-## 自定义内容 属性于element ui一致
-<show-code showPath="operationColumn/customOperationColumn">
-<customOperationColumn></customOperationColumn>
+## 使用卡片上传样式
+支持拖拽和点击上传 配置is-card属性即可
+<show-code showPath="upload/cardUploadFile">
+<cardUploadFile></cardUploadFile>
+</show-code>
+
+## 配置属性使用
+
+<show-code showPath="upload/configUploadfile">
+<configUploadfile></configUploadfile>
 </show-code>
 
 > **Tip**<br>

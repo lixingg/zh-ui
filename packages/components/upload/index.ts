@@ -1,6 +1,6 @@
 import ZhUpload from './src/zh-upload.vue'
 import ZhUploadCard from "./src/zh-uploadCard.vue";
-import zhUploadDialog from './src/zh-uploadDialog.vue'
+import zhUploadDialog from './src/zh-uploadFileDialog.vue'
 import { App } from 'vue'
 
 export default {

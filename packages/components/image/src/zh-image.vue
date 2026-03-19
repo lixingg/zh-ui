@@ -1,6 +1,6 @@
 <template>
   <div v-for="(item, index) in fileList" :key="index" class="image-box">
-    <el-icon v-if="remove" :size="16" color="#ccc" class="removeBtn" @click="removeItem(index)">
+    <el-icon v-if="remove" :size="16" color="#ccc" class="removeBtn" @click.stop="removeItem(index)">
       <CircleCloseFilled />
     </el-icon>
     <el-image
@@ -75,7 +75,7 @@
 
   const fileList: any = computed({
     get: (): any => {
-      if (Array.isArray(props.url || props.src)) {
+      if (Array.isArray(props.url || props.src || props.modelValue)) {
         type.value = 'array';
         return props.url || props.src || props.modelValue;
       }
@@ -151,6 +151,13 @@
         name: url.substring(url.lastIndexOf('/') + 1),
         url: url,
         icon: pptIcon
+      };
+    }
+    if (/blob:http/.test(url)) {
+      return {
+        name: url.substring(url.lastIndexOf('/') + 1),
+        url: url,
+        icon: url
       };
     }
     return {
