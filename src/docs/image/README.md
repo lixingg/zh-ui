@@ -1,56 +1,48 @@
 # image 图片
 
-图片容器，在保留所有原生 img 的特性下，支持懒加载，自定义占位、加载失败等
+>基于element图片容器二次封装，在保留所有element的特性下，
+支持无需配置预览可直接预览、下载、删除按钮实现双向数据绑定操作（一般用在上传图片回显展示移除），
+非图格式文件如：word、pdf、xlsx等，展示对应的logo图标和名称（可选项）点击图标可直接下载
 
 ## 基础用法
-可通过fit确定图片如何适应到容器框，同原生 object-fit
-<show-code showPath="input/baseInput">
+基于element图片属性正常使用
+<show-code showPath="image/baseImage">
 <baseImage></baseImage>
 </show-code>
 
-## 占位内容
+## 新增特性
 
-可通过slot = placeholder可自定义占位内容
+支持图片预览弹框内下载按钮下载，支持非图片格式以文件形式下载
+<show-code showPath="image/downLoadImage">
+<downLoadImage></downLoadImage>
+</show-code>
 
-<show-code showPath="input/disabledInput">
-<placeholder-image></placeholder-image>
+支持删除图片的双向绑定属性，remove属性用来显示删除按钮，使用v-model绑定值实现数据的双向绑定
+<show-code showPath="image/downLoadImage">
+<removeImage></removeImage>
 </show-code>
 
 
+## hideNumber 属性
 
-## Image 属性
+| 属性       | 说明              | 类型             | 可选值        | 默认值   |
+|----------|-----------------|----------------|------------|-------|
+| number   | 需要脱敏的内容         | string / array | ---        | ---   |
+| src      | 绑定值（不支持数据的双向绑定） | string / array | ---        | ---   |
+| url      | 绑定值（不支持数据的双向绑定） | string / array | ---        | ---   |
+| remove   | 控制删除按钮显示隐藏      | boolean        | true/false | false |
+| showName | 控制图片或者文件的名称显示隐藏 | boolean        | ---        | ---   |
 
-| 属性 | 说明 | 类型 | 可选值 | 默认值 |
-| - | - | - | - | - |
-| modelValue / v-model | 绑定值 | string / number | --- | --- |
-| type | 类型 | string | text，password 和其他原生 input 的 type 值 | --- |
-| placeholder | 输入框占位文本 | string | --- | --- |
-| disabled | 是否禁用 | boolean | --- | false |
-| showPassword | 显示切换密码图标 | boolean | --- | false |
-| clearable | 开启清空按钮 | boolean | --- | false |
 
-## Image 插槽
-
-| 插槽 | 说明 |
-| - | - |
-| `prefix` | 输入框头部内容，只对 type="text" 有效 |
-| `suffix` | 输入框尾部内容，只对 type="text" 有效 |
-
-## Input 事件
-
-| 事件名 | 说明 | 参数 |
-| - | - | - |
-| `change` | 仅在输入框失去焦点或用户按下回车时触发 | (value: string | number) |
-| `input` | 在 Input 值改变时触发 | (value: string | number) |
-| `clear` | 在点击由 clearable 属性生成的清空按钮时触发 | --- |
 
 ## 源代码
 
-[gitee input](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/input)
+[gitee image](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/image)
 
 
 
 <script setup>
 import baseImage from './baseImage.vue';
-import placeholderImage from './placeholderImage.vue';
+import downLoadImage from './downLoadImage.vue';
+import removeImage from './removeImage.vue';
 </script>

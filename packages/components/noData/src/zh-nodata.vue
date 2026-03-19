@@ -1,7 +1,8 @@
 <template>
   <div class="nodata">
-    <img :class="imgClass" :src="src" alt="">
-    <p v-if="showText" :class="textClass">{{text}}</p>
+    <img v-if="!icon" :style="$attrs.imgStyle" :src="src" alt="">
+    <zh-icon v-else :name="icon" :color="color" :size="size" />
+    <p v-if="showText" :style="$attrs.textStyle">{{text}}</p>
   </div>
 </template>
 <script setup lang="ts">
@@ -11,14 +12,16 @@ const props = withDefaults(defineProps<{
   src?:string,
   showText?:boolean,
   text?:string,
-  textClass?: any,
-  imgClass?:any,
+  icon?:any,
+  size?:number,
+  color?:string,
 }>(),{
   src:noDataIcon,
   showText:true,
   text:'暂无数据',
-  imgClass:{},
-  textClass:{}
+  icon:'',
+  size:50,
+  color:'#ccc'
 })
 </script>
 <style lang="scss" scoped>

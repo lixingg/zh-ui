@@ -1,4 +1,7 @@
 <template>
-<zh-nodata />
+<zh-noData />
 </template>
 
+<script setup lang="ts">
+
+</script>

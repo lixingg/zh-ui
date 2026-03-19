@@ -11,8 +11,13 @@
       :preview-src-list="[item]"
       :style="$attrs.style"
       fit="contain"
+      v-bind="{...$attrs}"
       @click.stop.prevent="clickImage"
-    />
+    >
+      <template v-for="(_, name) in slots" #[name]="slotData">
+        <slot :name="name" v-bind="slotData || {}"></slot>
+      </template>
+    </el-image>
     <template v-else>
       <el-image
         v-if="getFileMs(item)"
@@ -20,6 +25,7 @@
         :style="$attrs.style"
         class="item"
         fit="contain"
+        v-bind="{...$attrs}"
         @click="downFile(item)"
       />
       <span v-else>-</span>
@@ -28,7 +34,16 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { computed, defineProps, defineEmits, ref, nextTick, h, render, defineExpose } from "vue";
+  import { computed,
+    defineProps,
+    defineEmits,
+    ref,
+    nextTick,
+    h,
+    render,
+    defineExpose,
+    useAttrs ,
+    useSlots} from "vue";
   import { Download } from '@element-plus/icons-vue';
   import pdfIcon from '@/assets/images/pdf.png';
   import wordIcon from '@/assets/images/word.png';
@@ -36,6 +51,7 @@
   import rarIcon from '@/assets/images/rar.png';
   import picIcon from '@/assets/images/pic.png';
   import unKnownIcon from '@/assets/images/unknown.png';
+  import pptIcon from "@/assets/images/ppt.png";
 
   const props = defineProps<{
     url?: string;
@@ -47,6 +63,10 @@
   const emits = defineEmits(['update:modelValue']);
   const type = ref<string>('');
   const imageRef = ref(null);
+  // 获取所有未声明的属性
+  const attrs = useAttrs()
+  // 获取所有插槽
+  const slots = useSlots()
   interface Item {
     url?: string;
     name?: string;
@@ -124,6 +144,13 @@
         name: url.substring(url.lastIndexOf('/') + 1),
         url: url,
         icon: rarIcon
+      };
+    }
+    if (/\.(ppt|pptx)$/.test(url)) {
+      return {
+        name: url.substring(url.lastIndexOf('/') + 1),
+        url: url,
+        icon: pptIcon
       };
     }
     return {

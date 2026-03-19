@@ -7,7 +7,7 @@
     :width="finalWidth"
   >
     <template #default="{ row }">
-      <div v-auto-width class="operation-buttons">
+      <div v-auto-width  :class="'operation-buttons'+id">
         <slot :row="row"></slot>
       </div>
     </template>
@@ -17,6 +17,7 @@
 <script lang="ts" setup>
 import { defineProps, ref, computed } from "vue";
 
+const id = ref('operation-buttons'+Math.random().toString(36).substr(2, 9));
 const props = defineProps({
   listDataLength: {
     type: Number,
@@ -80,19 +81,29 @@ const vAutoWidth = {
  * @returns {number} 返回操作组的最大宽度
  */
 const getOperationMaxWidth = () => {
-  const el = document.getElementsByClassName("operation-buttons");
-
+  const el = document.getElementsByClassName('operation-buttons'+id.value);
   // 取操作组的最大宽度
   let maxWidth = 0;
   let totalWidth = 0;
   Array.prototype.forEach.call(el, (item) => {
     // 获取每个item的dom
     const buttons = item.querySelectorAll(".el-button");
+    const contexts = item.querySelectorAll(".context-item");
     // 获取每行按钮的总宽度
-    totalWidth = Array.from(buttons).reduce((acc, button:any) => {
-      return acc + button.scrollWidth + 20; // 每个按钮的宽度加上预留宽度
-    }, 0) as number;
-
+    if(buttons){
+      totalWidth = Array.from(buttons).reduce((acc, button:any) => {
+        return acc + button.scrollWidth + 20; // 每个按钮的宽度加上预留宽度
+      }, 0) as number;
+      // alert('buttons'+totalWidth)
+    }
+    if(contexts){
+      console.log(contexts)
+      totalWidth += Array.from(contexts).reduce((acc, context:any) => {
+        console.log('context',context.offsetWidth)
+        return acc + context.offsetWidth + 20; // 每个按钮的宽度加上预留宽度
+      }, 0) as number;
+      // console.log('contexts'+totalWidth)
+    }
     // 获取最大的宽度
     if (totalWidth > maxWidth) maxWidth = totalWidth;
   });
