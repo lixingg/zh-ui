@@ -23,11 +23,11 @@
 </show-code>
 
 
-## hideNumber 属性
+## image 属性
 
 | 属性       | 说明              | 类型             | 可选值        | 默认值   |
 |----------|-----------------|----------------|------------|-------|
-| number   | 需要脱敏的内容         | string / array | ---        | ---   |
+| v-model  | 绑定值（支持数据的双向绑定）        | string / array | ---        | ---   |
 | src      | 绑定值（不支持数据的双向绑定） | string / array | ---        | ---   |
 | url      | 绑定值（不支持数据的双向绑定） | string / array | ---        | ---   |
 | remove   | 控制删除按钮显示隐藏      | boolean        | true/false | false |
