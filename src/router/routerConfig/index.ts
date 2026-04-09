@@ -4,7 +4,8 @@ import { dataShowComponent } from './dataShow.component'
 import { feedBackComponent } from './feedBack.component'
 import { formComponent } from './form.component'
 import { beforeComponent } from './before.component'
-
+import { echartsShowComponent } from './echartsShow.component'
+import { mapShowComponent } from './mapShow.component'
 export interface routerType {
   title: string
   routerData: RouteRecordRaw[]
@@ -26,6 +27,14 @@ export const routerDocsComponentConfig = {
   dataShowComponents: {
     title: 'Data 数据展示',
     routerData: dataShowComponent
+  },
+  echartsShowComponent: {
+    title: 'echarts 图标',
+    routerData: echartsShowComponent
+  },
+  mapShowComponents: {
+    title: 'map 地图',
+    routerData: mapShowComponent
   },
   feedBackComponents: {
     title: 'Feedback 反馈组件',

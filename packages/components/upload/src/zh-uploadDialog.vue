@@ -48,11 +48,11 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  useUpCustomApi:{
+  useUpCustomApi: {
     type: Boolean,
     default: false
   },
-  useDownCustomApi:{
+  useDownCustomApi: {
     type: Boolean,
     default: false
   },
@@ -71,14 +71,14 @@ const emits = defineEmits([
 let excel_arr = ref([]);
 let excel_file = "";
 let apiLoading = ref(false);
-const defaultOptions={
-  accept:'.xlsx, .xls',
-  limit:1,
-  downLoadUrl:`/api/back/goveruser/exportmodel`,
-  uploadUrl:`/api/back/goveruser/import`,
-  fileName:'人员导入模板.xlsx',
-  downloadMethod:"get"
-}
+const defaultOptions = {
+  accept: ".xlsx, .xls",
+  limit: 1,
+  downLoadUrl: `/api/back/goveruser/exportmodel`,
+  uploadUrl: `/api/back/goveruser/import`,
+  fileName: "人员导入模板.xlsx",
+  downloadMethod: "get"
+};
 const visible = computed({
   get() {
     return props.modelValue;
@@ -87,7 +87,18 @@ const visible = computed({
     emits("update:modelValue", val);
   }
 });
-const newOptions = computed(()=>({...defaultOptions, ...props.options}));
+const newOptions = computed(() => {
+  const nwoptions: any = {};
+  for (let k in props.options) {
+    nwoptions[k] = props.options[k];
+    if (Array.isArray(props.options?.accept)) {
+      nwoptions.accept = props.options?.accept.join(",");
+    }
+  }
+
+  return { ...defaultOptions, ...nwoptions };
+});
+
 function onCancel() {
   visible.value = false;
 }
@@ -105,11 +116,11 @@ function uploadSubmit() {
   apiLoading.value = true;
   let formData = new FormData();
   formData.append("excel_file", excel_file);
-  for(let k in props?.options?.params){
+  for (let k in props?.options?.params) {
     formData.append(k, props?.options?.params?.[k]);
   }
-  if(!props.useUpCustomApi){
-    fetch(newOptions.value.uploadUrl,{
+  if (!props.useUpCustomApi) {
+    fetch(newOptions.value.uploadUrl, {
       method: "post",
       body: JSON.stringify(formData)
     }).then(response => response.json())
@@ -121,33 +132,33 @@ function uploadSubmit() {
         }
         apiLoading.value = false;
       });
-  }else{
-    emits('submit', formData);
+  } else {
+    emits("submit", formData);
   }
 
 }
 
 function downModel() {
-  if(!props.useDownCustomApi){
+  if (!props.useDownCustomApi) {
     const loadingInstance = ElLoading.service({ fullscreen: true });
-    let param=''
-    for(let k in props?.options?.params){
-      param+=`${k}=${props?.options?.params[k]}&`
+    let param = "";
+    for (let k in props?.options?.params) {
+      param += `${k}=${props?.options?.params[k]}&`;
     }
-    param=param.substring(0,param.length-1)
+    param = param.substring(0, param.length - 1);
     fetch(`${newOptions.value.downLoadUrl}?${param}`,
-      newOptions.value.downloadMethod=='post'?{
-        method:'post',
-        body:JSON.stringify(props?.options?.params)
-      }:{method:newOptions.value.downloadMethod})
-      .then(response=> response.blob())
+      newOptions.value.downloadMethod == "post" ? {
+        method: "post",
+        body: JSON.stringify(props?.options?.params)
+      } : { method: newOptions.value.downloadMethod })
+      .then(response => response.blob())
       .then((res) => {
         loadingInstance.close();
         jsFileDownload(res, `${newOptions.value.fileName}.xlsx`);
         ElMessage.success("导出成功");
       });
-  }else{
-    emits('exportFile');
+  } else {
+    emits("exportFile");
   }
 }
 </script>

@@ -17,17 +17,19 @@
         <upload-filled />
       </el-icon>
       <div class="el-upload__text">
-        <p style="font-size: 16px; color: rgba(0, 0, 0, 0.85)" v-if="upload_text">
-          {{ upload_text }}
-        </p>
-        <p v-else>
-          将文件拖到此处，或 <em>点击上传</em>
-        </p>
-        <slot name="uploadText"></slot>
-        <p style="color: rgba(0, 0, 0, 0.45)" v-if="showSuggestion">
-          建议上传文件格式：{{ accepts }}...
-        </p>
-        <slot name="accepts"></slot>
+        <slot name="uploadText">
+            <p style="font-size: 16px; color: rgba(0, 0, 0, 0.85)" v-if="upload_text">
+              {{ upload_text }}
+            </p>
+            <p v-else>
+              将文件拖到此处，或 <em>点击上传</em>
+            </p>
+        </slot>
+        <slot name="accepts">
+          <p style="color: rgba(0, 0, 0, 0.45)" v-if="showSuggestion">
+            建议上传文件格式：{{ accepts }}...
+          </p>
+        </slot>
         <el-button @click.stop="downLoadFile" v-if="downFileOptions" type="primary" link>{{ newDownFileOptions.text }}
         </el-button>
       </div>
@@ -40,6 +42,9 @@
            :src="item"
            alt="" />-->
       <zh-image v-model="uploadFile"  v-bind="{...$attrs}"/>
+    </template>
+    <template v-for="(_, name) in slots" #[name]="slotData">
+      <slot :name="name" v-bind="slotData || {}"></slot>
     </template>
   </el-upload>
   <el-upload v-else
@@ -58,6 +63,9 @@
         <Plus />
       </el-icon>
     </template>
+    <template v-for="(_, name) in slots" #[name]="slotData">
+      <slot :name="name" v-bind="slotData || {}"></slot>
+    </template>
     <template v-if="!showListFile">
       <zh-image v-model="uploadFile" v-bind="{...$attrs}" />
     </template>
@@ -65,7 +73,7 @@
 
 </template>
 <script lang="ts" setup>
-import { defineProps, ref, computed, defineEmits } from "vue";
+import { defineProps, ref, computed, defineEmits, useAttrs, useSlots } from "vue";
 import { Plus, UploadFilled } from "@element-plus/icons-vue";
 import { ElLoading, ElMessage } from "element-plus";
 import jsFileDownload from "js-file-download";
@@ -73,6 +81,10 @@ import ZhImage from "../../image/src/zh-image.vue";
 interface DownFileOptions {
   useXML: boolean, url: string, text?: string,fileName:'string'
 }
+// 获取所有未声明的属性
+const attrs = useAttrs()
+// 获取所有插槽
+const slots = useSlots()
 const emits = defineEmits(["update:modelValue"]);
 const props = withDefaults(defineProps<{
   modelValue: string | string[],

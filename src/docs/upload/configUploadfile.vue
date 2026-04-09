@@ -1,11 +1,25 @@
 <template>
-  可配置提示词 upload_text 属性
+  可配置提示词 upload_text 属性，
+  使用插槽 uploadText 自定义内容
   <zh-upload :is-card="true"
              :upload_text="upload_text"
              style="height: 261px"
              remove
              v-model="formData.file"
              :uploadFn="uploadFun"/>
+  <el-divider />
+
+  <zh-upload :is-card="true"
+             class="mt8"
+             :upload_text="''"
+             style="height: 261px"
+             remove
+             v-model="formData.file8"
+             :uploadFn="uploadFun">
+    <template #uploadText>
+      我是插槽 uploadText 自定义内容
+    </template>
+  </zh-upload>
   <el-divider />
   可配置上传类型 accept 属性 例如：只能上传xlsx、jpg,
   <zh-upload :is-card="true"
@@ -36,6 +50,33 @@
              style="height: 261px"
              v-model="formData.file4"
              :uploadFn="uploadFun"/>
+  <el-divider />
+  可配置是否显示提示词 showSuggestion 属性
+  ，支持插槽 accepts 自定义内容
+  <zh-upload :is-card="true"
+             :showSuggestion="false"
+             style="height: 261px"
+             v-model="formData.file5"
+             :uploadFn="uploadFun"/>
+
+  <zh-upload :is-card="true"
+             :showSuggestion="false"
+             class="mt8"
+             style="height: 261px;"
+             v-model="formData.file6"
+             :uploadFn="uploadFun">
+    <template #accepts>
+      我是accepts插槽内容
+    </template>
+  </zh-upload>
+  <el-divider />
+  如果需要下载模板类的需求可配置 downFileOptions 属性
+  <zh-upload :is-card="true"
+             :showSuggestion="true"
+             style="height: 261px"
+             :down-file-options="downFileOptions"
+             v-model="formData.file7"
+             :uploadFn="uploadFun"/>
 </template>
 
 <script setup lang="ts">
@@ -46,7 +87,11 @@ const formData = reactive({
   file1:"",
   file2:"",
   file3:"",
-  file4:""
+  file4:"",
+  file5:"",
+  file6:"",
+  file7:"",
+  file8:""
 })
 // 上传类型
 const accept=['.xlsx','.jpg']
@@ -59,6 +104,12 @@ const maxSize=0.01
 const fileType ="image"
 // 上传文件展示形式
 const showListFile=true
+const downFileOptions={
+  useXML:true,// 是否使用xml请求接口 false 会使用window.open下载
+  url:"http://10.50.130.151:8080/obs/download?bucketName=zh-upload&objectName=template.xlsx",// 下载地址或者接口
+  text:'下载模板', // 下载按钮名称
+  fileName:'template.xlsx' // 下载文件名称/多用于使用xml请求接口
+}
 // 上传方法 upload(rawFile:File,path:string,name:string):Promise<string>
 const uploadFun=async(file)=>{
   console.log(file)
