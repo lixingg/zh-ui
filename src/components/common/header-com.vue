@@ -1,10 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <header id="navbar" class="flex justify-center border-b xl:fixed xl:top-0 w-screen">
     <div class="h-full flex items-center px-6 w-full xl:px-0 xl:w-1200">
       <router-link to="/">
-        <img class="h-7 w-13" src="https://element-plus.org/images/element-plus-logo.svg" />
+        <div style="display: flex;align-items: center">
+          <img class="h-7 w-13" src="/zhui.svg" />
+          <span style="font-size: 20px;font-weight: 500;margin-left: 10px;">ZHUI</span>
+        </div>
+
       </router-link>
     </div>
   </header>
