@@ -2,7 +2,7 @@ name: Deploy ZHUI site to Pages
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 # 设置token访问权限
 permissions:
