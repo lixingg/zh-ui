@@ -1,0 +1,140 @@
+/*@layer components {*/
+/*按钮基础属性*/
+.zh-button {
+    /*布局 高度*/
+    @apply inline-flex justify-center items-center h-8;
+    /*边距*/
+    @apply px-3.5 py-2;
+    /*边框*/
+    @apply border rounded;
+    /*字体*/
+    @apply text-sm text-gray-700;
+    @apply transition cursor-pointer whitespace-nowrap;
+}
+
+/*按钮默认属性*/
+/*.button-default {*/
+/*  @apply hover:bg-sky-200 hover:bg-opacity-50 hover:text-sky-400 hover:border-sky-200 active:border-sky-400;*/
+/*}*/
+.zh-button-default:not(.zh-is-disabled) {
+    @apply hover:bg-sky-200 hover:bg-opacity-50 hover:text-sky-400 hover:border-sky-200 active:border-sky-400;
+}
+
+/*primary 类型按钮*/
+.zh-button-primary {
+    @apply bg-primary text-white;
+}
+
+.zh-button-primary:not(.zh-is-disabled) {
+    @apply hover:bg-opacity-80;
+    @apply active:bg-sky-600 !important;
+}
+
+/*primary 类型朴素按钮*/
+.zh-button-primary.zh-is-plain {
+    @apply border-sky-400 text-primary bg-sky-200;
+}
+
+.zh-button-primary.zh-is-plain:not(.zh-is-disabled) {
+    @apply hover:bg-primary hover:text-white;
+}
+
+.zh-button-success {
+    @apply bg-success text-white;
+}
+
+.zh-button-success:not(.zh-is-disabled) {
+    @apply hover:bg-opacity-80;
+    @apply active:bg-green-600 !important;
+}
+
+.zh-button-success.zh-is-plain {
+    @apply text-success bg-green-200 border-green-400;
+}
+
+.zh-button-success.zh-is-plain:not(.zh-is-disabled) {
+    @apply hover:bg-success hover:text-white;
+}
+
+.zh-button-info {
+    @apply bg-info text-white;
+}
+
+.zh-button-info:not(.zh-is-disabled) {
+    @apply hover:bg-opacity-80;
+    @apply active:bg-gray-600;
+}
+
+.zh-button-info.zh-is-plain {
+    @apply text-info bg-gray-200 border-gray-400;
+}
+
+.zh-button-info.zh-is-plain:not(.zh-is-disabled) {
+    @apply hover:bg-info hover:text-white;
+}
+
+.zh-button-warning {
+    @apply bg-warning text-white;
+}
+
+.zh-button-warning:not(.zh-is-disabled) {
+    @apply hover:bg-opacity-80;
+    @apply active:bg-orange-600 !important;
+}
+
+.zh-button-warning.zh-is-plain {
+    @apply text-warning bg-orange-200 border-orange-400;
+}
+
+.zh-button-warning.zh-is-plain:not(.zh-is-disabled) {
+    @apply hover:bg-warning hover:text-white;
+}
+
+.zh-button-danger {
+    @apply bg-danger text-white;
+}
+
+.zh-button-danger:not(.zh-is-disabled) {
+    @apply hover:bg-opacity-80;
+    @apply active:bg-red-600 !important;
+}
+
+.zh-button-danger.zh-is-plain {
+    @apply text-danger bg-red-200 border-red-400;
+}
+
+.zh-button-danger.zh-is-plain:not(.zh-is-disabled) {
+    @apply hover:bg-danger hover:text-white;
+}
+
+/*文字类型按钮*/
+.zh-button-text {
+    @apply bg-transparent text-primary border-none !important;
+}
+
+.zh-button-text.zh-is-disabled {
+    @apply text-gray-400 !important;
+}
+
+.zh-button-text:not(.zh-is-disabled) {
+    @apply hover:text-sky-300 active:text-sky-600 !important;
+}
+
+.zh-is-plain {
+    /*color: deepskyblue;*/
+    @apply bg-opacity-40;
+}
+
+.zh-is-round {
+    @apply rounded-full;
+}
+
+.zh-is-disabled {
+    @apply cursor-not-allowed opacity-70;
+}
+
+.zh-is-circle {
+    @apply rounded-full w-8;
+}
+
+/*}*/
