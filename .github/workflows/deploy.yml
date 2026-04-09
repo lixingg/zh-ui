@@ -2,7 +2,7 @@ name: Deploy ZHUI site to Pages
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 # 设置token访问权限
 permissions:
@@ -28,7 +28,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: npm # 设置缓存
       - name: Setup Pages
         uses: actions/configure-pages@v4  # 在工作流程自动配置GithubPages
