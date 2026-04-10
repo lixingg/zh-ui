@@ -174,10 +174,13 @@
     nextTick(() => {
       setTimeout(() => {
         let wrapper = document.getElementsByClassName("el-image-viewer__actions__inner");
-        let downImg = document.createElement("i");
-        downImg.setAttribute("class", "el-icon");
-        render(h(Download, { onClick: cusClickHandler }), downImg);
-        wrapper[0].appendChild(downImg);
+        let downImage = document.getElementsByClassName("zh-downLoadImage");
+        if (wrapper.length > 0 && downImage.length === 0) {
+          let downImg = document.createElement("i");
+          downImg.setAttribute("class", "el-icon zh-downLoadImage");
+          render(h(Download, {onClick: cusClickHandler}), downImg);
+          wrapper[0].appendChild(downImg);
+        }
       });
     });
   }
