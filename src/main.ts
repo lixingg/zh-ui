@@ -23,4 +23,5 @@ for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
 app.use(ElementPlus, {
   locale: zhCn,
 })
+
 app.mount('#app')
