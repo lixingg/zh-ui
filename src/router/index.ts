@@ -6,7 +6,7 @@ const indexRouters: RouteRecordRaw[] = [
   {
     path: '/doc/component/',
     component: () => import('../components/doc-component-page.vue'),
-    redirect: '/doc/component/:pathMatch(.*)*',
+    redirect: '/doc/component/index',
     children: routerDocsComponent
   },
   {
