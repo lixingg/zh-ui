@@ -2,17 +2,17 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { routerDocsComponent } from './routerConfig'
 
 const indexRouters: RouteRecordRaw[] = [
+  { path: '/', redirect: '/doc/component' },
+  {
+    path: '/doc/component/',
+    component: () => import('../components/doc-component-page.vue'),
+    redirect: '/doc/component/:pathMatch(.*)*',
+    children: routerDocsComponent
+  },
   {
     path: '/home',
     component: () => import('../components/home-page.vue')
   },
-  {
-    path: '/doc/component',
-    component: () => import('../components/doc-component-page.vue'),
-    redirect: '/doc/component/index',
-    children: routerDocsComponent
-  },
-  { path: '/', redirect: '/doc/component' },
   {
     path: '/error',
     component: () => import('../components/error-page.vue')
