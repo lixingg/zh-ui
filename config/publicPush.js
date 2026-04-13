@@ -58,7 +58,8 @@ console.log(`✅ 已复制 package.json 到 ${zhuiPackagePath}`);
 // 5. 执行 npm publish（在 ZHUI 目录内）
 console.log(`🚀 正在发布 ZHUI 包到 npm...`);
 try {
-    execSync('npm publish', { cwd: zhuiDir, stdio: 'inherit' });
+    execSync('npm publish --access public',
+        { cwd: zhuiDir, stdio: 'inherit' });
     console.log(`🎉 发布成功！新版本 ${newVersion} 已上传至 npm`);
 } catch (error) {
     console.error(`❌ 发布失败：${error.message}`);

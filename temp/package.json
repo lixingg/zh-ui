@@ -1,6 +1,6 @@
 {
   "name": "zhui-plus",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "打造属于自己的个性化ui组件库",
   "main": "dist/zh-ui.es.js",
   "scripts": {
