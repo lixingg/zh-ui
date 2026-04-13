@@ -9,7 +9,7 @@ export default defineConfig({
   // 打包配置
   build: {
     sourcemap: false, //不开启镜像
-    outDir: 'ZHUI',
+    outDir: 'ZHUI/dist',
     assetsInlineLimit: 8192, // 小于 8kb 的导入或引用资源将内联为 base64 编码
     terserOptions: {
       // 生产环境移除console

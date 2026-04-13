@@ -1,7 +1,7 @@
 let copydir = require('copy-dir')
 copydir.sync(
   process.cwd() + '/dist',
-  process.cwd() + '/ZHUI',
+  process.cwd() + '/ZHUI/dist',
   {
     utimes: true,
     mode: true,
@@ -12,3 +12,5 @@ copydir.sync(
     console.log('done')
   }
 )
+
+
