@@ -58,6 +58,8 @@ console.log(`✅ 已复制 package.json 到 ${zhuiPackagePath}`);
 // 5. 执行 npm publish（在 ZHUI 目录内）
 console.log(`🚀 正在发布 ZHUI 包到 npm...`);
 try {
+    // 需要注意使用双认证需要在c盘下的C:\Users\EDY\.npmrc文件中添加
+    // //registry.npmjs.org/:_authToken=npm_xxxxx
     execSync('npm publish --access public',
         { cwd: zhuiDir, stdio: 'inherit' });
     console.log(`🎉 发布成功！新版本 ${newVersion} 已上传至 npm`);
