@@ -1,3 +1,5 @@
+@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
+
 $headerHeight: 72px;
 $iconBarWidth: 80px;
 $menuWidth: 336px;
@@ -14,3 +16,107 @@ $transitionTime: 0.6s;
 $breadcrumbHeight: 98px;
 $mapPageMenuWidth: 256px;
 $mapPageCloseMenuWidth: 70px;
+
+@keyframes topo-dash {
+  from {
+    stroke-dashoffset: 10;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+:root {
+  --sw-green: #70c877;
+  --sw-orange: #e6a23c;
+  --sw-topo-animation: topo-dash 0.3s linear infinite;
+}
+
+html {
+  --el-color-primary: #409eff;
+  --el-color-info-light-9: #666;
+  --theme-background: #fff;
+  --font-color: #3d444f;
+  --disabled-color: #ccc;
+  --dashboard-tool-bg: rgb(240 242 245);
+  --text-color-placeholder: #666;
+  --border-color: #dcdfe6;
+  --border-color-primary: #eee;
+  --layout-background: #f7f9fa;
+  --box-shadow-color: #ccc;
+  --sw-bg-color-overlay: #fff;
+  --sw-border-color-light: #e4e7ed;
+  --popper-hover-bg: #eee;
+  --sw-icon-btn-bg: #eee;
+  --sw-icon-btn-color: #666;
+  --sw-icon-btn-border: #ccc;
+  --sw-table-col: #fff;
+  --sw-config-header: aliceblue;
+  --sw-topology-color: #666;
+  --vis-tooltip-bg: #fff;
+  --sw-topology-switch-icon: rgba(0, 0, 0, 0.3);
+  --sw-topology-box-shadow: #eee 1px 2px 10px;
+  --sw-topology-setting-bg: #fff;
+  --sw-topology-border: 1px solid #999;
+  --sw-trace-success: rgb(46 47 51 / 10%);
+  --sw-trace-list-border: rgb(0 0 0 / 10%);
+  --sw-list-selected: #ededed;
+  --sw-table-header: #f3f4f9;
+  --sw-list-hover: rgb(0 0 0 / 4%);
+  --sw-setting-color: #606266;
+  --sw-alarm-tool: #f0f2f5;
+  --sw-alarm-tool-border: #c1c5ca41;
+  --sw-table-color: #000;
+  --sw-event-vis-selected: #1a1a1a;
+  --sw-time-axis-text: #4d4d4d;
+  --sw-drawer-header: #72767b;
+  --sw-marketplace-border: #dedfe0;
+  --sw-grid-item-active: #d4d7de;
+  --sw-trace-line: #999;
+}
+
+html.dark {
+  --el-color-primary: #409eff;
+  --el-color-info-light-9: #333;
+  --theme-background: #212224;
+  --font-color: #fafbfc;
+  --disabled-color: #999;
+  --dashboard-tool-bg: #000;
+  --text-color-placeholder: #ccc;
+  --border-color: #262629;
+  --border-color-primary: #4b4b52;
+  --layout-background: #000;
+  --box-shadow-color: #606266;
+  --sw-bg-color-overlay: #1d1e1f;
+  --sw-border-color-light: #414243;
+  --popper-hover-bg: rgb(64, 158, 255, 0.1);
+  --sw-icon-btn-bg: #222;
+  --sw-icon-btn-color: #ccc;
+  --sw-icon-btn-border: #999;
+  --sw-table-col: none;
+  --sw-config-header: #303133;
+  --sw-topology-color: #ccc;
+  --vis-tooltip-bg: #414243;
+  --sw-topology-switch-icon: #999;
+  --sw-topology-box-shadow: 0 0 2px 0 #444;
+  --sw-topology-setting-bg: #333;
+  --sw-topology-border: 1px solid #666;
+  --sw-trace-success: #aaa;
+  --sw-trace-list-border: #333133;
+  --sw-list-hover: #262629;
+  --sw-table-header: #303133;
+  --sw-list-selected: #3d444f;
+  --sw-setting-color: #eee;
+  --sw-alarm-tool: #303133;
+  --sw-alarm-tool-border: #444;
+  --sw-table-color: #fff;
+  --sw-event-vis-selected: #fff;
+  --sw-time-axis-text: #aaa;
+  --sw-drawer-header: #e9e9eb;
+  --sw-marketplace-border: #606266;
+  --sw-grid-item-active: #73767a;
+  --sw-trace-line: #e8e8e8;
+}
+
+
+

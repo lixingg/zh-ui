@@ -21,6 +21,9 @@ export * from './upload'
 export * from './image'
 export * from './hideNumber'
 export * from './operationColumn'
+export * from './charts'
+export * from './map'
+
 
 import button from './button'
 import icon from './icon'
@@ -36,7 +39,9 @@ import hideNumber from "./hideNumber";
 import upload from "./upload";
 import noData from './noData';
 import operationColumn from './operationColumn';
-
+import charts from './charts';
+import map from './map';
+import directives from "./directive"
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
 import '../../src/assets/style/index.scss'
@@ -54,7 +59,9 @@ const components = [
   hideNumber,
   upload,
   noData,
-  operationColumn
+  operationColumn,
+  charts,
+  map
 ]
 
 export default {
@@ -64,5 +71,6 @@ export default {
     }
     ElementPlus.install(app, options);
     components.map((item) => item.install(app))
+    app.use(directives)
   }
 }
