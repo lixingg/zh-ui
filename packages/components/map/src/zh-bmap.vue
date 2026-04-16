@@ -26,6 +26,8 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch, shallowRef, computed } from "vue";
 
+
+
 // ==================== Props 配置 ====================
 const props = defineProps({
   // 百度地图API密钥（必填）
@@ -68,8 +70,8 @@ const props = defineProps({
   controls: {
     type: Object,
     default: () => ({
-      navigation: true, // 平移缩放控件
-      scale: true, // 比例尺控件
+      navigation: false, // 平移缩放控件
+      scale: false, // 比例尺控件
       cityList: false, // 城市列表控件
       copyright: false, // 版权控件
       geolocation: false, // 定位控件
@@ -82,6 +84,18 @@ const props = defineProps({
     default: () => [],
   },
 });
+const urls =[
+  'https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js',// 聚合
+  "https://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js",// 普通热力图
+  "https://api.map.baidu.com/library/HeatMap/1.0/src/HeatMap_min.js"// webGL热力图
+]
+// 引入百度地图API
+for(let i=0;i<urls.length;i++){
+  const script = document.createElement('script');
+  script.src = urls[i];
+  script.async = true; // 或者使用 script.defer = true;
+  document.head.appendChild(script);
+}
 
 // ==================== Emits 回调 ====================
 const emit = defineEmits([
@@ -1145,7 +1159,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  destroyMap();
+  destroy();
 });
 
 // 监听mapOptions变化
@@ -1210,7 +1224,7 @@ defineExpose({
 </script>
 
 
-<style scoped>
+<style  scoped>
 .baidu-map-container {
   position: relative;
   width: 100%;
