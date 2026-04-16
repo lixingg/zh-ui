@@ -1,135 +1,56 @@
-import type { BarSeriesOption, LineSeriesOption, HeatmapSeriesOption, SankeySeriesOption } from "echarts/charts";
-import type {
-  TitleComponentOption,
-  TooltipComponentOption,
-  GridComponentOption,
-  DatasetComponentOption,
-  LegendComponentOption,
-} from "echarts/components";
-import type { Ref } from "vue";
-import { useTimeoutFn } from "./useTimeout";
-import { tryOnUnmounted } from "@vueuse/core";
-import { unref, nextTick, watch, computed, ref } from "vue";
-import { useDebounceFn } from "@vueuse/core";
-import { useEventListener } from "./useEventListener";
-import { useBreakpoint } from "./useBreakpoint";
-import echarts from "../echarts/echarts";
-import { Themes } from "../data";
+// composables/useEcharts.ts
+import {ref, onMounted, onBeforeUnmount, watch, markRaw, Ref} from 'vue'
+import * as echarts from 'echarts'
 
-export type ECOption = echarts.ComposeOption<
-  | BarSeriesOption
-  | LineSeriesOption
-  | TitleComponentOption
-  | TooltipComponentOption
-  | GridComponentOption
-  | DatasetComponentOption
-  | LegendComponentOption
-  | HeatmapSeriesOption
-  | SankeySeriesOption
->;
+import type { EChartsOption} from 'echarts/types/dist/shared'
+type EChartsInstance = ReturnType<typeof echarts.init>
+export function useEcharts(
+    chartRef: Ref<HTMLElement | null>,
+    initialOption: EChartsOption
+) {
+  const chartInstance = ref<EChartsInstance | null>(null)
 
-export function useECharts(elRef: Ref<HTMLDivElement>, theme: "light" | "dark" | "default" = "default"): Indexable {
-  const getDarkMode = computed(() => {
-    localStorage.setItem("theme", theme || Themes.Light);
-    return theme || Themes.Light;
-  });
-  let chartInstance: Nullable<echarts.ECharts> = null;
-  let resizeFn: Fn = resize;
-  const cacheOptions = ref({}) as Ref<ECOption>;
-  let removeResizeFn: Fn = () => ({});
+  // 初始化图表
+  const initChart = () => {
+    if (!chartRef.value) return
+    // 使用 markRaw 避免 Vue 对 ECharts 实例进行响应式代理[reference:1]
+    chartInstance.value = markRaw(echarts.init(chartRef.value))
+    chartInstance.value.setOption(initialOption)
+  }
 
-  resizeFn = useDebounceFn(resize, 200);
+  // 更新图表配置
+  const setOption = (option: EChartsOption) => {
+    if (!chartInstance.value) return
+    chartInstance.value.setOption(option, true) // true 启用合并模式，保留交互状态[reference:2]
+  }
 
-  const getOptions = computed(() => {
-    if (getDarkMode.value !== Themes.Dark) {
-      return cacheOptions.value as ECOption;
-    }
-    return {
-      backgroundColor: "transparent",
-      ...cacheOptions.value,
-    } as ECOption;
-  });
+  // 图表自适应
+  const resize = () => {
+    chartInstance.value?.resize()
+  }
 
-  function initCharts(t = theme) {
-    const el = unref(elRef);
-    if (!el || !unref(el)) {
-      return;
-    }
-    const { width, height } = el.getBoundingClientRect();
-
-    if (!width || !height) {
-      return;
-    }
-    chartInstance = echarts.init(el, t);
-    const { removeEvent } = useEventListener({
-      el: window,
-      name: "resize",
-      listener: resizeFn,
-    });
-    removeResizeFn = removeEvent;
-    const { widthRef, screenEnum } = useBreakpoint();
-    if (unref(widthRef) <= screenEnum.MD || el.offsetHeight === 0) {
-      useTimeoutFn(() => {
-        resizeFn();
-      }, 30);
+  // 销毁实例
+  const dispose = () => {
+    if (chartInstance.value) {
+      chartInstance.value.dispose()
+      chartInstance.value = null
     }
   }
 
-  function setOptions(options: ECOption, clear = true) {
-    cacheOptions.value = options;
-    if (unref(elRef)?.offsetHeight === 0) {
-      useTimeoutFn(() => {
-        setOptions(unref(getOptions));
-      }, 30);
-      return;
-    }
-    nextTick(() => {
-      useTimeoutFn(() => {
-        if (!chartInstance) {
-          initCharts(getDarkMode.value as "default");
+  onMounted(() => {
+    initChart()
+    window.addEventListener('resize', resize)
+  })
 
-          if (!chartInstance) return;
-        }
-        clear && chartInstance?.clear();
-
-        chartInstance?.setOption(unref(getOptions));
-      }, 30);
-    });
-  }
-
-  function resize() {
-    chartInstance?.resize();
-  }
-
-  watch(
-    () => getDarkMode.value,
-    (theme) => {
-      if (chartInstance) {
-        chartInstance.dispose();
-        initCharts(theme as "default");
-        setOptions(cacheOptions.value);
-      }
-    },
-  );
-
-  tryOnUnmounted(() => {
-    if (!chartInstance) return;
-    removeResizeFn();
-    chartInstance.dispose();
-    chartInstance = null;
-  });
-
-  function getInstance(): Nullable<echarts.ECharts> {
-    if (!chartInstance) {
-      initCharts(getDarkMode.value as "default");
-    }
-    return chartInstance;
-  }
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', resize)
+    dispose()
+  })
 
   return {
-    setOptions,
+    chartInstance,
+    setOption,
     resize,
-    echarts,
-    getInstance,
-  };
+    dispose
+  }
 }

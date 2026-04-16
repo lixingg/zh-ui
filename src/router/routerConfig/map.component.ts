@@ -4,7 +4,27 @@ import { RouteRecordRaw } from 'vue-router'
 export const mapComponent: RouteRecordRaw[] = [
   {
     path: 'amap',
-    meta: { title: 'amap 高的地图' },
-    component: () => import('../../docs/map/README.md')
+    meta: { title: 'amap 高德地图' },
+    component: () => import('../../docs/map/amap/README.md')
+  },
+  {
+    path: 'bmap',
+    meta: { title: 'bmap 百度地图' },
+    component: () => import('../../docs/map/bmap/README.md')
+  },
+  {
+    path: 'tmap',
+    meta: { title: 'tmap 腾讯地图' },
+    component: () => import('../../docs/map/tmap/README.md')
+  },
+  {
+    path: 'smap',
+    meta: { title: 'smap 天地图' },
+    component: () => import('../../docs/map/smap/README.md')
+  },
+  {
+    path: 'omap',
+    meta: { title: 'omap openlayer地图' },
+    component: () => import('../../docs/map/omap/README.md')
   },
 ]

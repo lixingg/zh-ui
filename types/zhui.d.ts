@@ -6,3 +6,4 @@ interface ZHVueProps {
 }
 declare module 'echarts'
 declare module 'echarts-gl'
+

@@ -19,6 +19,7 @@
     "publish": "node ./config/publicPush.js"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@element-plus/icons-vue": "^1.1.4",
     "echarts": "^5.4.3",
     "echarts-gl": "^2.0.9",
@@ -26,7 +27,6 @@
     "github-markdown-css": "^5.1.0",
     "js-file-download": "^0.4.12",
     "rollup-plugin-copy": "^3.5.0",
-    "@amap/amap-jsapi-loader": "^1.0.1",
     "sass": "^1.80.6",
     "vue": "^3.5.22",
     "vue-router": "^4.0.12"
@@ -36,6 +36,7 @@
     "@babel/preset-typescript": "^7.16.7",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/vue": "^6.4.2",
+    "@types/echarts": "^5.0.0",
     "@types/jest": "^27.5.0",
     "@types/node": "^16.11.7",
     "@types/prismjs": "^1.26.0",

@@ -4,7 +4,7 @@ import { dataShowComponent } from './dataShow.component'
 import { feedBackComponent } from './feedBack.component'
 import { formComponent } from './form.component'
 import { beforeComponent } from './before.component'
-import { echartsComponent } from './echarts.component'
+import { echartComponent } from './echarts.component'
 import { mapComponent } from './map.component'
 import {directiveComponent} from "./directive.component";
 export interface routerType {
@@ -31,7 +31,7 @@ export const routerDocsComponentConfig = {
   },
   echartsComponents: {
     title: 'echarts 图表',
-    routerData: echartsComponent
+    routerData: echartComponent
   },
  directivesComponents: {
     title: 'directive 指令',
