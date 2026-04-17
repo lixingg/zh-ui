@@ -66,9 +66,9 @@ const components = [
 
 export default {
   install(app: App, options?: any) {
-    for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
+/*    for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
       app.component(key, component)
-    }
+    }*/
     ElementPlus.install(app, options);
     components.map((item) => item.install(app))
     app.use(directives)

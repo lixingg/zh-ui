@@ -1,7 +1,7 @@
 <template>
-  <div class="baidu-map-container">
+  <div class="zh-baidu-map-container">
     <!-- 地图容器 -->
-    <div ref="mapContainerRef" class="map-container"></div>
+    <div ref="bmapContainerRef" class="zh-bmap-container"></div>
 
     <!-- 自定义UI插槽 -->
     <div class="custom-ui-slot">
@@ -24,9 +24,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch, shallowRef, computed } from "vue";
+import {ref, onMounted, onBeforeUnmount, watch, shallowRef, computed, nextTick} from "vue";
 
 
+/*const urls =[
+  'https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js',// 聚合
+  "https://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js",// 普通热力图
+  // "https://api.map.baidu.com/library/HeatMap/1.0/src/HeatMap_min.js"// webGL热力图
+]
+// 引入百度地图API
+for(let i=0;i<urls.length;i++){
+  const script = document.createElement('script');
+  script.src = urls[i];
+  script.async = true; // 或者使用 script.defer = true;
+  document.head.appendChild(script);
+}*/
 
 // ==================== Props 配置 ====================
 const props = defineProps({
@@ -38,7 +50,7 @@ const props = defineProps({
   // API版本：'2.0' | '3.0'
   version: {
     type: String,
-    default: "2.0",
+    default: "3.0",
   },
   // 是否使用WebGL版本（支持3D和热力图）
   useWebGL: {
@@ -49,7 +61,7 @@ const props = defineProps({
   mapOptions: {
     type: Object,
     default: () => ({
-      center: { lng: 116.397428, lat: 39.90923 }, // 默认北京天安门
+      center: {lng: 116.397428, lat: 39.90923}, // 默认北京天安门
       zoom: 12,
       viewMode: "2D", // 2D/3D
       enableMapClick: true,
@@ -84,18 +96,6 @@ const props = defineProps({
     default: () => [],
   },
 });
-const urls =[
-  'https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js',// 聚合
-  "https://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js",// 普通热力图
-  "https://api.map.baidu.com/library/HeatMap/1.0/src/HeatMap_min.js"// webGL热力图
-]
-// 引入百度地图API
-for(let i=0;i<urls.length;i++){
-  const script = document.createElement('script');
-  script.src = urls[i];
-  script.async = true; // 或者使用 script.defer = true;
-  document.head.appendChild(script);
-}
 
 // ==================== Emits 回调 ====================
 const emit = defineEmits([
@@ -116,12 +116,11 @@ const emit = defineEmits([
 ]);
 
 // ==================== 响应式数据 ====================
-const mapContainerRef = ref(null);
+const bmapContainerRef = ref(null);
 const map = shallowRef(null);
 const BMap = shallowRef(null);
 const isMapReady = ref(false);
 const isLoading = ref(false);
-
 // 存储所有覆盖物
 const markers = ref([]);
 const polylines = ref([]);
@@ -134,9 +133,20 @@ let geocoder = null;
 
 // SDK加载Promise
 let loadPromise = null;
-
+const defaultMapOption = {
+  center: {lng: 116.397428, lat: 39.90923}, // 默认北京天安门
+  zoom: 12,
+  viewMode: "2D", // 2D/3D
+  enableMapClick: true,
+  enableScrollWheelZoom: true,
+  enableDoubleClickZoom: true,
+  enableDragging: true,
+  enableKeyboard: true,
+  enablePinchToZoom: true,
+  enableAutoResize: true,
+}
+const newMapOption = computed(() => Object.assign({}, defaultMapOption, props.mapOptions));
 // ==================== 辅助函数 ====================
-
 /**
  * 动态加载百度地图SDK
  */
@@ -165,10 +175,10 @@ const loadBMapSDK = () => {
     };
 
     const script = document.createElement("script");
-    const versionParam = props.version === "3.0" ? "3.0" : "2.0";
+    const versionParam = props.version;
     const glParam = props.useWebGL ? "&s=1" : "";
 
-    script.src = `https://api.map.baidu.com/api?v=${versionParam}&ak=${props.ak}&callback=${callbackName}${glParam}`;
+    script.src = `https://api.map.baidu.com/api?v=${versionParam}&type=${props.useWebGL ? 'webgl' : 'web'}&ak=${props.ak}&callback=${callbackName}${glParam}`;
     script.onerror = () => {
       isLoading.value = false;
       reject(new Error("百度地图SDK加载失败，请检查网络或API Key"));
@@ -186,28 +196,27 @@ const loadBMapSDK = () => {
 const initMap = async () => {
   try {
     await loadBMapSDK();
-    if (!mapContainerRef.value) return;
-
+    if (!bmapContainerRef.value) return;
     const mapConfig = {
-      center: new BMap.value.Point(props.mapOptions.center.lng, props.mapOptions.center.lat),
-      zoom: props.mapOptions.zoom,
-      enableMapClick: props.mapOptions.enableMapClick,
-      enableScrollWheelZoom: props.mapOptions.enableScrollWheelZoom,
-      enableDoubleClickZoom: props.mapOptions.enableDoubleClickZoom,
-      enableDragging: props.mapOptions.enableDragging,
-      enableKeyboard: props.mapOptions.enableKeyboard,
-      enablePinchToZoom: props.mapOptions.enablePinchToZoom,
+      center: new BMap.value.Point(newMapOption.value.center.lng, newMapOption.value.center.lat),
+      zoom: newMapOption.value.zoom,
+      enableMapClick: newMapOption.value.enableMapClick,
+      enableScrollWheelZoom: newMapOption.value.enableScrollWheelZoom,
+      enableDoubleClickZoom: newMapOption.value.enableDoubleClickZoom,
+      enableDragging: newMapOption.value.enableDragging,
+      enableKeyboard: newMapOption.value.enableKeyboard,
+      enablePinchToZoom: newMapOption.value.enablePinchToZoom,
     };
 
     if (props.useWebGL) {
-      mapConfig.viewMode = props.mapOptions.viewMode;
+      mapConfig.viewMode = newMapOption.value.viewMode;
     }
-
-    map.value = new BMap.value.Map(mapContainerRef.value, mapConfig);
+    console.log('new BMap.value', mapConfig)
+    map.value = new BMap.value.Map(bmapContainerRef.value, mapConfig);
 
     // 设置个性化地图样式
     if (props.mapStyleId) {
-      map.value.setMapStyleV2({ styleId: props.mapStyleId });
+      map.value.setMapStyleV2({styleId: props.mapStyleId});
     }
 
     // 添加控件
@@ -220,7 +229,7 @@ const initMap = async () => {
     map.value.enableScrollWheelZoom();
 
     // 自动调整大小
-    if (props.mapOptions.enableAutoResize) {
+    if (newMapOption.value.enableAutoResize) {
       window.addEventListener("resize", handleMapResize);
     }
 
@@ -228,7 +237,7 @@ const initMap = async () => {
     initGeocoder();
 
     isMapReady.value = true;
-    emit("ready", { map: map.value, BMap: BMap.value });
+    emit("ready", {map: map.value, BMap: BMap.value});
   } catch (error) {
     console.error("百度地图初始化失败:", error);
   }
@@ -240,12 +249,12 @@ const initMap = async () => {
 const addControls = () => {
   if (!map.value || !BMap.value) return;
 
-  const { navigation, scale, cityList, copyright, geolocation, overview } = props.controls;
+  const {navigation, scale, cityList, copyright, geolocation, overview} = props.controls;
 
   if (navigation) {
     const navControl = props.useWebGL
         ? new BMap.value.NavigationControl()
-        : new BMap.value.NavigationControl({ type: BMAP_NAVIGATION_CONTROL_LARGE });
+        : new BMap.value.NavigationControl({type: BMAP_NAVIGATION_CONTROL_LARGE});
     map.value.addControl(navControl);
   }
 
@@ -316,11 +325,11 @@ const bindMapEvents = () => {
   });
 
   map.value.addEventListener("zoomend", () => {
-    emit("zoomEnd", { zoom: map.value.getZoom() });
+    emit("zoomEnd", {zoom: map.value.getZoom()});
   });
 
   map.value.addEventListener("moveend", () => {
-    emit("moveEnd", { center: getCenter() });
+    emit("moveEnd", {center: getCenter()});
   });
 };
 
@@ -392,8 +401,8 @@ const addMarker = (options) => {
     position,
     title = "",
     icon,
-    iconSize = { width: 30, height: 30 },
-    iconOffset = { x: -15, y: -15 },
+    iconSize = {width: 30, height: 30},
+    iconOffset = {x: -15, y: -15},
     label,
     labelStyle,
     draggable = false,
@@ -408,7 +417,7 @@ const addMarker = (options) => {
   }
 
   const point = toPoint(position.lng, position.lat);
-  let markerConfig = { point: point, title: title };
+  let markerConfig = {point: point, title: title};
 
   // 设置自定义图标
   if (icon) {
@@ -418,12 +427,13 @@ const addMarker = (options) => {
   }
 
   const marker = new BMap.value.Marker(point, markerConfig);
-  marker.setDraggable(draggable);
+  console.log('marker', marker);
+  // marker.setDraggable(draggable);
   marker.extData = extData;
 
   // 添加标签
   if (label) {
-    const labelObj = new BMap.value.Label(label, { position: point });
+    const labelObj = new BMap.value.Label(label, {position: point});
     if (labelStyle) {
       labelObj.setStyle(labelStyle);
     }
@@ -431,7 +441,7 @@ const addMarker = (options) => {
   }
 
   marker.addEventListener("click", () => {
-    emit("markerClick", { marker, position, extData, title });
+    emit("markerClick", {marker, position, extData, title});
     if (autoShowInfo && infoContent) {
       openInfoWindow(position, infoContent);
     }
@@ -442,7 +452,7 @@ const addMarker = (options) => {
       const newPoint = e.point;
       emit("markerDragEnd", {
         marker,
-        position: { lng: newPoint.lng, lat: newPoint.lat },
+        position: {lng: newPoint.lng, lat: newPoint.lat},
         extData,
       });
     });
@@ -514,7 +524,7 @@ const addPolyline = (options) => {
   }
 
   const points = toPoints(path);
-  const polylineConfig = { strokeColor: color, strokeWeight: weight, strokeOpacity: opacity };
+  const polylineConfig = {strokeColor: color, strokeWeight: weight, strokeOpacity: opacity};
 
   if (lineDash) {
     polylineConfig.strokeStyle = "dashed";
@@ -528,7 +538,7 @@ const addPolyline = (options) => {
   }
 
   polyline.addEventListener("click", () => {
-    emit("polylineClick", { polyline, path });
+    emit("polylineClick", {polyline, path});
   });
 
   polyline.setMap(map.value);
@@ -587,7 +597,7 @@ const addPolygon = (options) => {
   }
 
   polygon.addEventListener("click", () => {
-    emit("polygonClick", { polygon, paths });
+    emit("polygonClick", {polygon, paths});
   });
 
   polygon.setMap(map.value);
@@ -642,7 +652,7 @@ const addCircle = (options) => {
   });
 
   circle.addEventListener("click", () => {
-    emit("circleClick", { circle, center, radius });
+    emit("circleClick", {circle, center, radius});
   });
 
   circle.setMap(map.value);
@@ -725,14 +735,14 @@ const drawTrack = (options) => {
     addMarker({
       position: startPoint,
       icon: startMarkerIcon?.url || "https://api.map.baidu.com/images/start.png",
-      iconSize: startMarkerIcon?.size || { width: 30, height: 30 },
+      iconSize: startMarkerIcon?.size || {width: 30, height: 30},
       title: "起点",
     });
 
     addMarker({
       position: endPoint,
       icon: endMarkerIcon?.url || "https://api.map.baidu.com/images/end.png",
-      iconSize: endMarkerIcon?.size || { width: 30, height: 30 },
+      iconSize: endMarkerIcon?.size || {width: 30, height: 30},
       title: "终点",
     });
   }
@@ -750,7 +760,7 @@ const drawTrack = (options) => {
     movingMarker = addMarker({
       position: path[0],
       icon: options.carIcon?.url || "https://api.map.baidu.com/images/car.png",
-      iconSize: options.carIcon?.size || { width: 40, height: 40 },
+      iconSize: options.carIcon?.size || {width: 40, height: 40},
       title: "移动车辆",
     });
 
@@ -837,7 +847,7 @@ const addMarkerCluster = (points, options = {}) => {
   }
 
   markerCluster.addEventListener("click", (e) => {
-    emit("clusterClick", { cluster: e, points: e.markers });
+    emit("clusterClick", {cluster: e, points: e.markers});
   });
 
   return markerCluster;
@@ -888,11 +898,11 @@ const addHeatmap = (data, options = {}) => {
     };
 
     heatmapOverlay = new window.BMapGLHeatMapOverlay(Object.assign(defaultConfig, options));
-    heatmapOverlay.setDataSet({ data: heatmapData, max: options.max || 100 });
+    heatmapOverlay.setDataSet({data: heatmapData, max: options.max || 100});
     heatmapOverlay.addTo(map.value);
 
     heatmapOverlay.addEventListener("click", (e) => {
-      emit("hotspotClick", { point: e.point, value: e.value });
+      emit("hotspotClick", {point: e.point, value: e.value});
     });
 
     return heatmapOverlay;
@@ -923,7 +933,7 @@ const addHeatmap = (data, options = {}) => {
   };
 
   heatmapOverlay = new window.HeatmapOverlay(map.value, Object.assign(defaultConfig, options));
-  heatmapOverlay.setDataSet({ data: heatmapData, max: options.max || 100 });
+  heatmapOverlay.setDataSet({data: heatmapData, max: options.max || 100});
 
   return heatmapOverlay;
 };
@@ -935,7 +945,7 @@ const addHeatmap = (data, options = {}) => {
  */
 const updateHeatmapData = (data, max) => {
   if (heatmapOverlay) {
-    heatmapOverlay.setDataSet({ data: data, max: max || 100 });
+    heatmapOverlay.setDataSet({data: data, max: max || 100});
   }
 };
 
@@ -958,7 +968,7 @@ const removeHeatmap = () => {
 const openInfoWindow = (position, content, options = {}) => {
   if (!checkMapReady()) return;
 
-  const { offsetX = 0, offsetY = -20, autoClose = true, width = 200, height = 100 } = options;
+  const {offsetX = 0, offsetY = -20, autoClose = true, width = 200, height = 100} = options;
 
   if (infoWindow) {
     infoWindow.close();
@@ -1073,7 +1083,7 @@ const setCenter = (position, animate = true) => {
 const getCenter = () => {
   if (!checkMapReady()) return null;
   const center = map.value.getCenter();
-  return { lng: center.lng, lat: center.lat };
+  return {lng: center.lng, lat: center.lat};
 };
 
 /**
@@ -1111,7 +1121,7 @@ const fitBounds = (points, padding = 50) => {
   points.forEach((point) => {
     bounds.extend(toPoint(point.lng, point.lat));
   });
-  map.value.setViewport(bounds, { zoomFactor: 0.1, delay: 0, padding: padding });
+  map.value.setViewport(bounds, {zoomFactor: 0.1, delay: 0, padding: padding});
 };
 
 /**
@@ -1134,6 +1144,7 @@ const getBMap = () => {
  * 销毁地图实例
  */
 const destroy = () => {
+  console.log(map.value)
   if (map.value) {
     map.value.destroy();
     map.value = null;
@@ -1175,7 +1186,7 @@ watch(
         }
       }
     },
-    { deep: true }
+    {deep: true}
 );
 
 // ==================== 对外暴露方法 ====================
@@ -1224,15 +1235,15 @@ defineExpose({
 </script>
 
 
-<style  scoped>
-.baidu-map-container {
+<style scoped>
+.zh-baidu-map-container {
   position: relative;
   width: 100%;
   height: 100%;
   min-height: 400px;
 }
 
-.map-container {
+.zh-bmap-container {
   width: 100%;
   height: 100%;
 }
