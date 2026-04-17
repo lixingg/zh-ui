@@ -1118,7 +1118,7 @@ const getTMap = () => {
  */
 const destroyMap = () => {
   if (map.value) {
-    map.value.destroy();
+    map.value.destroy &&  map.value.destroy();
     map.value = null;
     isMapReady.value = false;
   }

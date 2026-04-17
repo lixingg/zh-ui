@@ -2,698 +2,728 @@
   <div class="amap-container">
     <!-- 地图容器 -->
     <div ref="mapContainerRef" class="map-container"></div>
-    <!-- 自定义插槽，用于在地图上方添加自定义UI -->
-    <div class="custom-ui-slot">
-      <slot name="customUI" :map="map" :isMapReady="isMapReady"></slot>
+
+    <!-- 轨迹控制面板（仅在启用轨迹时显示） -->
+    <div class="track-control-panel" v-if="showTrackPanel && trackMode">
+      <div class="control-buttons">
+        <button @click="playTrack" :disabled="isPlaying" class="btn-play">▶ 播放</button>
+        <button @click="pauseTrack" :disabled="!isPlaying" class="btn-pause">⏸ 暂停</button>
+        <button @click="stopTrack" class="btn-stop">⏹ 停止</button>
+        <button @click="resetTrack" class="btn-reset">🔄 重置</button>
+        <button @click="toggleCorrection" :class="{ active: enableCorrection }" class="btn-correction">
+          🧹 轨迹纠偏 {{ enableCorrection ? "开" : "关" }}
+        </button>
+        <button @click="toggleFollowCar" :class="{ active: followCarMode }" class="btn-follow">
+          🚗 跟随 {{ followCarMode ? "开" : "关" }}
+        </button>
+      </div>
+      <div class="progress-bar">
+        <span>进度: {{ progressPercent }}%</span>
+        <input type="range" v-model="progressPercent" @input="seekTo" min="0" max="100" step="1" />
+      </div>
+      <div class="track-info">
+        <span>当前点: {{ currentIndex + 1 }} / {{ displayPoints.length }}</span>
+        <span>剩余距离: {{ remainingDistance.toFixed(2) }} 米</span>
+        <span>总距离: {{ totalDistance.toFixed(2) }} 米</span>
+        <span v-if="correctionInfo.corrected">已纠偏 {{ correctionInfo.correctedCount }} 个点</span>
+      </div>
     </div>
+
+    <!-- 自定义UI插槽 -->
+    <div class="custom-ui-slot">
+      <slot name="customUI" :map="map" :AMap="AMap" :isMapReady="isMapReady" :trackInfo="trackInfo"></slot>
+    </div>
+
+    <!-- 自定义弹窗插槽 -->
+    <slot name="popup" :isOpen="isPopupOpen" :position="popupPosition" :data="popupData" :closePopup="closeInfoWindow"></slot>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
-import AMapLoader from '@amap/amap-jsapi-loader'
-
+import { ref, onMounted, onBeforeUnmount, watch, shallowRef, computed, nextTick } from "vue";
+import AMapLoader from "@amap/amap-jsapi-loader";
+import carSvg from "@/assets/images/car.svg"
 // ==================== Props 配置 ====================
 const props = defineProps({
-  // 高德地图API Key (必填)
-  amapKey: {
-    type: String,
-    required: true
-  },
-  // 高德地图安全密钥 (Web端2.0必须，如果没有请在官网获取)
-  securityJsCode: {
-    type: String,
-    default: ''
+  // 高德地图API Key（必填）
+  amapKey: { type: String, required: true },
+  // 安全密钥
+  securityJsCode: { type: String, default: "" },
+  // API版本
+  version: { type: String, default: "2.0" },
+  // 额外加载的插件
+  plugins: {
+    type: Array,
+    default: () => ["AMap.ToolBar", "AMap.Scale", "AMap.Geocoder", "AMap.MarkerClusterer", "AMap.HeatMap"],
   },
   // 地图初始化配置
   mapOptions: {
     type: Object,
     default: () => ({
-      center: [116.397428, 39.90923], // 默认北京天安门
-      zoom: 11,
-      viewMode: '2D', // 2D/3D
-      resizeEnable: true, // 自适应容器大小
+      center: [116.397428, 39.90923],
+      zoom: 12,
+      viewMode: "2D",
+      resizeEnable: true,
       showIndoorMap: false,
-      pitch: 0,
-      rotation: 0,
-      expandZoomRange: true,
-      zooms: [3, 20]
-    })
+      zooms: [3, 20],
+    }),
   },
-  // 额外加载的插件
-  plugins: {
-    type: Array,
-    default: () => ['AMap.Geocoder', 'AMap.ToolBar', 'AMap.Scale']
+  // 地图样式ID
+  mapStyleId: { type: String, default: "" },
+  // 控件配置
+  controls: {
+    type: Object,
+    default: () => ({ toolBar: true, scale: true, geolocation: false }),
   },
-  // 是否在地图加载完成后自动添加工具条
-  addToolBar: {
-    type: Boolean,
-    default: true
+  // 默认样式
+  defaultStyles: {
+    type: Object,
+    default: () => ({
+      marker: { icon: "", offset: [-15, -30] },
+      polyline: { strokeColor: "#3366FF", strokeWeight: 4, strokeOpacity: 0.8 },
+      polygon: { fillColor: "#00b0ff", fillOpacity: 0.4, strokeColor: "#0088ff", strokeWeight: 2 },
+    }),
   },
-  // 是否启用比例尺
-  addScale: {
-    type: Boolean,
-    default: true
-  }
-})
 
-// ==================== Emits 回调 ====================
+  // ========== 轨迹相关配置 ==========
+  // 轨迹模式（启用时显示轨迹控制面板）
+  trackMode: { type: Boolean, default: false },
+  // 原始轨迹点数据
+  originalTrackData: { type: Array, default: () => [] },
+  // 是否显示轨迹控制面板
+  showTrackPanel: { type: Boolean, default: false },
+  // 是否启用轨迹纠偏
+  enableCorrection: { type: Boolean, default: true },
+  // 纠偏参数 - 最大间距阈值（米）
+  maxGapDistance: { type: Number, default: 100 },
+  // 纠偏参数 - 抽稀阈值（米）
+  simplifyTolerance: { type: Number, default: 5 },
+  // 是否自动调整视野
+  autoFitBounds: { type: Boolean, default: true },
+  // 是否自动旋转车头方向
+  autoRotateCar: { type: Boolean, default: true },
+  // 动画速度（毫秒/点）
+  speed: { type: Number, default: 500 },
+  // 小车图标
+  carIcon: { type: String, default: carSvg },
+  carIconSize: { type: Object, default: () => ({ width: 80, height: 80 }) },
+  // 轨迹线样式
+  trackColor: { type: String, default: "#FF6B6B" },
+  trackWidth: { type: Number, default: 5 },
+  // 是否显示起点终点标记
+  showStartEndMarkers: { type: Boolean, default: true },
+  // 是否自动播放
+  autoPlay: { type: Boolean, default: false },
+  // 驾车模式（道路吸附）
+  drivingMode: { type: Boolean, default: false },
+  // 是否默认跟随小车
+  defaultFollowCar: { type: Boolean, default: true },
+});
+
+// ==================== Emits ====================
 const emit = defineEmits([
-  'ready',        // 地图加载完成
-  'click',        // 地图点击事件
-  'markerClick',  // 标记点击事件
-  'polylineClick',// 线点击事件
-  'polygonClick', // 面点击事件
-  'circleClick',  // 圆点击事件
-  'popupClose'    // 弹窗关闭事件
-])
+  "ready",
+  "click",
+  "rightClick",
+  "doubleClick",
+  "zoomEnd",
+  "moveEnd",
+  "markerClick",
+  "markerDragEnd",
+  "polylineClick",
+  "polygonClick",
+  "circleClick",
+  "infoWindowClose",
+  "clusterClick",
+  "hotspotClick",
+  "drawComplete",
+  // 轨迹事件
+  "trackReady",
+  "trackPlay",
+  "trackPause",
+  "trackStop",
+  "trackComplete",
+  "trackPointChange",
+  "trackCorrectionComplete",
+]);
 
 // ==================== 响应式数据 ====================
-const mapContainerRef = ref(null)    // 地图容器DOM
-const map = ref(null)               // 地图实例
-const isMapReady = ref(false)       // 地图是否就绪
+const mapContainerRef = ref(null);
+const map = shallowRef(null);
+const AMap = shallowRef(null);
+const isMapReady = ref(false);
 
-// 存储所有覆盖物，便于管理和清除
-const markers = ref([])      // 存储标记实例
-const polylines = ref([])    // 存储线实例
-const polygons = ref([])     // 存储面实例
-const circles = ref([])      // 存储圆实例
-let infoWindow = null        // 全局信息窗口实例
+// 覆盖物存储
+const markers = ref([]);
+const polylines = ref([]);
+const polygons = ref([]);
+const circles = ref([]);
+let markerCluster = null;
+let heatmap = null;
+let geocoder = null;
+let infoWindow = null;
 
-// 全局加载器单例，避免重复加载高德API
-let amapLoaderPromise = null
+// 弹窗相关
+const isPopupOpen = ref(false);
+const popupPosition = ref({ lng: 0, lat: 0 });
+const popupData = ref(null);
 
-// ==================== 辅助函数 ====================
-/**
- * 加载高德地图API (单例模式)
- */
-const loadAMap = () => {
-  if (amapLoaderPromise) return amapLoaderPromise
+// 轨迹相关
+const trackLine = shallowRef(null);
+const carMarker = shallowRef(null);
+const startMarker = shallowRef(null);
+const endMarker = shallowRef(null);
+const animationTimer = ref(null);
+const isPlaying = ref(false);
+const followCarMode = ref(props.defaultFollowCar);
+const currentIndex = ref(0);
+const progressPercent = ref(0);
 
-  // 配置安全密钥 (高德2.0需要)
-  if (props.securityJsCode) {
-    window._AMapSecurityConfig = {
-      securityJsCode: props.securityJsCode
+// 轨迹数据
+const rawPoints = ref([]);
+const displayPoints = ref([]);
+const distances = ref([]);
+const totalDistance = ref(0);
+const remainingDistance = ref(0);
+const segmentAngles = ref([]);
+const correctionInfo = ref({ corrected: false, correctedCount: 0, originalCount: 0 });
+
+// 轨迹信息计算属性
+const trackInfo = computed(() => ({
+  currentIndex: currentIndex.value,
+  totalPoints: displayPoints.value.length,
+  progress: progressPercent.value,
+  remainingDistance: remainingDistance.value,
+  totalDistance: totalDistance.value,
+  isPlaying: isPlaying.value,
+}));
+
+// 加载状态
+let loadPromise = null;
+
+// ==================== SDK加载 ====================
+const loadAMapSDK = () => {
+  if (loadPromise) return loadPromise;
+  if (props.securityJsCode) window._AMapSecurityConfig = { securityJsCode: props.securityJsCode };
+
+  loadPromise = AMapLoader.load({
+    key: props.amapKey,
+    version: props.version,
+    plugins: props.plugins,
+  }).catch((err) => {
+    console.error("高德地图SDK加载失败:", err);
+    throw err;
+  });
+  return loadPromise;
+};
+
+// ==================== 工具函数 ====================
+const calculateDistance = (p1, p2) => {
+  const R = 6371000;
+  const lat1 = (p1.lat * Math.PI) / 180;
+  const lat2 = (p2.lat * Math.PI) / 180;
+  const deltaLat = ((p2.lat - p1.lat) * Math.PI) / 180;
+  const deltaLng = ((p2.lng - p1.lng) * Math.PI) / 180;
+  const a = Math.sin(deltaLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+};
+
+const calculateBearing = (p1, p2) => {
+  const lat1 = (p1.lat * Math.PI) / 180;
+  const lat2 = (p2.lat * Math.PI) / 180;
+  const deltaLng = ((p2.lng - p1.lng) * Math.PI) / 180;
+  const x = Math.sin(deltaLng) * Math.cos(lat2);
+  const y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLng);
+  let bearing = (Math.atan2(x, y) * 180) / Math.PI;
+  return (bearing + 360) % 360;
+};
+
+const normalizePoint = (point) => {
+  if (Array.isArray(point)) return { lng: point[0], lat: point[1], speed: point[2] || 30, time: point[3] || 0 };
+  return { lng: point.lng, lat: point.lat, speed: point.speed || 30, time: point.time || 0 };
+};
+
+// 道格拉斯-普克抽稀
+const douglasPeucker = (points, tolerance) => {
+  if (points.length <= 2) return points;
+  let maxDist = 0, maxIdx = 0;
+  const perpendicularDistance = (p, p1, p2) => {
+    const area = Math.abs((p2.lng - p1.lng) * (p1.lat - p.lat) - (p1.lng - p.lng) * (p2.lat - p1.lat));
+    const bottom = Math.hypot(p2.lng - p1.lng, p2.lat - p1.lat);
+    return bottom === 0 ? Math.hypot(p.lng - p1.lng, p.lat - p1.lat) : area / bottom;
+  };
+  for (let i = 1; i < points.length - 1; i++) {
+    const dist = perpendicularDistance(points[i], points[0], points[points.length - 1]);
+    if (dist > maxDist) { maxDist = dist; maxIdx = i; }
+  }
+  if (maxDist > tolerance) {
+    const left = douglasPeucker(points.slice(0, maxIdx + 1), tolerance);
+    const right = douglasPeucker(points.slice(maxIdx), tolerance);
+    return left.slice(0, -1).concat(right);
+  }
+  return [points[0], points[points.length - 1]];
+};
+
+// 卡尔曼滤波平滑
+const kalmanFilter = (points) => {
+  if (points.length < 3) return points;
+  const Q = 0.01, R = 0.1;
+  let filtered = [points[0]];
+  for (let i = 1; i < points.length - 1; i++) {
+    const prev = filtered[i - 1];
+    const curr = points[i];
+    const K = Q / (Q + R);
+    filtered.push({ lng: prev.lng + K * (curr.lng - prev.lng), lat: prev.lat + K * (curr.lat - prev.lat), speed: curr.speed, time: curr.time });
+  }
+  filtered.push(points[points.length - 1]);
+  return filtered;
+};
+
+// 轨迹纠偏
+const correctTrack = (points) => {
+  if (!props.enableCorrection) return points;
+  let corrected = [...points];
+  let correctedCount = 0;
+
+  // 断点检测
+  const segments = [];
+  let currentSegment = [corrected[0]];
+  for (let i = 1; i < corrected.length; i++) {
+    if (calculateDistance(corrected[i - 1], corrected[i]) > props.maxGapDistance && currentSegment.length > 0) {
+      segments.push(currentSegment);
+      currentSegment = [corrected[i]];
+    } else currentSegment.push(corrected[i]);
+  }
+  if (currentSegment.length > 0) segments.push(currentSegment);
+
+  // 抽稀和平滑
+  let result = [];
+  for (const seg of segments) {
+    if (seg.length < 2) result.push(...seg);
+    else {
+      let simplified = douglasPeucker(seg, props.simplifyTolerance);
+      correctedCount += seg.length - simplified.length;
+      result.push(...kalmanFilter(simplified));
     }
   }
 
-  amapLoaderPromise = AMapLoader.load({
-    key: props.amapKey,
-    version: '2.0',
-    plugins: props.plugins
-  }).then(() => {
-    console.log('高德地图API加载成功')
-    return window.AMap
-  }).catch(err => {
-    console.error('高德地图API加载失败:', err)
-    throw err
-  })
+  correctionInfo.value = { corrected: props.enableCorrection, correctedCount, originalCount: points.length };
+  emit("trackCorrectionComplete", { originalCount: points.length, correctedCount, finalCount: result.length });
+  return result;
+};
 
-  return amapLoaderPromise
-}
+// 处理轨迹数据
+const processTrackData = async () => {
+  if (!props.trackMode || !props.originalTrackData.length) return;
+  rawPoints.value = props.originalTrackData.map(normalizePoint);
+  let processed = correctTrack(rawPoints.value);
+  displayPoints.value = processed;
 
-/**
- * 初始化地图
- */
+  distances.value = [];
+  segmentAngles.value = [];
+  totalDistance.value = 0;
+  for (let i = 0; i < displayPoints.value.length - 1; i++) {
+    const dist = calculateDistance(displayPoints.value[i], displayPoints.value[i + 1]);
+    distances.value.push(dist);
+    totalDistance.value += dist;
+    segmentAngles.value.push(calculateBearing(displayPoints.value[i], displayPoints.value[i + 1]));
+  }
+  remainingDistance.value = totalDistance.value;
+};
+
+// ==================== 地图初始化 ====================
 const initMap = async () => {
   try {
-    await loadAMap()
-    if (!mapContainerRef.value) return
+    await loadAMapSDK();
+    if (!mapContainerRef.value) return;
+    AMap.value = window.AMap;
 
-    // 创建地图实例
-    map.value = new AMap.Map(mapContainerRef.value, props.mapOptions)
+    map.value = new AMap.value.Map(mapContainerRef.value, props.mapOptions);
+    if (props.mapStyleId) map.value.setMapStyle(props.mapStyleId);
 
-    // 监听地图点击事件
-    map.value.on('click', (e) => {
-      emit('click', e)
-    })
+    // 添加控件
+    if (props.controls.toolBar) map.value.addControl(new AMap.value.ToolBar());
+    if (props.controls.scale) map.value.addControl(new AMap.value.Scale());
 
-    // 添加工具条
-    if (props.addToolBar) {
-      map.value.addControl(new AMap.ToolBar())
-    }
-    // 添加比例尺
-    if (props.addScale) {
-      map.value.addControl(new AMap.Scale())
-    }
+    // 绑定事件
+    map.value.on("click", (e) => emit("click", { lng: e.lnglat.lng, lat: e.lnglat.lat }));
+    map.value.on("rightclick", (e) => emit("rightClick", { lng: e.lnglat.lng, lat: e.lnglat.lat }));
+    map.value.on("dblclick", (e) => emit("doubleClick", { lng: e.lnglat.lng, lat: e.lnglat.lat }));
+    map.value.on("zoomend", () => emit("zoomEnd", { zoom: map.value.getZoom() }));
+    map.value.on("moveend", () => emit("moveEnd", { center: getCenter() }));
 
-    // 地图加载完成
-    map.value.on('complete', () => {
-      isMapReady.value = true
-      emit('ready', map.value)
-      console.log('地图加载完成')
-    })
+    // 初始化服务
+    AMap.value.plugin("AMap.Geocoder", () => { geocoder = new AMap.value.Geocoder(); });
 
-    // 监听地图容器大小变化，自动resize
-    window.addEventListener('resize', handleMapResize)
+    window.addEventListener("resize", () => map.value?.resize());
+    isMapReady.value = true;
+    emit("ready", { map: map.value, AMap: AMap.value });
   } catch (error) {
-    console.error('地图初始化失败:', error)
+    console.error("地图初始化失败:", error);
   }
-}
+};
 
-/**
- * 地图容器大小变化适配
- */
-const handleMapResize = () => {
-  if (map.value) {
-    map.value.resize()
-  }
-}
+// ==================== 轨迹方法 ====================
 
-/**
- * 通用方法：检查地图是否就绪
- */
-const checkMapReady = () => {
-  if (!map.value || !isMapReady.value) {
-    console.warn('地图尚未加载完成，请等待地图ready事件后再调用方法')
-    return false
-  }
-  return true
+const trackInit= ()=>{
+  setTimeout(async ()=>{
+    // 处理轨迹
+    if (props.trackMode) {
+      await processTrackData();
+      drawTrackLine();
+      if (props.showStartEndMarkers) addStartEndMarkers();
+      addCarMarker();
+      if (props.autoFitBounds) fitTrackBounds();
+      if (props.autoPlay) await nextTick(() => playTrack());
+      emit("trackReady", { map: map.value, AMap: AMap.value, trackInfo: trackInfo.value });
+    }
+  })
 }
+const removeTrack = () => {
+  if (trackLine.value) trackLine.value.setMap(null);
+  if (carMarker.value) carMarker.value.setMap(null);
+  if (startMarker.value) startMarker.value.setMap(null);
+  if (endMarker.value) endMarker.value.setMap(null);
+  trackInfo.value = null;
+  displayPoints.value = [];
+  emit("trackReady", { map: map.value, AMap: AMap.value, trackInfo: null });
+};
 
-// ==================== 核心方法 (对外暴露) ====================
-/**
- * 添加单个标记（打点）
- * @param {Object} options - 标记配置
- * @param {Array} options.position - 经纬度 [lng, lat]
- * @param {String} options.content - 自定义标记HTML内容（可选）
- * @param {String} options.icon - 图标URL（可选）
- * @param {String} options.title - 鼠标悬浮标题（可选）
- * @param {Object} options.extData - 扩展数据（用于回调识别）
- * @param {Boolean} options.autoShowPopup - 是否点击时自动显示弹窗
- * @param {String} options.popupContent - 弹窗内容（如果autoShowPopup为true）
- * @returns {Object} marker实例
- */
+const drawTrackLine = () => {
+  if (trackLine.value) trackLine.value.setMap(null);
+  if (!displayPoints.value.length) return;
+  trackLine.value = new AMap.value.Polyline({
+    path: displayPoints.value.map(p => [p.lng, p.lat]),
+    strokeColor: props.trackColor,
+    strokeWeight: props.trackWidth,
+    strokeOpacity: 0.9,
+    lineJoin: "round",
+    lineCap: "round",
+  });
+  trackLine.value.setMap(map.value);
+};
+
+const addStartEndMarkers = () => {
+  if (startMarker.value) startMarker.value.setMap(null);
+  if (endMarker.value) endMarker.value.setMap(null);
+  if (!displayPoints.value.length) return;
+  startMarker.value = new AMap.value.Marker({
+    position: [displayPoints.value[0].lng, displayPoints.value[0].lat],
+    icon: "https://webapi.amap.com/theme/v1.3/markers/n/start.png",
+    title: "起点",
+    offset: new AMap.value.Pixel(-15, -30),
+  });
+  endMarker.value = new AMap.value.Marker({
+    position: [displayPoints.value[displayPoints.value.length - 1].lng, displayPoints.value[displayPoints.value.length - 1].lat],
+    icon: "https://webapi.amap.com/theme/v1.3/markers/n/end.png",
+    title: "终点",
+    offset: new AMap.value.Pixel(-15, -30),
+  });
+  startMarker.value.setMap(map.value);
+  endMarker.value.setMap(map.value);
+};
+
+const addCarMarker = () => {
+  if (carMarker.value) carMarker.value.setMap(null);
+  if (!displayPoints.value.length) return;
+  carMarker.value = new AMap.value.Marker({
+    position: [displayPoints.value[0].lng, displayPoints.value[0].lat],
+    icon: new AMap.value.Icon({ size: new AMap.value.Size(props.carIconSize.width, props.carIconSize.height), image: props.carIcon, imageSize: new AMap.value.Size(props.carIconSize.width, props.carIconSize.height) }),
+    offset: new AMap.value.Pixel(-props.carIconSize.width / 2, -props.carIconSize.height / 2),
+    angle: segmentAngles.value[0] || 0,
+  });
+  carMarker.value.setMap(map.value);
+};
+
+const updateCarPosition = (idx) => {
+  if (!carMarker.value || idx >= displayPoints.value.length) return;
+  const point = displayPoints.value[idx];
+  carMarker.value.setPosition([point.lng, point.lat]);
+  if (props.autoRotateCar && idx < segmentAngles.value.length) carMarker.value.setAngle(segmentAngles.value[idx]);
+  let remaining = 0;
+  for (let i = idx; i < distances.value.length; i++) remaining += distances.value[i];
+  remainingDistance.value = remaining;
+  emit("trackPointChange", { index: idx, point, remainingDistance: remaining, totalDistance: totalDistance.value });
+};
+
+const fitTrackBounds = () => {
+  if (!map.value || !displayPoints.value.length) return;
+/*  const bounds = displayPoints.value.reduce((b, p) => b.extend([p.lng, p.lat]), new AMap.value.Bounds([displayPoints.value[0].lng, displayPoints.value[0].lat], [displayPoints.value[0].lng, displayPoints.value[0].lat]));
+  map.value.setBounds(bounds, false, [50, 50, 50, 50]);*/
+};
+
+const followCar = () => {
+  if (!map.value || !carMarker.value || !followCarMode.value) return;
+  const pos = carMarker.value.getPosition();
+  map.value.setCenter([pos.lng, pos.lat]);
+};
+
+const playTrack = () => {
+  if (isPlaying.value || !displayPoints.value.length) return;
+  if (currentIndex.value >= displayPoints.value.length - 1) resetTrack();
+  isPlaying.value = true;
+  emit("trackPlay");
+
+  const playStep = () => {
+    if (!isPlaying.value) return;
+    if (currentIndex.value < displayPoints.value.length - 1) {
+      currentIndex.value++;
+      updateCarPosition(currentIndex.value);
+      progressPercent.value = (currentIndex.value / (displayPoints.value.length - 1)) * 100;
+      if (followCarMode.value) followCar();
+      const speed = displayPoints.value[currentIndex.value]?.speed || 30;
+      animationTimer.value = setTimeout(playStep, props.speed / (speed / 30));
+    } else {
+      pauseTrack();
+      emit("trackComplete", { totalDistance: totalDistance.value, totalPoints: displayPoints.value.length });
+    }
+  };
+  playStep();
+};
+
+const pauseTrack = () => {
+  if (animationTimer.value) clearTimeout(animationTimer.value);
+  isPlaying.value = false;
+  emit("trackPause");
+};
+
+const stopTrack = () => {
+  pauseTrack();
+  currentIndex.value = 0;
+  progressPercent.value = 0;
+  updateCarPosition(0);
+  emit("trackStop");
+};
+
+const resetTrack = () => {
+  pauseTrack();
+  currentIndex.value = 0;
+  progressPercent.value = 0;
+  updateCarPosition(0);
+  if (props.autoFitBounds) fitTrackBounds();
+};
+
+const seekTo = (e) => {
+  const percent = parseFloat(e.target.value);
+  const targetIdx = Math.floor((percent / 100) * (displayPoints.value.length - 1));
+  const wasPlaying = isPlaying.value;
+  if (wasPlaying) pauseTrack();
+  currentIndex.value = Math.min(targetIdx, displayPoints.value.length - 1);
+  progressPercent.value = percent;
+  updateCarPosition(currentIndex.value);
+  if (wasPlaying) playTrack();
+};
+
+const toggleCorrection = () => {
+  props.enableCorrection = !props.enableCorrection;
+  processTrackData().then(() => {
+    drawTrackLine();
+    addStartEndMarkers();
+    addCarMarker();
+    updateCarPosition(currentIndex.value);
+    if (props.autoFitBounds) fitTrackBounds();
+  });
+};
+
+const toggleFollowCar = () => { followCarMode.value = !followCarMode.value; };
+
+// ==================== 通用地图方法 ====================
 const addMarker = (options) => {
-  if (!checkMapReady()) return null
+  if (!map.value) return null;
+  const { position, title = "", icon, label, draggable = false, autoShowInfo = false, infoContent = "", extData = {} } = options;
+  const marker = new AMap.value.Marker({ position, title, draggable, extData });
+  if (icon) marker.setIcon(new AMap.value.Icon({ size: new AMap.value.Size(30, 30), image: icon, imageSize: new AMap.value.Size(30, 30) }));
+  if (label) marker.setLabel({ content: label, offset: new AMap.value.Pixel(0, -20) });
+  marker.on("click", () => {
+    emit("markerClick", { marker, position, title, extData });
+    if (autoShowInfo && infoContent) openInfoWindow(position, infoContent);
+  });
+  if (draggable) marker.on("dragend", (e) => emit("markerDragEnd", { marker, position: e.target.getPosition(), extData }));
+  marker.setMap(map.value);
+  markers.value.push(marker);
+  return marker;
+};
 
-  const { position, content, icon, title, extData, autoShowPopup = false, popupContent = '' } = options
-  if (!position) {
-    console.error('添加标记失败：缺少position参数')
-    return null
-  }
+const addMarkers = (list) => list.map(item => addMarker(item)).filter(Boolean);
+const clearMarkers = () => { markers.value.forEach(m => m.setMap(null)); markers.value = []; };
+const removeMarker = (marker) => { const idx = markers.value.findIndex(m => m === marker); if (idx !== -1) { marker.setMap(null); markers.value.splice(idx, 1); } };
 
-  let markerConfig = {
-    position: position,
-    extData: extData,
-    title: title || ''
-  }
-
-  if (content) {
-    markerConfig.content = content
-  } else if (icon) {
-    markerConfig.icon = icon
-  }
-
-  const marker = new AMap.Marker(markerConfig)
-
-  // 标记点击事件
-  marker.on('click', (e) => {
-    emit('markerClick', { marker, event: e, extData: marker.getExtData() })
-    if (autoShowPopup && popupContent) {
-      openPopup(popupContent, position)
-    }
-  })
-
-  marker.setMap(map.value)
-  markers.value.push(marker)
-  return marker
-}
-
-/**
- * 批量添加标记
- * @param {Array} markerList - 标记配置数组，每个元素同addMarker的options
- * @returns {Array} marker实例数组
- */
-const addMarkers = (markerList) => {
-  if (!Array.isArray(markerList)) return []
-  return markerList.map(item => addMarker(item)).filter(m => m !== null)
-}
-
-/**
- * 清除所有标记
- */
-const clearMarkers = () => {
-  markers.value.forEach(marker => {
-    marker.setMap(null)
-  })
-  markers.value = []
-}
-
-/**
- * 移除指定标记
- * @param {Object} marker - marker实例
- */
-const removeMarker = (marker) => {
-  const index = markers.value.findIndex(m => m === marker)
-  if (index !== -1) {
-    marker.setMap(null)
-    markers.value.splice(index, 1)
-  }
-}
-
-/**
- * 添加线（折线）
- * @param {Object} options - 线的配置
- * @param {Array} options.path - 路径点数组 [[lng,lat], [lng,lat], ...]
- * @param {Object} options.style - 样式配置 strokeColor, strokeWeight, strokeOpacity, strokeStyle等
- * @param {Object} options.extData - 扩展数据
- * @param {Boolean} options.editable - 是否可编辑
- * @returns {Object} polyline实例
- */
 const addPolyline = (options) => {
-  if (!checkMapReady()) return null
+  const { path, strokeColor, strokeWeight, strokeOpacity, strokeStyle, extData = {} } = options;
+  const styles = props.defaultStyles.polyline;
+  const polyline = new AMap.value.Polyline({ path, strokeColor: strokeColor || styles.strokeColor, strokeWeight: strokeWeight || styles.strokeWeight, strokeOpacity: strokeOpacity || styles.strokeOpacity, strokeStyle: strokeStyle || styles.strokeStyle, extData });
+  polyline.on("click", () => emit("polylineClick", { polyline, path, extData }));
+  polyline.setMap(map.value);
+  polylines.value.push(polyline);
+  return polyline;
+};
+const clearPolylines = () => { polylines.value.forEach(l => l.setMap(null)); polylines.value = []; };
 
-  const { path, style = {}, extData, editable = false } = options
-  if (!path || !Array.isArray(path)) {
-    console.error('添加线失败：缺少path参数')
-    return null
-  }
-
-  const defaultStyle = {
-    strokeColor: '#3366FF',
-    strokeWeight: 4,
-    strokeOpacity: 0.8,
-    strokeStyle: 'solid'
-  }
-
-  const polyline = new AMap.Polyline({
-    path: path,
-    extData: extData,
-    editable: editable,
-    ...defaultStyle,
-    ...style
-  })
-
-  polyline.on('click', (e) => {
-    emit('polylineClick', { polyline, event: e, extData })
-  })
-
-  polyline.setMap(map.value)
-  polylines.value.push(polyline)
-  return polyline
-}
-
-/**
- * 清除所有线
- */
-const clearPolylines = () => {
-  polylines.value.forEach(line => {
-    line.setMap(null)
-  })
-  polylines.value = []
-}
-
-/**
- * 添加多边形（画面）
- * @param {Object} options - 多边形配置
- * @param {Array} options.path - 多边形边界点数组
- * @param {Object} options.style - 样式配置 fillColor, strokeColor, fillOpacity等
- * @param {Object} options.extData - 扩展数据
- * @returns {Object} polygon实例
- */
 const addPolygon = (options) => {
-  if (!checkMapReady()) return null
+  const { path, fillColor, fillOpacity, strokeColor, strokeWeight, extData = {} } = options;
+  const styles = props.defaultStyles.polygon;
+  const polygon = new AMap.value.Polygon({ path, fillColor: fillColor || styles.fillColor, fillOpacity: fillOpacity || styles.fillOpacity, strokeColor: strokeColor || styles.strokeColor, strokeWeight: strokeWeight || styles.strokeWeight, extData });
+  polygon.on("click", () => emit("polygonClick", { polygon, path, extData }));
+  polygon.setMap(map.value);
+  polygons.value.push(polygon);
+  return polygon;
+};
+const clearPolygons = () => { polygons.value.forEach(p => p.setMap(null)); polygons.value = []; };
 
-  const { path, style = {}, extData } = options
-  if (!path || !Array.isArray(path)) {
-    console.error('添加多边形失败：缺少path参数')
-    return null
-  }
-
-  const defaultStyle = {
-    fillColor: '#00b0ff',
-    fillOpacity: 0.4,
-    strokeColor: '#0088ff',
-    strokeWeight: 2,
-    strokeOpacity: 0.8
-  }
-
-  const polygon = new AMap.Polygon({
-    path: path,
-    extData: extData,
-    ...defaultStyle,
-    ...style
-  })
-
-  polygon.on('click', (e) => {
-    emit('polygonClick', { polygon, event: e, extData })
-  })
-
-  polygon.setMap(map.value)
-  polygons.value.push(polygon)
-  return polygon
-}
-
-/**
- * 清除所有多边形
- */
-const clearPolygons = () => {
-  polygons.value.forEach(polygon => {
-    polygon.setMap(null)
-  })
-  polygons.value = []
-}
-
-/**
- * 添加圆形（画面）
- * @param {Object} options - 圆形配置
- * @param {Array} options.center - 圆心经纬度 [lng, lat]
- * @param {Number} options.radius - 半径（米）
- * @param {Object} options.style - 样式配置
- * @returns {Object} circle实例
- */
 const addCircle = (options) => {
-  if (!checkMapReady()) return null
+  const { center, radius, fillColor, fillOpacity, strokeColor, strokeWeight, extData = {} } = options;
+  const styles = props.defaultStyles.polygon;
+  const circle = new AMap.value.Circle({ center, radius, fillColor: fillColor || styles.fillColor, fillOpacity: fillOpacity || styles.fillOpacity, strokeColor: strokeColor || styles.strokeColor, strokeWeight: strokeWeight || styles.strokeWeight, extData });
+  circle.on("click", () => emit("circleClick", { circle, center, radius, extData }));
+  circle.setMap(map.value);
+  circles.value.push(circle);
+  return circle;
+};
+const clearCircles = () => { circles.value.forEach(c => c.setMap(null)); circles.value = []; };
 
-  const { center, radius, style = {}, extData } = options
-  if (!center || !radius) {
-    console.error('添加圆形失败：缺少center或radius参数')
-    return null
-  }
+const clearAllOverlays = () => { clearMarkers(); clearPolylines(); clearPolygons(); clearCircles(); clearMarkerCluster(); removeHeatmap(); };
 
-  const defaultStyle = {
-    fillColor: '#00b0ff',
-    fillOpacity: 0.4,
-    strokeColor: '#0088ff',
-    strokeWeight: 2
-  }
+const addMarkerCluster = (points, options = {}) => {
+  if (markerCluster) markerCluster.setMap(null);
+  const markersList = points.map(p => new AMap.value.Marker({ position: p.position, title: p.title || "", extData: p.extData || {} }));
+  markerCluster = new AMap.value.MarkerClusterer(map.value, markersList, { gridSize: options.gridSize || 60, minClusterSize: options.minClusterSize || 2, maxZoom: options.maxZoom || 15 });
+  markerCluster.on("click", (e) => emit("clusterClick", { cluster: e, points: e.target.getMarkers() }));
+  return markerCluster;
+};
+const clearMarkerCluster = () => { if (markerCluster) { markerCluster.setMap(null); markerCluster = null; } };
 
-  const circle = new AMap.Circle({
-    center: center,
-    radius: radius,
-    extData: extData,
-    ...defaultStyle,
-    ...style
-  })
+const addHeatmap = (data, options = {}) => {
+  if (heatmap) heatmap.setMap(null);
+  heatmap = new AMap.value.HeatMap(map.value, { radius: options.radius || 30, opacity: options.opacity || [0, 0.8], gradient: options.gradient || { 0.2: "blue", 0.4: "cyan", 0.6: "lime", 0.8: "yellow", 1.0: "red" } });
+  heatmap.setDataSet({ data: data.map(d => ({ lng: d.lng, lat: d.lat, count: d.count || 1 })), max: options.max || 100 });
+  return heatmap;
+};
+const updateHeatmapData = (data, max) => { if (heatmap) heatmap.setDataSet({ data: data.map(d => ({ lng: d.lng, lat: d.lat, count: d.count || 1 })), max: max || 100 }); };
+const removeHeatmap = () => { if (heatmap) { heatmap.setMap(null); heatmap = null; } };
 
-  circle.on('click', (e) => {
-    emit('circleClick', { circle, event: e, extData })
-  })
+const openInfoWindow = (position, content, options = {}) => {
+  if (infoWindow) infoWindow.close();
+  infoWindow = new AMap.value.InfoWindow({ content: typeof content === "string" ? content : content.outerHTML, offset: new AMap.value.Pixel(options.offsetX || 0, options.offsetY || -20), autoMove: true });
+  infoWindow.on("close", () => { emit("infoWindowClose"); isPopupOpen.value = false; });
+  infoWindow.open(map.value, position);
+  isPopupOpen.value = true;
+  popupPosition.value = { lng: position[0], lat: position[1] };
+  popupData.value = { content };
+  if (options.autoClose !== false) setTimeout(() => closeInfoWindow(), options.closeDelay || 5000);
+};
+const closeInfoWindow = () => { if (infoWindow) infoWindow.close(); isPopupOpen.value = false; popupData.value = null; };
 
-  circle.setMap(map.value)
-  circles.value.push(circle)
-  return circle
-}
+const reGeoCode = (position) => new Promise((resolve, reject) => {
+  if (!geocoder) reject(new Error("地理编码服务未初始化"));
+  else geocoder.getAddress(position, (status, result) => status === "complete" ? resolve({ formattedAddress: result.regeocode.formattedAddress, addressComponent: result.regeocode.addressComponent, position }) : reject(new Error("逆地理编码失败")));
+});
 
-/**
- * 清除所有圆形
- */
-const clearCircles = () => {
-  circles.value.forEach(circle => {
-    circle.setMap(null)
-  })
-  circles.value = []
-}
+const geoCode = (address) => new Promise((resolve, reject) => {
+  if (!geocoder) reject(new Error("地理编码服务未初始化"));
+  else geocoder.getLocation(address, (status, result) => status === "complete" && result.geocodes.length ? resolve({ lng: result.geocodes[0].location.lng, lat: result.geocodes[0].location.lat, formattedAddress: result.geocodes[0].formattedAddress }) : reject(new Error("地理编码失败")));
+});
 
-/**
- * 清除所有覆盖物（标记、线、面、圆）
- */
-const clearAllOverlays = () => {
-  clearMarkers()
-  clearPolylines()
-  clearPolygons()
-  clearCircles()
-}
-
-/**
- * 绘制轨迹
- * @param {Object} options - 轨迹配置
- * @param {Array} options.path - 轨迹点数组 [[lng,lat], ...]
- * @param {Object} options.lineStyle - 线的样式
- * @param {Boolean} options.addStartEndMarkers - 是否添加起点终点标记
- * @param {String} options.startMarkerIcon - 起点图标
- * @param {String} options.endMarkerIcon - 终点图标
- * @returns {Object} 返回polyline实例
- */
-const drawTrack = (options) => {
-  if (!checkMapReady()) return null
-
-  const { path, lineStyle = {}, addStartEndMarkers = true, startMarkerIcon, endMarkerIcon } = options
-  if (!path || path.length < 2) {
-    console.error('绘制轨迹失败：路径点至少需要2个点')
-    return null
-  }
-
-  // 绘制轨迹线
-  const polyline = addPolyline({
-    path: path,
-    style: {
-      strokeColor: '#FF6B6B',
-      strokeWeight: 5,
-      strokeOpacity: 0.9,
-      ...lineStyle
-    }
-  })
-
-  // 添加起点终点标记
-  if (addStartEndMarkers) {
-    const startPoint = path[0]
-    const endPoint = path[path.length - 1]
-
-    addMarker({
-      position: startPoint,
-      icon: startMarkerIcon || 'https://webapi.amap.com/theme/v1.3/markers/n/start.png',
-      title: '起点'
-    })
-
-    addMarker({
-      position: endPoint,
-      icon: endMarkerIcon || 'https://webapi.amap.com/theme/v1.3/markers/n/end.png',
-      title: '终点'
-    })
-  }
-
-  // 自动调整视野到轨迹范围
-  if (options.fitBounds !== false) {
-    const bounds = new AMap.Bounds(path[0], path[0])
-    path.forEach(point => {
-      bounds.extend(point)
-    })
-    map.value.setBounds(bounds, false, [20, 20, 20, 20])
-  }
-
-  return polyline
-}
-
-/**
- * 逆地理编码（经纬度转地址）
- * @param {Array} position - 经纬度 [lng, lat]
- * @returns {Promise} 返回地址信息
- */
-const reGeoCode = (position) => {
-  return new Promise((resolve, reject) => {
-    if (!checkMapReady()) {
-      reject(new Error('地图未就绪'))
-      return
-    }
-
-    AMap.plugin('AMap.Geocoder', () => {
-      const geocoder = new AMap.Geocoder()
-      geocoder.getAddress(position, (status, result) => {
-        if (status === 'complete' && result.info === 'OK') {
-          resolve({
-            formattedAddress: result.regeocode.formattedAddress,
-            addressComponent: result.regeocode.addressComponent,
-            position: position
-          })
-        } else {
-          reject(new Error('逆地理编码失败'))
-        }
-      })
-    })
-  })
-}
-
-/**
- * 打开信息窗口（Popupper）
- * @param {String|HTMLElement} content - 弹窗内容
- * @param {Array} position - 经纬度 [lng, lat]
- * @param {Object} options - 可选配置 { offset, autoClose }
- */
-const openPopup = (content, position, options = {}) => {
-  if (!checkMapReady()) return
-
-  const { offset = new AMap.Pixel(0, -20), autoClose = true } = options
-
-  if (!infoWindow) {
-    infoWindow = new AMap.InfoWindow({
-      offset: offset,
-      autoClose: autoClose,
-      content: ''
-    })
-
-    // 监听弹窗关闭事件
-    infoWindow.on('close', () => {
-      emit('popupClose')
-    })
-  }
-
-  infoWindow.setContent(content)
-  infoWindow.open(map.value, position)
-}
-
-/**
- * 关闭信息窗口
- */
-const closePopup = () => {
-  if (infoWindow) {
-    infoWindow.close()
-  }
-}
-
-/**
- * 设置地图中心点
- * @param {Array} position - 经纬度 [lng, lat]
- * @param {Boolean} animate - 是否带动画
- */
-const setCenter = (position, animate = true) => {
-  if (!checkMapReady()) return
-  map.value.setCenter(position, animate)
-}
-
-/**
- * 获取当前地图中心点
- * @returns {Array} 经纬度
- */
-const getCenter = () => {
-  if (!checkMapReady()) return null
-  return map.value.getCenter()
-}
-
-/**
- * 设置地图缩放级别
- * @param {Number} zoom - 缩放级别
- */
-const setZoom = (zoom) => {
-  if (!checkMapReady()) return
-  map.value.setZoom(zoom)
-}
-
-/**
- * 获取当前缩放级别
- * @returns {Number}
- */
-const getZoom = () => {
-  if (!checkMapReady()) return null
-  return map.value.getZoom()
-}
-
-/**
- * 适应视野到指定范围
- * @param {Array} points - 点数组 [[lng,lat], ...]
- * @param {Object} padding - 边距 {top, right, bottom, left}
- */
-const fitBounds = (points, padding = { top: 20, right: 20, bottom: 20, left: 20 }) => {
-  if (!checkMapReady() || !points || points.length === 0) return
-
-  const bounds = new AMap.Bounds(points[0], points[0])
-  points.forEach(point => {
-    bounds.extend(point)
-  })
-  map.value.setBounds(bounds, false, padding)
-}
-
-/**
- * 获取地图实例（供高级操作）
- * @returns {Object} 地图实例
- */
-const getMapInstance = () => {
-  return map.value
-}
-
-/**
- * 销毁地图实例（通常在组件卸载时自动调用）
- */
-const destroyMap = () => {
-  if (map.value) {
-    map.value.destroy()
-    map.value = null
-    isMapReady.value = false
-  }
-  if (infoWindow) {
-    infoWindow = null
-  }
-  window.removeEventListener('resize', handleMapResize)
-}
+const setCenter = (position, animate = true) => { if (map.value) animate ? map.value.panTo(position) : map.value.setCenter(position); };
+const getCenter = () => map.value ? [map.value.getCenter().lng, map.value.getCenter().lat] : null;
+const setZoom = (zoom) => map.value?.setZoom(zoom);
+const getZoom = () => map.value?.getZoom();
+const fitBounds = (points, padding = 50) => {
+  if (!map.value || !points?.length) return;
+  const bounds = points.reduce((b, p) => b.extend(p), new AMap.value.Bounds(points[0], points[0]));
+  map.value.setBounds(bounds, false, [padding, padding, padding, padding]);
+};
+const getMapInstance = () => map.value;
+const getAMap = () => AMap.value;
+const startDraw = (type, options = {}) => {
+  AMap.value.plugin(["AMap.MouseTool"], () => {
+    const mouseTool = new AMap.value.MouseTool(map.value);
+    const onComplete = (e) => {
+      let data = null;
+      if (type === "polyline") data = e.path;
+      else if (type === "polygon") data = e.path;
+      else if (type === "circle") data = { center: [e.center.lng, e.center.lat], radius: e.radius };
+      else if (type === "marker") data = [e.lnglat.lng, e.lnglat.lat];
+      emit("drawComplete", { type, data, feature: e });
+      mouseTool.close(true);
+    };
+    if (type === "polyline") mouseTool.polyline({ strokeColor: options.strokeColor || "#3366FF" }, onComplete);
+    else if (type === "polygon") mouseTool.polygon({ fillColor: options.fillColor || "#00b0ff" }, onComplete);
+    else if (type === "circle") mouseTool.circle({ fillColor: options.fillColor || "#00b0ff" }, onComplete);
+    else if (type === "marker") mouseTool.marker({}, onComplete);
+  });
+};
 
 // ==================== 生命周期 ====================
-onMounted(() => {
-  initMap()
-})
-
+onMounted(() => initMap());
 onBeforeUnmount(() => {
-  destroyMap()
-})
+  if (animationTimer.value) clearTimeout(animationTimer.value);
+  if (map.value) map.value.destroy();
+});
 
-// 监听mapOptions变化（深度监听，重新初始化部分配置）
-watch(() => props.mapOptions, (newOptions) => {
-  if (map.value && isMapReady.value) {
-    // 动态更新中心点和缩放
-    if (newOptions.center) map.value.setCenter(newOptions.center)
-    if (newOptions.zoom) map.value.setZoom(newOptions.zoom)
-  }
-}, { deep: true })
+watch(() => props.originalTrackData, async () => { if (isMapReady.value && props.trackMode) { await processTrackData(); drawTrackLine(); addStartEndMarkers(); addCarMarker(); updateCarPosition(currentIndex.value); if (props.autoFitBounds) fitTrackBounds(); } }, { deep: true });
 
-// ==================== 对外暴露方法 ====================
+// ==================== 对外暴露 ====================
 defineExpose({
   // 地图控制
-  setCenter,
-  getCenter,
-  setZoom,
-  getZoom,
-  fitBounds,
-  getMapInstance,
-  // 打点相关
-  addMarker,
-  addMarkers,
-  clearMarkers,
-  removeMarker,
-  // 画线相关
-  addPolyline,
-  clearPolylines,
-  // 画面相关（多边形/圆）
-  addPolygon,
-  clearPolygons,
-  addCircle,
-  clearCircles,
+  setCenter, getCenter, setZoom, getZoom, fitBounds, getMapInstance, getAMap,
+  // 打点
+  addMarker, addMarkers, clearMarkers, removeMarker,
+  // 画线
+  addPolyline, clearPolylines,
+  // 画面
+  addPolygon, clearPolygons, addCircle, clearCircles,
   // 清除所有
   clearAllOverlays,
+  // 聚合
+  addMarkerCluster, clearMarkerCluster,
+  // 热力图
+  addHeatmap, updateHeatmapData, removeHeatmap,
+  // 地理编码
+  reGeoCode, geoCode,
+  // 弹窗
+  openInfoWindow, closeInfoWindow,
+  // 绘制
+  startDraw,
   // 轨迹
-  drawTrack,
-  // 逆地理编码
-  reGeoCode,
-  // Popupper弹窗
-  openPopup,
-  closePopup,
-  // 地图就绪状态
-  isMapReady
-})
+  playTrack, pauseTrack, stopTrack, resetTrack, fitTrackBounds, followCar, toggleFollowCar,
+  getTrackPoints: () => displayPoints.value,
+  getCurrentPosition: () => displayPoints.value[currentIndex.value],
+  getTrackInfo: () => trackInfo.value,
+  trackInit,
+  removeTrack,
+  isPlaying,
+  // 状态
+  isMapReady,
+});
 </script>
 
 <style scoped>
-.amap-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
+.amap-container { position: relative; width: 100%; height: 100%; min-height: 500px; }
+.map-container { width: 100%; height: 100%; }
+.track-control-panel {
+  position: absolute; bottom: 20px; left: 20px; right: 20px;
+  background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px);
+  border-radius: 12px; padding: 12px 20px; color: white; z-index: 100; font-size: 14px;
 }
-
-.map-container {
-  width: 100%;
-  height: 100%;
-}
-
-.custom-ui-slot {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  left: auto;
-  z-index: 10;
-  pointer-events: none;
-}
-
-.custom-ui-slot > * {
-  pointer-events: auto;
-}
+.control-buttons { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.control-buttons button { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+.control-buttons button:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-play { background: #4caf50; color: white; }
+.btn-play:hover:not(:disabled) { background: #45a049; }
+.btn-pause { background: #ff9800; color: white; }
+.btn-pause:hover:not(:disabled) { background: #e68900; }
+.btn-stop { background: #f44336; color: white; }
+.btn-stop:hover:not(:disabled) { background: #da190b; }
+.btn-reset { background: #2196f3; color: white; }
+.btn-reset:hover:not(:disabled) { background: #0b7dda; }
+.btn-correction { background: #9c27b0; color: white; }
+.btn-correction.active { background: #4caf50; }
+.btn-follow { background: #607d8b; color: white; }
+.btn-follow.active { background: #4caf50; }
+.progress-bar { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+.progress-bar span { min-width: 60px; }
+.progress-bar input { flex: 1; height: 4px; border-radius: 2px; cursor: pointer; }
+.track-info { display: flex; gap: 20px; font-size: 12px; color: #ccc; flex-wrap: wrap; }
+.custom-ui-slot { position: absolute; top: 10px; right: 10px; z-index: 10; pointer-events: none; }
+.custom-ui-slot > * { pointer-events: auto; }
 </style>

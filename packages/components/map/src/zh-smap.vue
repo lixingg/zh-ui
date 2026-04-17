@@ -184,7 +184,7 @@ const initMap = async () => {
     loadBaseLayers();
 
     // 添加控件
-    addControls();
+    // addControls();
 
     // 绑定地图事件
     bindMapEvents();
@@ -414,7 +414,7 @@ const addMarker = (options) => {
   }
 
   const marker = new T.value.Marker(markerConfig);
-  marker.setDraggable(draggable);
+  // marker.setDraggable(draggable);
   marker.extData = extData;
 
   if (label) {
@@ -1079,7 +1079,7 @@ const setMapType = (type) => {
  */
 const destroyMap = () => {
   if (map.value) {
-    map.value.destroy();
+    map.value.destroy && map.value.destroy();
     map.value = null;
     isMapReady.value = false;
   }
