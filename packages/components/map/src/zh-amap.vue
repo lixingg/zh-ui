@@ -19,7 +19,7 @@
       </div>
       <div class="progress-bar">
         <span>进度: {{ progressPercent }}%</span>
-        <input type="range" v-model="progressPercent" @input="seekTo" min="0" max="100" step="1" />
+        <input type="range" v-model="progressPercent" @input="seekTo" min="0" max="100" step="1"/>
       </div>
       <div class="track-info">
         <span>当前点: {{ currentIndex + 1 }} / {{ displayPoints.length }}</span>
@@ -35,26 +35,27 @@
     </div>
 
     <!-- 自定义弹窗插槽 -->
-    <slot name="popup" :isOpen="isPopupOpen" :position="popupPosition" :data="popupData" :closePopup="closeInfoWindow"></slot>
+    <slot name="popup" :isOpen="isPopupOpen" :position="popupPosition" :data="popupData"
+          :closePopup="closeInfoWindow"></slot>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch, shallowRef, computed, nextTick } from "vue";
+import {ref, onMounted, onBeforeUnmount, watch, shallowRef, computed, nextTick} from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import carSvg from "@/assets/images/car.svg"
 // ==================== Props 配置 ====================
 const props = defineProps({
   // 高德地图API Key（必填）
-  amapKey: { type: String, required: true },
+  amapKey: {type: String, required: true},
   // 安全密钥
-  securityJsCode: { type: String, default: "" },
+  securityJsCode: {type: String, default: ""},
   // API版本
-  version: { type: String, default: "2.0" },
+  version: {type: String, default: "2.0"},
   // 额外加载的插件
   plugins: {
     type: Array,
-    default: () => ["AMap.ToolBar", "AMap.Scale", "AMap.Geocoder", "AMap.MarkerClusterer", "AMap.HeatMap"],
+    default: () => ["AMap.ToolBar", "AMap.Scale", "AMap.Geocoder", "AMap.MarkerCluster", "AMap.HeatMap"],
   },
   // 地图初始化配置
   mapOptions: {
@@ -69,55 +70,56 @@ const props = defineProps({
     }),
   },
   // 地图样式ID
-  mapStyleId: { type: String, default: "" },
+  mapStyleId: {type: String, default: ""},
   // 控件配置
   controls: {
     type: Object,
-    default: () => ({ toolBar: true, scale: true, geolocation: false }),
+    default: () => ({toolBar: true, scale: true, geolocation: false}),
   },
   // 默认样式
   defaultStyles: {
     type: Object,
     default: () => ({
-      marker: { icon: "", offset: [-15, -30] },
-      polyline: { strokeColor: "#3366FF", strokeWeight: 4, strokeOpacity: 0.8 },
-      polygon: { fillColor: "#00b0ff", fillOpacity: 0.4, strokeColor: "#0088ff", strokeWeight: 2 },
+      marker: {icon: "", offset: [-15, -30]},
+      polyline: {strokeColor: "#3366FF", strokeWeight: 4, strokeOpacity: 0.8},
+      polygon: {fillColor: "#00b0ff", fillOpacity: 0.4, strokeColor: "#0088ff", strokeWeight: 2},
     }),
   },
 
   // ========== 轨迹相关配置 ==========
   // 轨迹模式（启用时显示轨迹控制面板）
-  trackMode: { type: Boolean, default: false },
+  trackMode: {type: Boolean, default: false},
   // 原始轨迹点数据
-  originalTrackData: { type: Array, default: () => [] },
+  originalTrackData: {type: Array, default: () => []},
   // 是否显示轨迹控制面板
-  showTrackPanel: { type: Boolean, default: false },
+  showTrackPanel: {type: Boolean, default: false},
   // 是否启用轨迹纠偏
-  enableCorrection: { type: Boolean, default: true },
+  enableCorrection: {type: Boolean, default: true},
   // 纠偏参数 - 最大间距阈值（米）
-  maxGapDistance: { type: Number, default: 100 },
+  maxGapDistance: {type: Number, default: 100},
   // 纠偏参数 - 抽稀阈值（米）
-  simplifyTolerance: { type: Number, default: 5 },
+  simplifyTolerance: {type: Number, default: 5},
   // 是否自动调整视野
-  autoFitBounds: { type: Boolean, default: true },
+  autoFitBounds: {type: Boolean, default: true},
   // 是否自动旋转车头方向
-  autoRotateCar: { type: Boolean, default: true },
+  autoRotateCar: {type: Boolean, default: true},
   // 动画速度（毫秒/点）
-  speed: { type: Number, default: 500 },
+  speed: {type: Number, default: 500},
   // 小车图标
-  carIcon: { type: String, default: carSvg },
-  carIconSize: { type: Object, default: () => ({ width: 80, height: 80 }) },
+  carIcon: {type: String, default: carSvg},
+  carIconSize: {type: Object, default: () => ({width: 80, height: 80})},
   // 轨迹线样式
-  trackColor: { type: String, default: "#FF6B6B" },
-  trackWidth: { type: Number, default: 5 },
+  trackColor: {type: String, default: "#FF6B6B"},
+  trackWidth: {type: Number, default: 5},
   // 是否显示起点终点标记
-  showStartEndMarkers: { type: Boolean, default: true },
+  showStartEndMarkers: {type: Boolean, default: true},
   // 是否自动播放
-  autoPlay: { type: Boolean, default: false },
+  autoPlay: {type: Boolean, default: false},
   // 驾车模式（道路吸附）
-  drivingMode: { type: Boolean, default: false },
+  drivingMode: {type: Boolean, default: false},
   // 是否默认跟随小车
-  defaultFollowCar: { type: Boolean, default: true },
+  defaultFollowCar: {type: Boolean, default: true},
+  renderClusterMarker:{type:Function,default:null}, // 自定义聚合点
 });
 
 // ==================== Emits ====================
@@ -165,7 +167,7 @@ let infoWindow = null;
 
 // 弹窗相关
 const isPopupOpen = ref(false);
-const popupPosition = ref({ lng: 0, lat: 0 });
+const popupPosition = ref({lng: 0, lat: 0});
 const popupData = ref(null);
 
 // 轨迹相关
@@ -186,7 +188,7 @@ const distances = ref([]);
 const totalDistance = ref(0);
 const remainingDistance = ref(0);
 const segmentAngles = ref([]);
-const correctionInfo = ref({ corrected: false, correctedCount: 0, originalCount: 0 });
+const correctionInfo = ref({corrected: false, correctedCount: 0, originalCount: 0});
 
 // 轨迹信息计算属性
 const trackInfo = computed(() => ({
@@ -204,7 +206,7 @@ let loadPromise = null;
 // ==================== SDK加载 ====================
 const loadAMapSDK = () => {
   if (loadPromise) return loadPromise;
-  if (props.securityJsCode) window._AMapSecurityConfig = { securityJsCode: props.securityJsCode };
+  if (props.securityJsCode) window._AMapSecurityConfig = {securityJsCode: props.securityJsCode};
 
   loadPromise = AMapLoader.load({
     key: props.amapKey,
@@ -239,8 +241,8 @@ const calculateBearing = (p1, p2) => {
 };
 
 const normalizePoint = (point) => {
-  if (Array.isArray(point)) return { lng: point[0], lat: point[1], speed: point[2] || 30, time: point[3] || 0 };
-  return { lng: point.lng, lat: point.lat, speed: point.speed || 30, time: point.time || 0 };
+  if (Array.isArray(point)) return {lng: point[0], lat: point[1], speed: point[2] || 30, time: point[3] || 0};
+  return {lng: point.lng, lat: point.lat, speed: point.speed || 30, time: point.time || 0};
 };
 
 // 道格拉斯-普克抽稀
@@ -254,7 +256,10 @@ const douglasPeucker = (points, tolerance) => {
   };
   for (let i = 1; i < points.length - 1; i++) {
     const dist = perpendicularDistance(points[i], points[0], points[points.length - 1]);
-    if (dist > maxDist) { maxDist = dist; maxIdx = i; }
+    if (dist > maxDist) {
+      maxDist = dist;
+      maxIdx = i;
+    }
   }
   if (maxDist > tolerance) {
     const left = douglasPeucker(points.slice(0, maxIdx + 1), tolerance);
@@ -273,7 +278,12 @@ const kalmanFilter = (points) => {
     const prev = filtered[i - 1];
     const curr = points[i];
     const K = Q / (Q + R);
-    filtered.push({ lng: prev.lng + K * (curr.lng - prev.lng), lat: prev.lat + K * (curr.lat - prev.lat), speed: curr.speed, time: curr.time });
+    filtered.push({
+      lng: prev.lng + K * (curr.lng - prev.lng),
+      lat: prev.lat + K * (curr.lat - prev.lat),
+      speed: curr.speed,
+      time: curr.time
+    });
   }
   filtered.push(points[points.length - 1]);
   return filtered;
@@ -307,8 +317,8 @@ const correctTrack = (points) => {
     }
   }
 
-  correctionInfo.value = { corrected: props.enableCorrection, correctedCount, originalCount: points.length };
-  emit("trackCorrectionComplete", { originalCount: points.length, correctedCount, finalCount: result.length });
+  correctionInfo.value = {corrected: props.enableCorrection, correctedCount, originalCount: points.length};
+  emit("trackCorrectionComplete", {originalCount: points.length, correctedCount, finalCount: result.length});
   return result;
 };
 
@@ -333,6 +343,9 @@ const processTrackData = async () => {
 
 // ==================== 地图初始化 ====================
 const initMap = async () => {
+  if (map.value) {
+    map.value.destroy && map.value.destroy();
+  }
   try {
     await loadAMapSDK();
     if (!mapContainerRef.value) return;
@@ -346,18 +359,20 @@ const initMap = async () => {
     if (props.controls.scale) map.value.addControl(new AMap.value.Scale());
 
     // 绑定事件
-    map.value.on("click", (e) => emit("click", { lng: e.lnglat.lng, lat: e.lnglat.lat }));
-    map.value.on("rightclick", (e) => emit("rightClick", { lng: e.lnglat.lng, lat: e.lnglat.lat }));
-    map.value.on("dblclick", (e) => emit("doubleClick", { lng: e.lnglat.lng, lat: e.lnglat.lat }));
-    map.value.on("zoomend", () => emit("zoomEnd", { zoom: map.value.getZoom() }));
-    map.value.on("moveend", () => emit("moveEnd", { center: getCenter() }));
+    map.value.on("click", (e) => emit("click", {lng: e.lnglat.lng, lat: e.lnglat.lat}));
+    map.value.on("rightclick", (e) => emit("rightClick", {lng: e.lnglat.lng, lat: e.lnglat.lat}));
+    map.value.on("dblclick", (e) => emit("doubleClick", {lng: e.lnglat.lng, lat: e.lnglat.lat}));
+    map.value.on("zoomend", () => emit("zoomEnd", {zoom: map.value.getZoom()}));
+    map.value.on("moveend", () => emit("moveEnd", {center: getCenter()}));
 
     // 初始化服务
-    AMap.value.plugin("AMap.Geocoder", () => { geocoder = new AMap.value.Geocoder(); });
+    AMap.value.plugin("AMap.Geocoder", () => {
+      geocoder = new AMap.value.Geocoder();
+    });
 
     window.addEventListener("resize", () => map.value?.resize());
     isMapReady.value = true;
-    emit("ready", { map: map.value, AMap: AMap.value });
+    emit("ready", {map: map.value, AMap: AMap.value});
   } catch (error) {
     console.error("地图初始化失败:", error);
   }
@@ -365,8 +380,8 @@ const initMap = async () => {
 
 // ==================== 轨迹方法 ====================
 
-const trackInit= ()=>{
-  setTimeout(async ()=>{
+const trackInit = () => {
+  setTimeout(async () => {
     // 处理轨迹
     if (props.trackMode) {
       await processTrackData();
@@ -375,7 +390,7 @@ const trackInit= ()=>{
       addCarMarker();
       if (props.autoFitBounds) fitTrackBounds();
       if (props.autoPlay) await nextTick(() => playTrack());
-      emit("trackReady", { map: map.value, AMap: AMap.value, trackInfo: trackInfo.value });
+      emit("trackReady", {map: map.value, AMap: AMap.value, trackInfo: trackInfo.value});
     }
   })
 }
@@ -386,7 +401,7 @@ const removeTrack = () => {
   if (endMarker.value) endMarker.value.setMap(null);
   trackInfo.value = null;
   displayPoints.value = [];
-  emit("trackReady", { map: map.value, AMap: AMap.value, trackInfo: null });
+  emit("trackReady", {map: map.value, AMap: AMap.value, trackInfo: null});
 };
 
 const drawTrackLine = () => {
@@ -428,7 +443,11 @@ const addCarMarker = () => {
   if (!displayPoints.value.length) return;
   carMarker.value = new AMap.value.Marker({
     position: [displayPoints.value[0].lng, displayPoints.value[0].lat],
-    icon: new AMap.value.Icon({ size: new AMap.value.Size(props.carIconSize.width, props.carIconSize.height), image: props.carIcon, imageSize: new AMap.value.Size(props.carIconSize.width, props.carIconSize.height) }),
+    icon: new AMap.value.Icon({
+      size: new AMap.value.Size(props.carIconSize.width, props.carIconSize.height),
+      image: props.carIcon,
+      imageSize: new AMap.value.Size(props.carIconSize.width, props.carIconSize.height)
+    }),
     offset: new AMap.value.Pixel(-props.carIconSize.width / 2, -props.carIconSize.height / 2),
     angle: segmentAngles.value[0] || 0,
   });
@@ -443,13 +462,13 @@ const updateCarPosition = (idx) => {
   let remaining = 0;
   for (let i = idx; i < distances.value.length; i++) remaining += distances.value[i];
   remainingDistance.value = remaining;
-  emit("trackPointChange", { index: idx, point, remainingDistance: remaining, totalDistance: totalDistance.value });
+  emit("trackPointChange", {index: idx, point, remainingDistance: remaining, totalDistance: totalDistance.value});
 };
 
 const fitTrackBounds = () => {
   if (!map.value || !displayPoints.value.length) return;
-/*  const bounds = displayPoints.value.reduce((b, p) => b.extend([p.lng, p.lat]), new AMap.value.Bounds([displayPoints.value[0].lng, displayPoints.value[0].lat], [displayPoints.value[0].lng, displayPoints.value[0].lat]));
-  map.value.setBounds(bounds, false, [50, 50, 50, 50]);*/
+  /*  const bounds = displayPoints.value.reduce((b, p) => b.extend([p.lng, p.lat]), new AMap.value.Bounds([displayPoints.value[0].lng, displayPoints.value[0].lat], [displayPoints.value[0].lng, displayPoints.value[0].lat]));
+    map.value.setBounds(bounds, false, [50, 50, 50, 50]);*/
 };
 
 const followCar = () => {
@@ -475,7 +494,7 @@ const playTrack = () => {
       animationTimer.value = setTimeout(playStep, props.speed / (speed / 30));
     } else {
       pauseTrack();
-      emit("trackComplete", { totalDistance: totalDistance.value, totalPoints: displayPoints.value.length });
+      emit("trackComplete", {totalDistance: totalDistance.value, totalPoints: displayPoints.value.length});
     }
   };
   playStep();
@@ -525,105 +544,229 @@ const toggleCorrection = () => {
   });
 };
 
-const toggleFollowCar = () => { followCarMode.value = !followCarMode.value; };
+const toggleFollowCar = () => {
+  followCarMode.value = !followCarMode.value;
+};
 
 // ==================== 通用地图方法 ====================
 const addMarker = (options) => {
   if (!map.value) return null;
-  const { position, title = "", icon, label, draggable = false, autoShowInfo = false, infoContent = "", extData = {} } = options;
-  const marker = new AMap.value.Marker({ position, title, draggable, extData });
-  if (icon) marker.setIcon(new AMap.value.Icon({ size: new AMap.value.Size(30, 30), image: icon, imageSize: new AMap.value.Size(30, 30) }));
-  if (label) marker.setLabel({ content: label, offset: new AMap.value.Pixel(0, -20) });
+  const {
+    position,
+    title = "",
+    icon,
+    label,
+    draggable = false,
+    autoShowInfo = false,
+    infoContent = "",
+    extData = {}
+  } = options;
+  const marker = new AMap.value.Marker({position, title, draggable, extData});
+  if (icon) marker.setIcon(new AMap.value.Icon({
+    size: new AMap.value.Size(30, 30),
+    image: icon,
+    imageSize: new AMap.value.Size(30, 30)
+  }));
+  if (label) marker.setLabel({content: label, offset: new AMap.value.Pixel(0, -20)});
   marker.on("click", () => {
-    emit("markerClick", { marker, position, title, extData });
+    emit("markerClick", {marker, position, title, extData});
     if (autoShowInfo && infoContent) openInfoWindow(position, infoContent);
   });
-  if (draggable) marker.on("dragend", (e) => emit("markerDragEnd", { marker, position: e.target.getPosition(), extData }));
+  if (draggable) marker.on("dragend", (e) => emit("markerDragEnd", {
+    marker,
+    position: e.target.getPosition(),
+    extData
+  }));
   marker.setMap(map.value);
   markers.value.push(marker);
   return marker;
 };
 
 const addMarkers = (list) => list.map(item => addMarker(item)).filter(Boolean);
-const clearMarkers = () => { markers.value.forEach(m => m.setMap(null)); markers.value = []; };
-const removeMarker = (marker) => { const idx = markers.value.findIndex(m => m === marker); if (idx !== -1) { marker.setMap(null); markers.value.splice(idx, 1); } };
+const clearMarkers = () => {
+  markers.value.forEach(m => m.setMap(null));
+  markers.value = [];
+};
+const removeMarker = (marker) => {
+  const idx = markers.value.findIndex(m => m === marker);
+  if (idx !== -1) {
+    marker.setMap(null);
+    markers.value.splice(idx, 1);
+  }
+};
 
 const addPolyline = (options) => {
-  const { path, strokeColor, strokeWeight, strokeOpacity, strokeStyle, extData = {} } = options;
+  const {path, strokeColor, strokeWeight, strokeOpacity, strokeStyle, extData = {}} = options;
   const styles = props.defaultStyles.polyline;
-  const polyline = new AMap.value.Polyline({ path, strokeColor: strokeColor || styles.strokeColor, strokeWeight: strokeWeight || styles.strokeWeight, strokeOpacity: strokeOpacity || styles.strokeOpacity, strokeStyle: strokeStyle || styles.strokeStyle, extData });
-  polyline.on("click", () => emit("polylineClick", { polyline, path, extData }));
+  const polyline = new AMap.value.Polyline({
+    path,
+    strokeColor: strokeColor || styles.strokeColor,
+    strokeWeight: strokeWeight || styles.strokeWeight,
+    strokeOpacity: strokeOpacity || styles.strokeOpacity,
+    strokeStyle: strokeStyle || styles.strokeStyle,
+    extData
+  });
+  polyline.on("click", () => emit("polylineClick", {polyline, path, extData}));
   polyline.setMap(map.value);
   polylines.value.push(polyline);
   return polyline;
 };
-const clearPolylines = () => { polylines.value.forEach(l => l.setMap(null)); polylines.value = []; };
+const clearPolylines = () => {
+  polylines.value.forEach(l => l.setMap(null));
+  polylines.value = [];
+};
 
 const addPolygon = (options) => {
-  const { path, fillColor, fillOpacity, strokeColor, strokeWeight, extData = {} } = options;
+  const {path, fillColor, fillOpacity, strokeColor, strokeWeight, extData = {}} = options;
   const styles = props.defaultStyles.polygon;
-  const polygon = new AMap.value.Polygon({ path, fillColor: fillColor || styles.fillColor, fillOpacity: fillOpacity || styles.fillOpacity, strokeColor: strokeColor || styles.strokeColor, strokeWeight: strokeWeight || styles.strokeWeight, extData });
-  polygon.on("click", () => emit("polygonClick", { polygon, path, extData }));
+  const polygon = new AMap.value.Polygon({
+    path,
+    fillColor: fillColor || styles.fillColor,
+    fillOpacity: fillOpacity || styles.fillOpacity,
+    strokeColor: strokeColor || styles.strokeColor,
+    strokeWeight: strokeWeight || styles.strokeWeight,
+    extData
+  });
+  polygon.on("click", () => emit("polygonClick", {polygon, path, extData}));
   polygon.setMap(map.value);
   polygons.value.push(polygon);
   return polygon;
 };
-const clearPolygons = () => { polygons.value.forEach(p => p.setMap(null)); polygons.value = []; };
+const clearPolygons = () => {
+  polygons.value.forEach(p => p.setMap(null));
+  polygons.value = [];
+};
 
 const addCircle = (options) => {
-  const { center, radius, fillColor, fillOpacity, strokeColor, strokeWeight, extData = {} } = options;
+  const {center, radius, fillColor, fillOpacity, strokeColor, strokeWeight, extData = {}} = options;
   const styles = props.defaultStyles.polygon;
-  const circle = new AMap.value.Circle({ center, radius, fillColor: fillColor || styles.fillColor, fillOpacity: fillOpacity || styles.fillOpacity, strokeColor: strokeColor || styles.strokeColor, strokeWeight: strokeWeight || styles.strokeWeight, extData });
-  circle.on("click", () => emit("circleClick", { circle, center, radius, extData }));
+  const circle = new AMap.value.Circle({
+    center,
+    radius,
+    fillColor: fillColor || styles.fillColor,
+    fillOpacity: fillOpacity || styles.fillOpacity,
+    strokeColor: strokeColor || styles.strokeColor,
+    strokeWeight: strokeWeight || styles.strokeWeight,
+    extData
+  });
+  circle.on("click", () => emit("circleClick", {circle, center, radius, extData}));
   circle.setMap(map.value);
   circles.value.push(circle);
   return circle;
 };
-const clearCircles = () => { circles.value.forEach(c => c.setMap(null)); circles.value = []; };
+const clearCircles = () => {
+  circles.value.forEach(c => c.setMap(null));
+  circles.value = [];
+};
 
-const clearAllOverlays = () => { clearMarkers(); clearPolylines(); clearPolygons(); clearCircles(); clearMarkerCluster(); removeHeatmap(); };
+const clearAllOverlays = () => {
+  clearMarkers();
+  clearPolylines();
+  clearPolygons();
+  clearCircles();
+  clearMarkerCluster();
+  removeHeatmap();
+};
 
 const addMarkerCluster = (points, options = {}) => {
   if (markerCluster) markerCluster.setMap(null);
-  const markersList = points.map(p => new AMap.value.Marker({ position: p.position, title: p.title || "", extData: p.extData || {} }));
-  markerCluster = new AMap.value.MarkerClusterer(map.value, markersList, { gridSize: options.gridSize || 60, minClusterSize: options.minClusterSize || 2, maxZoom: options.maxZoom || 15 });
-  markerCluster.on("click", (e) => emit("clusterClick", { cluster: e, points: e.target.getMarkers() }));
+  /*  const markersList = points.map(p => new AMap.value.Marker({
+      position: p.position,
+      title: p.title || "",
+      extData: p.extData || {}
+    }));*/
+  const markersList = points.map(p => ({weight: 8, lnglat: p.position, "name": p.name, extData: p.extData || {}}))
+  const _renderClusterMarker = (context) => (props.renderClusterMarker(context));
+  const _renderMarker = (context) => (context.count == 1 && context.marker.setIcon(
+      new AMap.value.Icon({
+        size: new AMap.value.Size(context.data[0]?.extData?.size?.[0] || 30, context.data[0]?.extData?.size?.[1] || 30),
+        image: context.data[0]?.extData?.icon || '',
+        imageSize: new AMap.value.Size(context.data[0]?.extData?.size?.[0] || 30, context.data[0]?.extData?.size?.[1] || 30)
+      })))
+  markerCluster = new AMap.value.MarkerCluster(map.value, markersList, {
+    gridSize: options.gridSize || 60,
+    minClusterSize: options.minClusterSize || 2,
+    renderClusterMarker:props.renderClusterMarker && _renderClusterMarker || null,
+    renderMarker: _renderMarker,
+    maxZoom: options.maxZoom || 15
+  });
+  markerCluster.on("click", (e) => emit("clusterClick", {cluster: e, })); //points: e.target.getMarkers()
   return markerCluster;
 };
-const clearMarkerCluster = () => { if (markerCluster) { markerCluster.setMap(null); markerCluster = null; } };
+const clearMarkerCluster = () => {
+  if (markerCluster) {
+    markerCluster.setMap(null);
+    markerCluster = null;
+  }
+};
 
 const addHeatmap = (data, options = {}) => {
   if (heatmap) heatmap.setMap(null);
-  heatmap = new AMap.value.HeatMap(map.value, { radius: options.radius || 30, opacity: options.opacity || [0, 0.8], gradient: options.gradient || { 0.2: "blue", 0.4: "cyan", 0.6: "lime", 0.8: "yellow", 1.0: "red" } });
-  heatmap.setDataSet({ data: data.map(d => ({ lng: d.lng, lat: d.lat, count: d.count || 1 })), max: options.max || 100 });
+  heatmap = new AMap.value.HeatMap(map.value, {
+    radius: options.radius || 30,
+    opacity: options.opacity || [0, 0.8],
+    gradient: options.gradient || {0.2: "blue", 0.4: "cyan", 0.6: "lime", 0.8: "yellow", 1.0: "red"}
+  });
+  heatmap.setDataSet({data: data.map(d => ({lng: d.lng, lat: d.lat, count: d.count || 1})), max: options.max || 100});
   return heatmap;
 };
-const updateHeatmapData = (data, max) => { if (heatmap) heatmap.setDataSet({ data: data.map(d => ({ lng: d.lng, lat: d.lat, count: d.count || 1 })), max: max || 100 }); };
-const removeHeatmap = () => { if (heatmap) { heatmap.setMap(null); heatmap = null; } };
+const updateHeatmapData = (data, max) => {
+  if (heatmap) heatmap.setDataSet({
+    data: data.map(d => ({lng: d.lng, lat: d.lat, count: d.count || 1})),
+    max: max || 100
+  });
+};
+const removeHeatmap = () => {
+  if (heatmap) {
+    heatmap.setMap(null);
+    heatmap = null;
+  }
+};
 
 const openInfoWindow = (position, content, options = {}) => {
   if (infoWindow) infoWindow.close();
-  infoWindow = new AMap.value.InfoWindow({ content: typeof content === "string" ? content : content.outerHTML, offset: new AMap.value.Pixel(options.offsetX || 0, options.offsetY || -20), autoMove: true });
-  infoWindow.on("close", () => { emit("infoWindowClose"); isPopupOpen.value = false; });
+  infoWindow = new AMap.value.InfoWindow({
+    content: typeof content === "string" ? content : content.outerHTML,
+    offset: new AMap.value.Pixel(options.offsetX || 0, options.offsetY || -20),
+    autoMove: true
+  });
+  infoWindow.on("close", () => {
+    emit("infoWindowClose");
+    isPopupOpen.value = false;
+  });
   infoWindow.open(map.value, position);
   isPopupOpen.value = true;
-  popupPosition.value = { lng: position[0], lat: position[1] };
-  popupData.value = { content };
+  popupPosition.value = {lng: position[0], lat: position[1]};
+  popupData.value = {content};
   if (options.autoClose !== false) setTimeout(() => closeInfoWindow(), options.closeDelay || 5000);
 };
-const closeInfoWindow = () => { if (infoWindow) infoWindow.close(); isPopupOpen.value = false; popupData.value = null; };
+const closeInfoWindow = () => {
+  if (infoWindow) infoWindow.close();
+  isPopupOpen.value = false;
+  popupData.value = null;
+};
 
 const reGeoCode = (position) => new Promise((resolve, reject) => {
   if (!geocoder) reject(new Error("地理编码服务未初始化"));
-  else geocoder.getAddress(position, (status, result) => status === "complete" ? resolve({ formattedAddress: result.regeocode.formattedAddress, addressComponent: result.regeocode.addressComponent, position }) : reject(new Error("逆地理编码失败")));
+  else geocoder.getAddress(position, (status, result) => status === "complete" ? resolve({
+    formattedAddress: result.regeocode.formattedAddress,
+    addressComponent: result.regeocode.addressComponent,
+    position
+  }) : reject(new Error("逆地理编码失败")));
 });
 
 const geoCode = (address) => new Promise((resolve, reject) => {
   if (!geocoder) reject(new Error("地理编码服务未初始化"));
-  else geocoder.getLocation(address, (status, result) => status === "complete" && result.geocodes.length ? resolve({ lng: result.geocodes[0].location.lng, lat: result.geocodes[0].location.lat, formattedAddress: result.geocodes[0].formattedAddress }) : reject(new Error("地理编码失败")));
+  else geocoder.getLocation(address, (status, result) => status === "complete" && result.geocodes.length ? resolve({
+    lng: result.geocodes[0].location.lng,
+    lat: result.geocodes[0].location.lat,
+    formattedAddress: result.geocodes[0].formattedAddress
+  }) : reject(new Error("地理编码失败")));
 });
 
-const setCenter = (position, animate = true) => { if (map.value) animate ? map.value.panTo(position) : map.value.setCenter(position); };
+const setCenter = (position, animate = true) => {
+  if (map.value) animate ? map.value.panTo(position) : map.value.setCenter(position);
+};
 const getCenter = () => map.value ? [map.value.getCenter().lng, map.value.getCenter().lat] : null;
 const setZoom = (zoom) => map.value?.setZoom(zoom);
 const getZoom = () => map.value?.getZoom();
@@ -641,14 +784,14 @@ const startDraw = (type, options = {}) => {
       let data = null;
       if (type === "polyline") data = e.path;
       else if (type === "polygon") data = e.path;
-      else if (type === "circle") data = { center: [e.center.lng, e.center.lat], radius: e.radius };
+      else if (type === "circle") data = {center: [e.center.lng, e.center.lat], radius: e.radius};
       else if (type === "marker") data = [e.lnglat.lng, e.lnglat.lat];
-      emit("drawComplete", { type, data, feature: e });
+      emit("drawComplete", {type, data, feature: e});
       mouseTool.close(true);
     };
-    if (type === "polyline") mouseTool.polyline({ strokeColor: options.strokeColor || "#3366FF" }, onComplete);
-    else if (type === "polygon") mouseTool.polygon({ fillColor: options.fillColor || "#00b0ff" }, onComplete);
-    else if (type === "circle") mouseTool.circle({ fillColor: options.fillColor || "#00b0ff" }, onComplete);
+    if (type === "polyline") mouseTool.polyline({strokeColor: options.strokeColor || "#3366FF"}, onComplete);
+    else if (type === "polygon") mouseTool.polygon({fillColor: options.fillColor || "#00b0ff"}, onComplete);
+    else if (type === "circle") mouseTool.circle({fillColor: options.fillColor || "#00b0ff"}, onComplete);
     else if (type === "marker") mouseTool.marker({}, onComplete);
   });
 };
@@ -660,10 +803,21 @@ onBeforeUnmount(() => {
   if (map.value) map.value.destroy();
 });
 
-watch(() => props.originalTrackData, async () => { if (isMapReady.value && props.trackMode) { await processTrackData(); drawTrackLine(); addStartEndMarkers(); addCarMarker(); updateCarPosition(currentIndex.value); if (props.autoFitBounds) fitTrackBounds(); } }, { deep: true });
+watch(() => props.originalTrackData, async () => {
+  if (isMapReady.value && props.trackMode) {
+    await processTrackData();
+    drawTrackLine();
+    addStartEndMarkers();
+    addCarMarker();
+    updateCarPosition(currentIndex.value);
+    if (props.autoFitBounds) fitTrackBounds();
+  }
+}, {deep: true});
 
 // ==================== 对外暴露 ====================
 defineExpose({
+  // 初始化
+  initMap,
   // 地图控制
   setCenter, getCenter, setZoom, getZoom, fitBounds, getMapInstance, getAMap,
   // 打点
@@ -698,32 +852,143 @@ defineExpose({
 </script>
 
 <style scoped>
-.amap-container { position: relative; width: 100%; height: 100%; min-height: 500px; }
-.map-container { width: 100%; height: 100%; }
-.track-control-panel {
-  position: absolute; bottom: 20px; left: 20px; right: 20px;
-  background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px);
-  border-radius: 12px; padding: 12px 20px; color: white; z-index: 100; font-size: 14px;
+.amap-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
 }
-.control-buttons { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-.control-buttons button { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
-.control-buttons button:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-play { background: #4caf50; color: white; }
-.btn-play:hover:not(:disabled) { background: #45a049; }
-.btn-pause { background: #ff9800; color: white; }
-.btn-pause:hover:not(:disabled) { background: #e68900; }
-.btn-stop { background: #f44336; color: white; }
-.btn-stop:hover:not(:disabled) { background: #da190b; }
-.btn-reset { background: #2196f3; color: white; }
-.btn-reset:hover:not(:disabled) { background: #0b7dda; }
-.btn-correction { background: #9c27b0; color: white; }
-.btn-correction.active { background: #4caf50; }
-.btn-follow { background: #607d8b; color: white; }
-.btn-follow.active { background: #4caf50; }
-.progress-bar { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
-.progress-bar span { min-width: 60px; }
-.progress-bar input { flex: 1; height: 4px; border-radius: 2px; cursor: pointer; }
-.track-info { display: flex; gap: 20px; font-size: 12px; color: #ccc; flex-wrap: wrap; }
-.custom-ui-slot { position: absolute; top: 10px; right: 10px; z-index: 10; pointer-events: none; }
-.custom-ui-slot > * { pointer-events: auto; }
+
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+.track-control-panel {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 12px 20px;
+  color: white;
+  z-index: 100;
+  font-size: 14px;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.control-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.control-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-play {
+  background: #4caf50;
+  color: white;
+}
+
+.btn-play:hover:not(:disabled) {
+  background: #45a049;
+}
+
+.btn-pause {
+  background: #ff9800;
+  color: white;
+}
+
+.btn-pause:hover:not(:disabled) {
+  background: #e68900;
+}
+
+.btn-stop {
+  background: #f44336;
+  color: white;
+}
+
+.btn-stop:hover:not(:disabled) {
+  background: #da190b;
+}
+
+.btn-reset {
+  background: #2196f3;
+  color: white;
+}
+
+.btn-reset:hover:not(:disabled) {
+  background: #0b7dda;
+}
+
+.btn-correction {
+  background: #9c27b0;
+  color: white;
+}
+
+.btn-correction.active {
+  background: #4caf50;
+}
+
+.btn-follow {
+  background: #607d8b;
+  color: white;
+}
+
+.btn-follow.active {
+  background: #4caf50;
+}
+
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.progress-bar span {
+  min-width: 60px;
+}
+
+.progress-bar input {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.track-info {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  color: #ccc;
+  flex-wrap: wrap;
+}
+
+.custom-ui-slot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.custom-ui-slot > * {
+  pointer-events: auto;
+}
 </style>
