@@ -1058,7 +1058,7 @@ const addMarkerCluster = (points: ClusterPoint[], options: { distance?: number; 
 
   const clusterStyles = options.styles || [props.defaultStyles.cluster];
 
-  const clusterStyleFunction = (feature: Feature): Style | any => {
+  const clusterStyleFunction = (feature: Feature | any) => {
     const size = feature.get("features").length;
     const minClusterSize = options.minClusterSize || 2;
 
@@ -1085,7 +1085,7 @@ const addMarkerCluster = (points: ClusterPoint[], options: { distance?: number; 
   map.value.addLayer(clusterLayer.value);
 
   map.value.on("click", (e) => {
-    const featureHit = map.value!.forEachFeatureAtPixel(e.pixel, (f) => f);
+    const featureHit:any = map.value!.forEachFeatureAtPixel(e.pixel, (f) => f);
     if (featureHit && clusterLayer.value?.getSource()?.getFeatures().includes(featureHit)) {
       const featuresCluster = featureHit.get("features");
       if (featuresCluster && featuresCluster.length > 1) {
