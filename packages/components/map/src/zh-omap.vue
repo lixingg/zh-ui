@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch, shallowRef, computed, nextTick } from "vue";
-
+import carImage from "@/assets/images/car.svg"
 // ==================== OpenLayers 导入 ====================
 import "ol/ol.css";
 import Map from "ol/Map";
@@ -233,8 +233,8 @@ const props = defineProps({
   autoFitBounds: { type: Boolean, default: true },
   autoRotateCar: { type: Boolean, default: true },
   speed: { type: Number, default: 500 },
-  carIcon: { type: String, default: "https://cdn-icons-png.flaticon.com/512/3096/3096982.png" },
-  carIconSize: { type: Object as () => { width: number; height: number }, default: () => ({ width: 40, height: 40 }) },
+  carIcon: { type: String, default: carImage },
+  carIconSize: { type: Object as () => { width: number; height: number }, default: () => ({ width: 8, height: 8 }) },
   trackColor: { type: String, default: "#FF6B6B" },
   trackWidth: { type: Number, default: 5 },
   showStartEndMarkers: { type: Boolean, default: true },
@@ -276,7 +276,7 @@ const vectorLayer = shallowRef<VectorLayer<VectorSource> | null>(null);
 const markerLayer = shallowRef<VectorLayer<VectorSource> | null>(null);
 const lineLayer = shallowRef<VectorLayer<VectorSource> | null>(null);
 const polygonLayer = shallowRef<VectorLayer<VectorSource> | null>(null);
-const clusterLayer = shallowRef<VectorLayer<any> | null>(null);
+const clusterLayer = shallowRef<any>(null);
 let heatmapLayer: any = null;
 
 // 覆盖物存储
@@ -805,7 +805,7 @@ const toggleFollowCar = (): void => {
 
 // ==================== 通用地图方法 ====================
 /** 获取默认标记样式 */
-const getDefaultMarkerStyle = (options: MarkerStyle = {}): Style => {
+const getDefaultMarkerStyle = (options: MarkerStyle = {}): Style | any => {
   const styles = props.defaultStyles;
   const { iconUrl, iconSize, iconAnchor, color, radius, label, labelColor, labelFontSize, labelOffsetY } = options;
 
@@ -853,7 +853,7 @@ const addMarker = (options: MarkerOptions): Feature | null => {
   const { position, title = "", icon, iconSize, iconOffset, label, draggable = false, autoShowInfo = false, infoContent = "", extData = {}, customStyle } = options;
 
   const coord = fromLonLat(position);
-  const feature = new Feature({ geometry: new Point(coord), title, extData, infoContent, autoShowInfo });
+  const feature:any = new Feature({ geometry: new Point(coord), title, extData, infoContent, autoShowInfo });
 
   let style: Style;
   if (customStyle) {
@@ -895,7 +895,7 @@ const addMarkers = (markerList: MarkerOptions[]): Feature[] => {
 
 /** 清除所有标记 */
 const clearMarkers = (): void => {
-  markers.value.forEach(m => vectorLayer.value?.getSource()?.removeFeature(m));
+  markers.value.forEach((m:any) => vectorLayer.value?.getSource()?.removeFeature(m));
   markers.value = [];
 };
 
@@ -917,13 +917,12 @@ const addPolyline = (options: PolylineOptions): Feature | null => {
 
   const points = path.map(p => fromLonLat(p));
   const lineGeometry = new LineString(points);
-  const feature = new Feature({ geometry: lineGeometry, extData });
+  const feature:any = new Feature({ geometry: lineGeometry, extData });
   feature.setStyle(
       new Style({
         stroke: new Stroke({
           color: color || styles.color,
           width: width || styles.width,
-          opacity: opacity || styles.opacity,
           lineDash: lineDash,
         }),
       })
@@ -944,7 +943,7 @@ const addPolyline = (options: PolylineOptions): Feature | null => {
 
 /** 清除所有线 */
 const clearPolylines = (): void => {
-  polylines.value.forEach(l => vectorLayer.value?.getSource()?.removeFeature(l));
+  polylines.value.forEach((l:any) => vectorLayer.value?.getSource()?.removeFeature(l));
   polylines.value = [];
 };
 
@@ -960,7 +959,7 @@ const addPolygon = (options: PolygonOptions): Feature | null => {
   const feature = new Feature({ geometry: polygonGeometry, extData });
   feature.setStyle(
       new Style({
-        fill: new Fill({ color: fillColor || styles.fillColor, opacity: fillOpacity || styles.fillOpacity }),
+        fill: new Fill({ color: fillColor || styles.fillColor }),
         stroke: new Stroke({ color: strokeColor || styles.strokeColor, width: strokeWidth || styles.strokeWidth }),
       })
   );
@@ -980,7 +979,7 @@ const addPolygon = (options: PolygonOptions): Feature | null => {
 
 /** 清除所有多边形 */
 const clearPolygons = (): void => {
-  polygons.value.forEach(p => vectorLayer.value?.getSource()?.removeFeature(p));
+  polygons.value.forEach((p:any) => vectorLayer.value?.getSource()?.removeFeature(p));
   polygons.value = [];
 };
 
@@ -993,11 +992,11 @@ const addCircle = (options: CircleOptions): Feature | null => {
 
   const coord = fromLonLat(center);
   const circleGeometry = new Circle(coord, radius);
-  const polygonFromCircle = Polygon.fromCircle(circleGeometry);
+  const polygonFromCircle = (Polygon as any).fromCircle(circleGeometry);
   const feature = new Feature({ geometry: polygonFromCircle, extData, center, radius });
   feature.setStyle(
       new Style({
-        fill: new Fill({ color: fillColor || styles.fillColor, opacity: fillOpacity || styles.fillOpacity }),
+        fill: new Fill({ color: fillColor || styles.fillColor}),
         stroke: new Stroke({ color: strokeColor || styles.strokeColor, width: strokeWidth || styles.strokeWidth }),
       })
   );
@@ -1017,7 +1016,7 @@ const addCircle = (options: CircleOptions): Feature | null => {
 
 /** 清除所有圆形 */
 const clearCircles = (): void => {
-  circles.value.forEach(c => vectorLayer.value?.getSource()?.removeFeature(c));
+  circles.value.forEach((c:any) => vectorLayer.value?.getSource()?.removeFeature(c));
   circles.value = [];
 };
 
@@ -1036,7 +1035,7 @@ const clearAllOverlays = (): void => {
 };
 
 /** 添加标注聚合 */
-const addMarkerCluster = (points: ClusterPoint[], options: { distance?: number; minClusterSize?: number; styles?: ClusterStyle[] } = {}): VectorLayer<VectorSource<Cluster>> | null => {
+const addMarkerCluster = (points: ClusterPoint[], options: { distance?: number; minClusterSize?: number; styles?: ClusterStyle[] } = {}): VectorLayer<any> | null => {
   if (!map.value) return null;
 
   if (clusterLayer.value) {
@@ -1059,7 +1058,7 @@ const addMarkerCluster = (points: ClusterPoint[], options: { distance?: number; 
 
   const clusterStyles = options.styles || [props.defaultStyles.cluster];
 
-  const clusterStyleFunction = (feature: Feature): Style => {
+  const clusterStyleFunction = (feature: Feature): Style | any => {
     const size = feature.get("features").length;
     const minClusterSize = options.minClusterSize || 2;
 
@@ -1090,7 +1089,7 @@ const addMarkerCluster = (points: ClusterPoint[], options: { distance?: number; 
     if (featureHit && clusterLayer.value?.getSource()?.getFeatures().includes(featureHit)) {
       const featuresCluster = featureHit.get("features");
       if (featuresCluster && featuresCluster.length > 1) {
-        const extent = featuresCluster.reduce((ext: number[], f: Feature) => {
+        const extent = featuresCluster.reduce((ext: number[], f: Feature | any) => {
           const coord = f.getGeometry()!.getCoordinates();
           return [Math.min(ext[0], coord[0]), Math.min(ext[1], coord[1]), Math.max(ext[2], coord[0]), Math.max(ext[3], coord[1])];
         }, [featuresCluster[0].getGeometry()!.getCoordinates()[0], featuresCluster[0].getGeometry()!.getCoordinates()[1], featuresCluster[0].getGeometry()!.getCoordinates()[0], featuresCluster[0].getGeometry()!.getCoordinates()[1]]);
