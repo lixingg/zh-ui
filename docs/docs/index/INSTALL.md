@@ -19,11 +19,11 @@ css做过前缀兼容，对不同浏览器支持度都挺高，js就没有专门
 # 选择一个你喜欢的包管理器
 
 # NPM
-$ npm install zh-ui --save
+$ npm install zhui-plus --save
 
 # Yarn
-$ yarn add zh-ui
+$ yarn add zhui-plus
 
 # pnpm
-$ pnpm install zh-ui
+$ pnpm install zhui-plus
 ```
