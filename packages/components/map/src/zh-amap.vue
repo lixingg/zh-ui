@@ -10,8 +10,8 @@
         <button @click="pauseTrack" :disabled="!isPlaying" class="btn-pause">⏸ 暂停</button>
         <button @click="stopTrack" class="btn-stop">⏹ 停止</button>
         <button @click="resetTrack" class="btn-reset">🔄 重置</button>
-        <button @click="toggleCorrection" :class="{ active: enableCorrection }" class="btn-correction">
-          🧹 轨迹纠偏 {{ enableCorrection ? "开" : "关" }}
+        <button @click="toggleCorrection" :class="{ active: newEnableCorrection }" class="btn-correction">
+          🧹 轨迹纠偏 {{ newEnableCorrection ? "开" : "关" }}
         </button>
         <button @click="toggleFollowCar" :class="{ active: followCarMode }" class="btn-follow">
           🚗 跟随 {{ followCarMode ? "开" : "关" }}
@@ -40,7 +40,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {ref, onMounted, onBeforeUnmount, watch, shallowRef, computed, nextTick} from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import carSvg from "@/assets/images/car.svg"
@@ -119,7 +119,7 @@ const props = defineProps({
   drivingMode: {type: Boolean, default: false},
   // 是否默认跟随小车
   defaultFollowCar: {type: Boolean, default: true},
-  renderClusterMarker:{type:Function,default:null}, // 自定义聚合点
+  renderClusterMarker: {type: Function, default: null}, // 自定义聚合点
 });
 
 // ==================== Emits ====================
@@ -150,45 +150,48 @@ const emit = defineEmits([
 ]);
 
 // ==================== 响应式数据 ====================
-const mapContainerRef = ref(null);
-const map = shallowRef(null);
-const AMap = shallowRef(null);
+const mapContainerRef = ref<any>(null);
+const map = shallowRef<any>(null);
+const AMap = shallowRef<any>(null);
 const isMapReady = ref(false);
 
 // 覆盖物存储
-const markers = ref([]);
-const polylines = ref([]);
-const polygons = ref([]);
-const circles = ref([]);
-let markerCluster = null;
-let heatmap = null;
-let geocoder = null;
-let infoWindow = null;
-
+const markers = ref<any>([]);
+const polylines = ref<any>([]);
+const polygons = ref<any>([]);
+const circles = ref<any>([]);
+let markerCluster: any = null;
+let heatmap: any = null;
+let geocoder: any = null;
+let infoWindow: any = null;
 // 弹窗相关
-const isPopupOpen = ref(false);
-const popupPosition = ref({lng: 0, lat: 0});
-const popupData = ref(null);
+const isPopupOpen = ref<any>(false);
+const popupPosition = ref<{lng:number,lat:number}>({lng: 0, lat: 0});
+const popupData = ref<any>(null);
 
 // 轨迹相关
-const trackLine = shallowRef(null);
-const carMarker = shallowRef(null);
-const startMarker = shallowRef(null);
-const endMarker = shallowRef(null);
-const animationTimer = ref(null);
-const isPlaying = ref(false);
-const followCarMode = ref(props.defaultFollowCar);
-const currentIndex = ref(0);
-const progressPercent = ref(0);
+const trackLine = shallowRef<any>(null);
+const carMarker = shallowRef<any>(null);
+const startMarker = shallowRef<any>(null);
+const endMarker = shallowRef<any>(null);
+const animationTimer = ref<any>(null);
+const isPlaying = ref<boolean>(false);
+const followCarMode = ref<any>(props.defaultFollowCar);
+const currentIndex = ref<any>(0);
+const progressPercent = ref<any>(0);
 
 // 轨迹数据
-const rawPoints = ref([]);
-const displayPoints = ref([]);
-const distances = ref([]);
-const totalDistance = ref(0);
-const remainingDistance = ref(0);
-const segmentAngles = ref([]);
-const correctionInfo = ref({corrected: false, correctedCount: 0, originalCount: 0});
+const rawPoints = ref<any>([]);
+const displayPoints = ref<any>([]);
+const distances = ref<any>([]);
+const totalDistance = ref<any>(0);
+const remainingDistance = ref<any>(0);
+const segmentAngles = ref<any>([]);
+const correctionInfo = ref<{ corrected: boolean, correctedCount: number, originalCount: number }>({
+  corrected: false,
+  correctedCount: 0,
+  originalCount: 0
+});
 
 // 轨迹信息计算属性
 const trackInfo = computed(() => ({
@@ -198,21 +201,23 @@ const trackInfo = computed(() => ({
   remainingDistance: remainingDistance.value,
   totalDistance: totalDistance.value,
   isPlaying: isPlaying.value,
-}));
+})) as any;
 
+//
+const newEnableCorrection = ref<any>(props.enableCorrection);
 // 加载状态
-let loadPromise = null;
+let loadPromise: any = null;
 
 // ==================== SDK加载 ====================
 const loadAMapSDK = () => {
   if (loadPromise) return loadPromise;
-  if (props.securityJsCode) window._AMapSecurityConfig = {securityJsCode: props.securityJsCode};
+  if (props.securityJsCode) (window as any)._AMapSecurityConfig = {securityJsCode: props.securityJsCode};
 
   loadPromise = AMapLoader.load({
     key: props.amapKey,
     version: props.version,
     plugins: props.plugins,
-  }).catch((err) => {
+  } as any).catch((err) => {
     console.error("高德地图SDK加载失败:", err);
     throw err;
   });
@@ -291,13 +296,13 @@ const kalmanFilter = (points) => {
 
 // 轨迹纠偏
 const correctTrack = (points) => {
-  if (!props.enableCorrection) return points;
+  if (!newEnableCorrection.value) return points;
   let corrected = [...points];
   let correctedCount = 0;
 
   // 断点检测
-  const segments = [];
-  let currentSegment = [corrected[0]];
+  const segments: any = [];
+  let currentSegment: any = [corrected[0]];
   for (let i = 1; i < corrected.length; i++) {
     if (calculateDistance(corrected[i - 1], corrected[i]) > props.maxGapDistance && currentSegment.length > 0) {
       segments.push(currentSegment);
@@ -307,7 +312,7 @@ const correctTrack = (points) => {
   if (currentSegment.length > 0) segments.push(currentSegment);
 
   // 抽稀和平滑
-  let result = [];
+  let result: any = [];
   for (const seg of segments) {
     if (seg.length < 2) result.push(...seg);
     else {
@@ -317,7 +322,7 @@ const correctTrack = (points) => {
     }
   }
 
-  correctionInfo.value = {corrected: props.enableCorrection, correctedCount, originalCount: points.length};
+  correctionInfo.value = {corrected: newEnableCorrection.value, correctedCount, originalCount: points.length};
   emit("trackCorrectionComplete", {originalCount: points.length, correctedCount, finalCount: result.length});
   return result;
 };
@@ -349,7 +354,7 @@ const initMap = async () => {
   try {
     await loadAMapSDK();
     if (!mapContainerRef.value) return;
-    AMap.value = window.AMap;
+    AMap.value = (window as any).AMap;
 
     map.value = new AMap.value.Map(mapContainerRef.value, props.mapOptions);
     if (props.mapStyleId) map.value.setMapStyle(props.mapStyleId);
@@ -534,7 +539,7 @@ const seekTo = (e) => {
 };
 
 const toggleCorrection = () => {
-  props.enableCorrection = !props.enableCorrection;
+  newEnableCorrection.value = !newEnableCorrection.value;
   processTrackData().then(() => {
     drawTrackLine();
     addStartEndMarkers();
@@ -668,7 +673,7 @@ const clearAllOverlays = () => {
   removeHeatmap();
 };
 
-const addMarkerCluster = (points, options = {}) => {
+const addMarkerCluster = (points, options: any = {}) => {
   if (markerCluster) markerCluster.setMap(null);
   /*  const markersList = points.map(p => new AMap.value.Marker({
       position: p.position,
@@ -686,11 +691,11 @@ const addMarkerCluster = (points, options = {}) => {
   markerCluster = new AMap.value.MarkerCluster(map.value, markersList, {
     gridSize: options.gridSize || 60,
     minClusterSize: options.minClusterSize || 2,
-    renderClusterMarker:props.renderClusterMarker && _renderClusterMarker || null,
+    renderClusterMarker: props.renderClusterMarker && _renderClusterMarker || null,
     renderMarker: _renderMarker,
     maxZoom: options.maxZoom || 15
   });
-  markerCluster.on("click", (e) => emit("clusterClick", {cluster: e, })); //points: e.target.getMarkers()
+  markerCluster.on("click", (e) => emit("clusterClick", {cluster: e,})); //points: e.target.getMarkers()
   return markerCluster;
 };
 const clearMarkerCluster = () => {
@@ -700,7 +705,7 @@ const clearMarkerCluster = () => {
   }
 };
 
-const addHeatmap = (data, options = {}) => {
+const addHeatmap = (data, options: any = {}) => {
   if (heatmap) heatmap.setMap(null);
   heatmap = new AMap.value.HeatMap(map.value, {
     radius: options.radius || 30,
@@ -723,7 +728,7 @@ const removeHeatmap = () => {
   }
 };
 
-const openInfoWindow = (position, content, options = {}) => {
+const openInfoWindow = (position, content, options: any = {}) => {
   if (infoWindow) infoWindow.close();
   infoWindow = new AMap.value.InfoWindow({
     content: typeof content === "string" ? content : content.outerHTML,
@@ -777,11 +782,11 @@ const fitBounds = (points, padding = 50) => {
 };
 const getMapInstance = () => map.value;
 const getAMap = () => AMap.value;
-const startDraw = (type, options = {}) => {
+const startDraw = (type, options: any = {}) => {
   AMap.value.plugin(["AMap.MouseTool"], () => {
     const mouseTool = new AMap.value.MouseTool(map.value);
-    const onComplete = (e) => {
-      let data = null;
+    const onComplete = (e: any) => {
+      let data: any = null;
       if (type === "polyline") data = e.path;
       else if (type === "polygon") data = e.path;
       else if (type === "circle") data = {center: [e.center.lng, e.center.lat], radius: e.radius};
