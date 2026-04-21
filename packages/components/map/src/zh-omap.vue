@@ -111,7 +111,6 @@ export interface PolylineOptions {
   path: [number, number][];
   color?: string;
   width?: number;
-  opacity?: number;
   lineDash?: number[];
   extData?: Record<string, any>;
 }
@@ -180,7 +179,7 @@ export interface TrackInfo {
 /** 默认样式配置 */
 export interface DefaultStyles {
   marker: { color: string; radius: number };
-  polyline: { color: string; width: number; opacity: number };
+  polyline: { color: string; width: number; };
   polygon: { fillColor: string; fillOpacity: number; strokeColor: string; strokeWidth: number };
   cluster: { color: string; radius: number; textColor: string; textSize: number };
 }
@@ -217,7 +216,7 @@ const props = defineProps({
     type: Object as () => DefaultStyles,
     default: () => ({
       marker: { color: "#FF5722", radius: 8 },
-      polyline: { color: "#3366FF", width: 4, opacity: 0.8 },
+      polyline: { color: "#3366FF", width: 4},
       polygon: { fillColor: "rgba(0, 176, 255, 0.3)", fillOpacity: 0.4, strokeColor: "#0088ff", strokeWidth: 2 },
       cluster: { color: "#FF9800", radius: 20, textColor: "#fff", textSize: 14 },
     }),
@@ -912,7 +911,7 @@ const removeMarker = (marker: Feature): void => {
 const addPolyline = (options: PolylineOptions): Feature | null => {
   if (!vectorLayer.value) return null;
 
-  const { path, color, width, opacity, lineDash, extData = {} } = options;
+  const { path, color, width,  lineDash, extData = {} } = options;
   const styles = props.defaultStyles.polyline;
 
   const points = path.map(p => fromLonLat(p));
@@ -1087,7 +1086,7 @@ const addMarkerCluster = (points: ClusterPoint[], options: { distance?: number; 
   map.value.on("click", (e) => {
     const featureHit:any = map.value!.forEachFeatureAtPixel(e.pixel, (f) => f);
     if (featureHit && clusterLayer.value?.getSource()?.getFeatures().includes(featureHit)) {
-      const featuresCluster = featureHit.get("features");
+      const featuresCluster:any = featureHit.get("features");
       if (featuresCluster && featuresCluster.length > 1) {
         const extent = featuresCluster.reduce((ext: number[], f: Feature | any) => {
           const coord = f.getGeometry()!.getCoordinates();
