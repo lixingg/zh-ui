@@ -1,6 +1,6 @@
 // utils/echartsTheme.ts
 import type { EChartsOption} from 'echarts/types/dist/shared'
-import * as echarts from 'echarts'
+import * as echarts from 'echarts';
 
 // 马卡龙风格主题配置[reference:7]
 export const macaronsTheme: any = {
@@ -61,12 +61,13 @@ export const macaronsTheme: any = {
 }
 
 // 生成从上往下的线性渐变（带透明度遮幕效果）[reference:8][reference:9]
+// @ts-ignore
 export function generateLinearGradient(
     chartInstance: any,
     color: string,
     startOpacity: number = 0.4,
     endOpacity: number = 0.05
-): echarts.graphic.LinearGradient {
+) {
     return {
         type: 'linear',
         x: 0,   // 起始 x 坐标（0 表示最左）
