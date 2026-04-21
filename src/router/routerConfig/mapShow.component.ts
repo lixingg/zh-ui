@@ -5,7 +5,7 @@ export const mapShowComponent: RouteRecordRaw[] = [
   {
     path: 'amap',
     meta: { title: 'amap 高德地图' },
-    component: () => import('../../docs/map/amap/README.md')
+    component: () => import('@/docs/map/amap/README.md')
   },
   {
     path: 'bmap',
