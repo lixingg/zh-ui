@@ -29,7 +29,7 @@ export const routerDocsComponentConfig = {
     title: 'Data 数据展示',
     routerData: dataShowComponent
   },
-  echartsComponents: {
+  echartsShowComponents: {
     title: 'echarts 图表',
     routerData: echartsShowComponent
   },
@@ -37,7 +37,7 @@ export const routerDocsComponentConfig = {
     title: 'directive 指令',
     routerData: directiveComponent
  },
-  mapComponents: {
+  mapShowComponents: {
     title: 'map 地图',
     routerData: mapShowComponent
   },

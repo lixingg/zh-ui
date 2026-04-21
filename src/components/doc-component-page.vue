@@ -7,8 +7,8 @@ const asideKeys = [
   'formComponents',
   'dataShowComponents',
   'feedBackComponents',
-  'echartsComponents',
-  'mapComponents',
+  'echartsShowComponents',
+  'mapShowComponents',
   'directivesComponents'
 ]
 </script>
