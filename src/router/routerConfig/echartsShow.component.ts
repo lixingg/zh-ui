@@ -2,7 +2,7 @@ import { RouteRecordRaw } from 'vue-router'
 
 // 数据展示组件路由
 export const echartsShowComponent: RouteRecordRaw[] = [
-  {
+/*  {
     path: 'linechart',
     meta: { title: '折线图' },
     component: () => import('@/docs/charts/linechart/README.md')
@@ -26,5 +26,5 @@ export const echartsShowComponent: RouteRecordRaw[] = [
     path: 'mapchart',
     meta: { title: '地图' },
     component: () => import('@/docs/charts/mapchart/README.md')
-  },
+  },*/
 ]
