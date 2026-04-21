@@ -5,6 +5,6 @@ export const directiveComponent: RouteRecordRaw[] = [
   {
     path: 'directives',
     meta: { title: 'directive' },
-    component: () => import('../../docs/directives/README.md')
+    component: () => import('@/docs/directives/README.md')
   },
 ]
