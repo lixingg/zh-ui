@@ -20,8 +20,9 @@ export default defineConfig({
     },
     lib: {
       entry: resolve(process.cwd(), './packages/components/index.ts'), // 设置入口文件
-      name: 'zh-ui', // 起个名字，安装、引入用
-      fileName: (format) => `zh-ui.${format}.js` // 打包后的文件名
+      name: 'zhui-plus', // 起个名字，安装、引入用
+      formats: ['es', 'cjs'],  // 移除 'umd'，或者不要指定 formats
+      fileName: (format) => `zhui-plus.${format}.js` // 打包后的文件名
     },
     rollupOptions: {
       plugins: [
