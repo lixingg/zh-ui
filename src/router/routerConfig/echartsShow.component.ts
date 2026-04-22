@@ -5,7 +5,7 @@ export const echartsShowComponent: RouteRecordRaw[] = [
   {
     path: 'linechart',
     meta: { title: '折线图' },
-    component: () => import('@/docs/linechart/README.md')
+    component: () => import('../../docs/linechart/README.md')
   },
   /*{
     path: 'barchart',
