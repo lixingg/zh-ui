@@ -2,7 +2,7 @@ import { RouteRecordRaw } from 'vue-router'
 
 // 数据展示组件路由
 export const mapShowComponent: RouteRecordRaw[] = [
-  {
+  /*{
     path: 'amap',
     meta: { title: 'amap 高德地图' },
     component: () => import('@/docs/map/amap/README.md')
@@ -26,5 +26,5 @@ export const mapShowComponent: RouteRecordRaw[] = [
     path: 'map/omap',
     meta: { title: 'omap openlayer地图' },
     component: () => import('@/docs/map/omap/README.md')
-  },
+  },*/
 ]
