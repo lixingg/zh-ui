@@ -27,7 +27,7 @@ const props = withDefaults(
       width?: string,
       customOption?: Partial<EChartsOption>
     }>(), {
-      chartId: 'line-chart',
+      chartId: 'linechart',
       smooth: true,
       showArea: false,
       height: '325px',
