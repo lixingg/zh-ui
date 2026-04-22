@@ -21,5 +21,10 @@ export const dataShowComponent: RouteRecordRaw[] = [
     path: 'operationColumn',
     meta: { title: 'operationColumn 自适应操作栏' },
     component: () => import('@/docs/operationColumn/README.md')
-  }
+  },
+  {
+    path: 'lineChart',
+    meta: { title: '折线图' },
+    component: () => import('@/docs/lineChart/README.md')
+  },
 ]
