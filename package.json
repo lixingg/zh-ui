@@ -13,7 +13,7 @@
   "repository": "https://gitee.com/lixindekongjian/zh-ui.git",
   "scripts": {
     "dev": "vite --host --mode development --config ./config/dev.config.ts",
-    "build:doc": "vue-tsc --noEmit --skipLibCheck && vite build --mode production --config ./config/prod.doc.config.ts && node ./config/copyDocs.js && shx cp docs/index.html docs/404.html",
+    "build:doc": "vue-tsc --noEmit --skipLibCheck && vite build --mode production --config ./config/prod.doc.config.ts  && shx cp docs/index.html docs/404.html",
     "build:com": "vue-tsc --noEmit --skipLibCheck && vite build --mode production --config ./config/prod.com.config.ts && node ./config/copyDist.js",
     "preview": "vite preview",
     "publish": "node ./config/publicPush.js"
