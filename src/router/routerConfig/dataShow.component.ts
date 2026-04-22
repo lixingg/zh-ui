@@ -24,7 +24,7 @@ export const dataShowComponent: RouteRecordRaw[] = [
   },
   {
     path: 'lineChart',
-    meta: { title: '折线图' },
+    meta: { title: 'lineChart 折线图' },
     component: () => import('@/docs/lineChart/README.md')
   },
 ]
