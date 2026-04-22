@@ -3,9 +3,9 @@ import { RouteRecordRaw } from 'vue-router'
 // 数据展示组件路由
 export const echartsShowComponent: RouteRecordRaw[] = [
 /*  {
-    path: 'lineChart',
+    path: 'line-chart',
     meta: { title: '折线图' },
-    component: () => import('@/docs/lineChart/README.md')
+    component: () => import('@/docs/line-chart/README.md')
   },*/
   /*{
     path: 'bar-chart',

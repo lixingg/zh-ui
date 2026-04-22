@@ -23,8 +23,8 @@ export const dataShowComponent: RouteRecordRaw[] = [
     component: () => import('@/docs/operationColumn/README.md')
   },
   {
-    path: 'lineChart',
-    meta: { title: 'lineChart 折线图' },
-    component: () => import('@/docs/lineChart/README.md')
+    path: 'line-chart',
+    meta: { title: 'line-chart 折线图' },
+    component: () => import('@/docs/line-chart/README.md')
   },
 ]
