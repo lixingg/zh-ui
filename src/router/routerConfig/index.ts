@@ -1,12 +1,12 @@
-import { baseComponent } from './base.component'
 import { RouteRecordRaw } from 'vue-router'
+import { baseComponent } from './base.component'
 import { dataShowComponent } from './dataShow.component'
 import { feedBackComponent } from './feedBack.component'
 import { formComponent } from './form.component'
 import { beforeComponent } from './before.component'
 import { echartsShowComponent } from './echartsShow.component'
 import { mapShowComponent } from './mapShow.component'
-import {directiveComponent} from "./directive.component";
+import { directiveComponent} from "./directive.component";
 export interface routerType {
   title: string
   routerData: RouteRecordRaw[]
@@ -33,7 +33,7 @@ export const routerDocsComponentConfig = {
     title: 'echarts 图表',
     routerData: echartsShowComponent
   },
- directivesComponents: {
+ directiveComponents: {
     title: 'directive 指令',
     routerData: directiveComponent
  },
