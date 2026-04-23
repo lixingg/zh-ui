@@ -3,16 +3,11 @@ import { RouteRecordRaw } from 'vue-router'
 // 数据展示组件路由
 export const echartsShowComponent: RouteRecordRaw[] = [
   {
-    path: 'image',
-    meta: { title: 'Image 图片' },
-    component: () => import('@/docs/image/README.md')
-  },
-  {
     path: 'linechart',
     meta: { title: '折线图' },
     component: () => import('@/docs/charts/linechart/README.md')
   },
-  /*{
+  {
     path: 'bar-chart',
     meta: { title: '柱状图' },
     component: () => import('@/docs/charts/barchart/README.md')
@@ -31,5 +26,5 @@ export const echartsShowComponent: RouteRecordRaw[] = [
     path: 'map-chart',
     meta: { title: '地图' },
     component: () => import('@/docs/charts/mapchart/README.md')
-  },*/
+  },
 ]
