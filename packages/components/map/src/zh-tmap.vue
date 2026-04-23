@@ -178,6 +178,7 @@ export interface MapOptions {
   baseMap?: { type: string; features?: string[] };
   pitch?: number;
   rotation?: number;
+  [key: string]: any;
 }
 
 // 腾讯地图控件位置常量（避免 SDK 未加载时访问）
@@ -345,7 +346,7 @@ const segmentAngles = ref<number[]>([]);
 const correctionInfo = ref<CorrectionInfo>({corrected: false, correctedCount: 0, originalCount: 0});
 
 // 轨迹信息计算属性
-const trackInfo = computed<TrackInfo>(() => ({
+const trackInfo = computed<TrackInfo | any>(() => ({
   currentIndex: currentIndex.value,
   totalPoints: displayPoints.value.length,
   progress: progressPercent.value,
@@ -831,7 +832,29 @@ const toggleCorrection = (): void => {
 const toggleFollowCar = (): void => {
   followCarMode.value = !followCarMode.value;
 };
-
+const trackInit = () => {
+  setTimeout(async () => {
+    // 处理轨迹
+    if (props.trackMode) {
+      await processTrackData();
+      drawTrackLine();
+      if (props.showStartEndMarkers) addStartEndMarkers();
+      addCarMarker();
+      if (props.autoFitBounds) fitTrackBounds();
+      if (props.autoPlay) await nextTick(() => playTrack());
+      emit("trackReady", {map: map.value, TMap: TMap.value, trackInfo: trackInfo.value});
+    }
+  })
+}
+const removeTrack = () => {
+  if (trackLine.value) map.value.removeOverlay(trackLine.value);
+  if (carMarker.value) map.value.removeOverlay(carMarker.value);
+  if (startMarker.value) map.value.removeOverlay(startMarker.value);
+  if (endMarker.value) map.value.removeOverlay(endMarker.value);
+  trackInfo.value = null;
+  displayPoints.value = [];
+  emit("trackReady", {map: map.value, TMap: TMap.value, trackInfo: trackInfo.value});
+};
 // ==================== 通用地图方法 ====================
 /** 创建自定义标记图标 */
 const createMarkerIcon = (style: MarkerStyle): any => {
@@ -845,7 +868,15 @@ const createMarkerIcon = (style: MarkerStyle): any => {
     anchor: style.anchor ? new TMap.value.Point(style.anchor.x, style.anchor.y) : undefined,
   });
 };
-
+const createMarkerStyle= (style: any): any => {
+   return new TMap.value.MarkerStyle({
+     "width": style?.width || props.defaultStyles.marker.width,  // 点标记样式宽度（像素）
+     "height": style?.height || props.defaultStyles.marker.height, // 点标记样式高度（像素）
+     "src": style?.src || props.defaultStyles.marker.src, //图片路径
+     //焦点在图片中的像素位置，一般大头针类似形式的图片以针尖位置做为焦点，圆形点以圆心位置为焦点
+     "anchor": style.anchor ? new TMap.value.Point(style.anchor.x, style.anchor.y) : undefined,
+   })
+}
 /** 添加单个标记 */
 const addMarker = (options: MarkerOptions): any => {
   if (!map.value) return null;
@@ -873,14 +904,17 @@ const addMarker = (options: MarkerOptions): any => {
     });
   }
 
-  const marker = new TMap.value.Marker({
+  const markerLayer  = new TMap.value.MultiMarker({
     map: map.value,
+    styles:{
+      'customStyle':createMarkerStyle(customStyle)
+    },
     position: toLatLng(position[1], position[0]),
     title: title,
     draggable: draggable,
     icon: markerIcon,
   });
-  marker.extData = extData;
+  markerLayer.extData = extData;
 
   // 添加标签
   if (label || customStyle?.label) {
@@ -895,19 +929,19 @@ const addMarker = (options: MarkerOptions): any => {
     });
   }
 
-  marker.on("click", () => {
+  markerLayer.on("click", () => {
     emit("markerClick", {marker, position, title, extData});
     if (autoShowInfo && infoContent) openInfoWindow(position, infoContent);
   });
 
-  if (draggable) {
-    marker.on("dragend", (e: any) => {
-      const newPos = e.position;
-      emit("markerDragEnd", {marker, position: [newPos.getLng(), newPos.getLat()], extData});
-    });
-  }
-
-  markers.value.push(marker);
+  // if (draggable) {
+  //   marker.on("dragend", (e: any) => {
+  //     const newPos = e.position;
+  //     emit("markerDragEnd", {marker, position: [newPos.getLng(), newPos.getLat()], extData});
+  //   });
+  // }
+  //
+  // markers.value.push(marker);
   return marker;
 };
 
@@ -1429,6 +1463,8 @@ defineExpose({
   // 状态
   isMapReady,
   initMap,
+  trackInit,
+  removeTrack
 });
 </script>
 
@@ -1565,7 +1601,7 @@ defineExpose({
   position: absolute;
   top: 10px;
   right: 10px;
-  z-index: 10;
+  z-index: 1001;
   pointer-events: none;
 }
 

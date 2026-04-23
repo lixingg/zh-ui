@@ -24,14 +24,18 @@
         <div v-if="isMapReady" class="toolbar">
           <button @click="addDemoMarker">添加标记</button>
           <button @click="addCustomMarker">自定义样式标记</button>
+          <button @click="addDemoPolyline">添加线</button>
           <button @click="addDemoPolygon">添加多边形</button>
           <button @click="addDemoTrack">添加轨迹</button>
           <button @click="removeDemoTrack">移除轨迹</button>
           <button @click="showHeatmap">热力图</button>
           <button @click="showCluster">点聚合</button>
           <button @click="showCustomCluster">自定义样式聚合</button>
-          <button @click="getAddress">逆地理编码</button>
+          <button @click="showInput=true">逆地理编码</button>
           <button @click="clearAll">清除所有</button>
+        </div>
+        <div class="mt16" v-if="showInput">
+          <el-input v-model="adress" placeholder="请输入地理位置" @keydown.enter="getAddress"/>
         </div>
       </template>
 
@@ -55,7 +59,8 @@ const ak = ref(localStorage.getItem("bmap_ak") || "");
 const isMapReady = ref(false);
 const trackMode = ref(false)
 const trackPanel = ref(false)
-
+const showInput = ref(false);
+const adress = ref("")
 const mapOptions = {
   center: [116.397428, 39.90923] as [number, number],
   zoom: 12,
@@ -115,6 +120,8 @@ const addCustomMarker = () => {
   });
 };
 
+const addDemoPolyline = () => mapRef.value?.addPolyline({path: [[116.397438, 39.90933], [116.42, 39.922], [116.418, 39.91]]});
+
 // 添加多边形
 const addDemoPolygon = () => {
   mapRef.value?.addPolygon({
@@ -162,20 +169,20 @@ const showCustomCluster = () => {
       position: [116.405, 39.915],
       title: "VIP点位",
       customStyle: {
-        url: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
-        size: { width: 40, height: 40 },
+        url: "http://webapi.amap.com/theme/v1.3/m1.png",
+        size: { width: 56, height: 56 },
         anchor: { x: 20, y: 40 },
         label: "VIP",
         labelColor: "#ff6600",
-        labelFontSize: 16,
+        labelFontSize: 14,
       },
     },
     {
       position: [116.410, 39.918],
       title: "重点点位",
       customStyle: {
-        url: "https://cdn-icons-png.flaticon.com/512/684/684844.png",
-        size: { width: 35, height: 35 },
+        url: "http://webapi.amap.com/theme/v1.3/m1.png",
+        size: { width: 56, height: 56 },
         anchor: { x: 17, y: 35 },
         label: "重点",
         labelColor: "#3366ff",
@@ -186,9 +193,9 @@ const showCustomCluster = () => {
 
   // 聚合样式配置
   const clusterStyles = [
-    { url: "https://api.map.baidu.com/images/point.png", size: { width: 40, height: 40 }, textColor: "#fff", textSize: 14 },
-    { url: "https://api.map.baidu.com/images/point.png", size: { width: 50, height: 50 }, textColor: "#fff", textSize: 16 },
-    { url: "https://api.map.baidu.com/images/point.png", size: { width: 60, height: 60 }, textColor: "#fff", textSize: 18 },
+    { url: "http://webapi.amap.com/theme/v1.3/m1.png", size: { width: 56, height: 56 }, textColor: "#fff", textSize: 14 },
+    { url: "http://webapi.amap.com/theme/v1.3/m2.png", size: { width: 56, height: 56 }, textColor: "#fff", textSize: 16 },
+    { url: "http://webapi.amap.com/theme/v1.3/m1.png", size: { width: 56, height: 56 }, textColor: "#fff", textSize: 18 },
   ];
 
   mapRef.value?.addMarkerCluster(points, {
@@ -201,8 +208,10 @@ const showCustomCluster = () => {
 
 // 逆地理编码
 const getAddress = async () => {
-  const res = await mapRef.value?.reGeoCode([116.397428, 39.90923]);
+  showInput.value = false;
+  const res = await mapRef.value?.geoCode(adress.value);
   console.log(res?.formattedAddress);
+  alert([res.lng,res.lat])
 };
 
 // 清除所有

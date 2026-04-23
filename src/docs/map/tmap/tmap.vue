@@ -8,7 +8,8 @@
         :api-key="apiKey"
         :map-options="mapOptions"
         :controls="controls"
-        :track-mode="true"
+        :track-mode="trackMode"
+        :show-track-panel="trackPanel"
         :original-track-data="trackPoints"
         :enable-correction="true"
         :auto-rotate-car="true"
@@ -23,6 +24,8 @@
           <button @click="addDemoMarker">添加标记</button>
           <button @click="addCustomMarker">自定义样式标记</button>
           <button @click="addDemoPolygon">添加多边形</button>
+          <button @click="addDemoTrack">添加轨迹</button>
+          <button @click="removeDemoTrack">移除轨迹</button>
           <button @click="showHeatmap">热力图</button>
           <button @click="showCluster">点聚合</button>
           <button @click="showCustomCluster">自定义样式聚合</button>
@@ -49,10 +52,11 @@ import {onMounted, ref, watch} from "vue";
 const mapRef = ref<any>(null);
 const apiKey = ref(localStorage.getItem("tmap_ak") || "");
 const isMapReady = ref(false);
+const trackMode = ref(false);
+const trackPanel = ref(false)
 const mapOptions = {
   center: [116.397428, 39.90923] as [number, number],
   zoom: 12,
-  viewMode: "2D" as const,
 };
 
 const controls = {
@@ -123,7 +127,8 @@ const addDemoPolygon = () => {
     strokeColor: "#0088ff",
   });
 };
-
+const addDemoTrack = () => (trackMode.value = true , trackPanel.value = true, mapRef.value?.trackInit())
+const removeDemoTrack = () => (trackMode.value = false , trackPanel.value = false, mapRef.value?.removeTrack())
 // 热力图
 const showHeatmap = () => {
   const data = Array.from({ length: 50 }, () => ({
@@ -221,11 +226,12 @@ watch(()=>apiKey.value,()=>{
 }
 
 .toolbar button {
-  padding: 6px 12px;
+  padding: 4px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   background: #fff;
+  font-size: 12px;
 }
 
 .custom-popup {

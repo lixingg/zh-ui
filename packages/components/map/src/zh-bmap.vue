@@ -10,8 +10,8 @@
         <button @click="pauseTrack" :disabled="!isPlaying" class="btn-pause">⏸ 暂停</button>
         <button @click="stopTrack" class="btn-stop">⏹ 停止</button>
         <button @click="resetTrack" class="btn-reset">🔄 重置</button>
-        <button @click="toggleCorrection" :class="{ active: enableCorrection }" class="btn-correction">
-          🧹 轨迹纠偏 {{ enableCorrection ? "开" : "关" }}
+        <button @click="toggleCorrection" :class="{ active: newEnableCorrection }" class="btn-correction">
+          🧹 轨迹纠偏 {{ newEnableCorrection ? "开" : "关" }}
         </button>
         <button @click="toggleFollowCar" :class="{ active: followCarMode }" class="btn-follow">
           🚗 跟随 {{ followCarMode ? "开" : "关" }}
@@ -224,8 +224,8 @@ const props = defineProps({
       polyline: {strokeColor: "#3366FF", strokeWeight: 4, strokeOpacity: 0.8},
       polygon: {fillColor: "#00b0ff", fillOpacity: 0.4, strokeColor: "#0088ff", strokeWeight: 2},
       cluster: {
-        url: "https://api.map.baidu.com/images/point.png",
-        size: {width: 40, height: 40},
+        url: "http://webapi.amap.com/theme/v1.3/m2.png",
+        size: {width: 56, height: 56},
         textColor: "#fff",
         textSize: 14
       },
@@ -314,7 +314,7 @@ const map = shallowRef<any>(null);
 const BMap = shallowRef<any>(null);
 const isMapReady = ref(false);
 const isLoading = ref(false);
-
+const newEnableCorrection = ref(props.enableCorrection);
 // 覆盖物存储
 const markers = ref<any[]>([]);
 const polylines = ref<any[]>([]);
@@ -401,13 +401,6 @@ const loadBMapSDK = (): Promise<any> => {
       delete (window as any)[callbackName];
     };
     document.head.appendChild(script);
-    const script1 = document.createElement("script");
-    script1.src = `https://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js`;
-    script1.onerror = () => {
-      isLoading.value = false;
-      reject(new Error("Heatmap库加载失败，请检查网络或API Key"));
-    };
-    document.head.appendChild(script1);
   });
 
   return loadPromise;
@@ -516,7 +509,7 @@ const kalmanFilter = (points: TrackPoint[]): TrackPoint[] => {
 
 /** 轨迹纠偏 */
 const correctTrack = (points: TrackPoint[]): TrackPoint[] => {
-  if (!props.enableCorrection) return points;
+  if (!newEnableCorrection.value) return points;
 
   let corrected = [...points];
   let correctedCount = 0;
@@ -549,7 +542,7 @@ const correctTrack = (points: TrackPoint[]): TrackPoint[] => {
   }
 
   correctionInfo.value = {
-    corrected: props.enableCorrection,
+    corrected: newEnableCorrection.value,
     correctedCount,
     originalCount: points.length,
   };
@@ -592,7 +585,9 @@ const initMap = async (): Promise<void> => {
     map.value.destroy && map.value.destroy();
   }
   try {
-    await loadBMapSDK();
+    // if(!BMap.value){
+      await loadBMapSDK();
+    // }
     if (!mapContainerRef.value) return;
 
     const center = toPoint(props.mapOptions.center![0], props.mapOptions.center![1]);
@@ -781,7 +776,7 @@ const playTrack = (): void => {
     if (currentIndex.value < displayPoints.value.length - 1) {
       currentIndex.value++;
       updateCarPosition(currentIndex.value);
-      progressPercent.value = (currentIndex.value / (displayPoints.value.length - 1)) * 100;
+      progressPercent.value = Math.floor((currentIndex.value / (displayPoints.value.length - 1)) * 100);
 
       if (followCarMode.value) followCar();
 
@@ -831,7 +826,7 @@ const resetTrack = (): void => {
 /** 跳转到指定进度 */
 const seekTo = (e: Event): void => {
   const target = e.target as HTMLInputElement;
-  const percent = parseFloat(target.value);
+  const percent = Math.floor(parseFloat(target.value));
   const targetIdx = Math.floor((percent / 100) * (displayPoints.value.length - 1));
   const wasPlaying = isPlaying.value;
 
@@ -844,7 +839,7 @@ const seekTo = (e: Event): void => {
 
 /** 切换轨迹纠偏 */
 const toggleCorrection = (): void => {
-  (props as any).enableCorrection = !props.enableCorrection;
+  newEnableCorrection.value = !newEnableCorrection.value;
   processTrackData().then(() => {
     drawTrackLine();
     addStartEndMarkers();
@@ -1083,6 +1078,7 @@ const getClusterMarkerStyle = (clusterSize: number, customStyle?: ClusterStyle):
     text: clusterSize.toString(),
     textColor: textColor,
     textSize: textSize,
+    textAlign: "center",
   };
 };
 
@@ -1101,7 +1097,18 @@ const addMarkerCluster = (points: ClusterPoint[], options: {
 
   // 动态加载聚合库
   if (!(window as any).BMapLib) {
-    console.warn("请先引入MarkerClusterer库，在index.html中添加: script src='https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js'");
+    const script = document.createElement("script");
+    script.src = `https://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js`;
+    script.onload=()=>{
+      const script1 = document.createElement("script");
+      script1.src = `https://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js`;
+      script1.onload=()=>{
+        addMarkerCluster(points, options);
+      }
+      document.head.appendChild(script1);
+    }
+    document.head.appendChild(script);
+
     return null;
   }
 
@@ -1110,7 +1117,7 @@ const addMarkerCluster = (points: ClusterPoint[], options: {
   }
 
   // 创建标记，支持单独点位自定义样式
-  const markersList = points.map((point) => {
+  const markersList = points.map((point:any) => {
     let marker: any;
     if (point.customStyle) {
       const icon = createIcon(point.customStyle);
@@ -1119,6 +1126,10 @@ const addMarkerCluster = (points: ClusterPoint[], options: {
       marker = new BMap.value.Marker(toPoint(point.position[0], point.position[1]), {title: point.title || ""});
     }
     marker.extData = point.extData || {};
+    marker.addEventListener("click", () => {
+      emit("markerClick", {marker, position:point.position, title:point.title, extData:marker.extData});
+      if (point.autoShowInfo && point.infoContent) openInfoWindow(point?.position, point?.infoContent);
+    });
     return marker;
   });
 
@@ -1130,14 +1141,16 @@ const addMarkerCluster = (points: ClusterPoint[], options: {
   markerCluster = new (window as any).BMapLib.MarkerClusterer(map.value, {
     markers: markersList,
     gridSize: options.gridSize || 60,
-    minClusterSize: options.minClusterSize || 2,
+    minClusterSize: options.minClusterSize || 12,
     maxZoom: options.maxZoom || 15,
     styles: clusterStyles.map(style => getClusterMarkerStyle(0, style)),
+    onClusteringEnd: (e: any) => {
+      emit("clusterClick", {cluster: e, points: e.markers});
+    }
   });
-
-  markerCluster.addEventListener("click", (e: any) => {
+/*  markerCluster.addEventListener("click", (e: any) => {
     emit("clusterClick", {cluster: e, points: e.markers});
-  });
+  });*/
 
   return markerCluster;
 };
@@ -1161,7 +1174,12 @@ const addHeatmap = (data: HeatmapDataPoint[], options: {
 
   // 动态加载热力图库
   if (!(window as any).BMapLib) {
-    console.warn("请先引入Heatmap库，在index.html中添加: script src='https://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js'");
+    const script = document.createElement("script");
+    script.src = `https://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js`;
+    script.onload = () => {
+      addHeatmap(data, options);
+    }
+    document.head.appendChild(script);
     return null;
   }
 
@@ -1188,9 +1206,8 @@ const addHeatmap = (data: HeatmapDataPoint[], options: {
   };
 
   heatmap = new (window as any).BMapLib.HeatmapOverlay(defaultConfig);
+  map.value.addOverlay(heatmap);
   heatmap.setDataSet({data: heatmapData, max: options.max || 100});
-  heatmap.setMap(map.value);
-
   return heatmap;
 };
 
@@ -1207,7 +1224,7 @@ const updateHeatmapData = (data: HeatmapDataPoint[], max?: number): void => {
 /** 移除热力图 */
 const removeHeatmap = (): void => {
   if (heatmap) {
-    heatmap.setMap(null);
+    map.value.removeOverlay(heatmap);
     heatmap = null;
   }
 };
