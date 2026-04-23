@@ -52,7 +52,7 @@
 </template>
 
 <style lang="scss">
-  $badgeSize: 19px;
+  @use"../style.scss" as *;
   .zh-sup__base {
     transform: translateY(-50%) translate(100%);
     @apply align-baseline;

@@ -71,7 +71,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '../style/index';
+  @use '../style/index';
   .zh-drawer {
     @apply flex flex-col box-border pb-4 px-4;
   }

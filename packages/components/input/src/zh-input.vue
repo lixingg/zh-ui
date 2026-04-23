@@ -85,7 +85,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '../style/index';
+  @use '../style/index';
   .zh-input {
     @apply w-full box-border relative inline-flex;
   }

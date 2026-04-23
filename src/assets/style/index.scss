@@ -1,12 +1,11 @@
+@use "./_variable.scss";
+@use "./_element.scss";
+@use './utils';
+@use "./media";
+@use "./main.scss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import "./_variable.scss";
-@import "./main.scss";
-@import "./_element.scss";
-@import './utils';
-@import "./media";
 
 h1, h2, h3, h4, h5 {
   scroll-margin-top: 60px;

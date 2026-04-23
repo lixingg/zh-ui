@@ -1,5 +1,5 @@
-@import "./animation";
-@import "./media";
+@use "./animation";
+@use "./media";
 
 @mixin animation_($name,$time,$isRes:false) {
   @if($isRes) {
