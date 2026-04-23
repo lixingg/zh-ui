@@ -7,11 +7,11 @@ export const echartsShowComponent: RouteRecordRaw[] = [
     meta: { title: 'Image 图片' },
     component: () => import('@/docs/image/README.md')
   },
-/*  {
+  {
     path: 'linechart',
     meta: { title: '折线图' },
     component: () => import('@/docs/charts/linechart/README.md')
-  },*/
+  },
   /*{
     path: 'bar-chart',
     meta: { title: '柱状图' },
