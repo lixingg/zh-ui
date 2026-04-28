@@ -944,7 +944,8 @@ defineExpose(exposedMethods);
     padding: 12px 20px;
     color: white;
     z-index: 1000;
-    min-width: 500px;
+    //min-width: 500px;
+    width: 100%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 
     .control-buttons {
@@ -954,11 +955,11 @@ defineExpose(exposedMethods);
       justify-content: center;
 
       button {
-        padding: 6px 14px;
+        padding: 6px 12px;
         border: none;
         border-radius: 6px;
         cursor: pointer;
-        font-size: 13px;
+        font-size: 12px;
         transition: all 0.2s;
         background: #3a3a3a;
         color: white;

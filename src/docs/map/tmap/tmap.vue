@@ -17,11 +17,9 @@
       <!-- 自定义UI插槽 -->
       <template #customUI="{ map, TMap, isMapReady, methods, trackInfo }">
         <div class="custom-toolbar">
-          <button @click="handleAddMarker">➕ 添加标记</button>
-          <button @click="handleAddPolyline">📏 添加线</button>
-          <button @click="handleAddPolygon">🔷 画面</button>
-          <button @click="addDemoTrack">添加轨迹</button>
-          <button @click="removeDemoTrack">移除轨迹</button>
+          <button @click="handleAddMarker">添加标记</button>
+          <button @click="handleAddPolyline">添加线</button>
+          <button @click="handleAddPolygon">画面</button>
           <button @click="methods.toggleHeatmap">🔥 热力图</button>
           <button @click="methods.toggleCluster">👥 点聚合</button>
           <button @click="handleReverseGeocode">📍 逆地理编码</button>
@@ -139,8 +137,8 @@ watch(()=>ak.value,()=>{
 
 <style>
 .demo {
-  width: 100vw;
-  height: 400px;
+  width: 100%;
+  height: 600px;
 }
 
 .custom-toolbar {
