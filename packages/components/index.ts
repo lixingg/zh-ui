@@ -23,6 +23,7 @@ export * from './hideNumber'
 export * from './operationColumn'
 export * from './charts'
 export * from './map'
+export * from './table'
 
 
 import button from './button'
@@ -41,6 +42,7 @@ import noData from './noData';
 import operationColumn from './operationColumn';
 import charts from './charts';
 import map from './map';
+import table from './table';
 import directives from "./directive"
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
@@ -61,7 +63,8 @@ const components = [
   noData,
   operationColumn,
   charts,
-  map
+  map,
+  table,
 ]
 
 export default {
