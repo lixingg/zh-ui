@@ -13,12 +13,10 @@ import baseAiChat from './baseAiChat.vue';
 
 
 ## aiChat 属性
-| 属性                       | 说明 | 类型 | 默认值      |
-|--------------------------| - | - |----------|
-| userId / contactId       | 双方标识 | `string` | `number` | '' |
-| contactName              | 对方名称| string    | --       |
-| myAvatar / contactAvatar | 自定义头像URL（可选） | `string` | --       |
-| wsUrl                 | WebSocket 服务地址 | `string` | `--`     |
+| 属性                       | 说明             | 类型       | 默认值  |
+|--------------------------|----------------|----------|------|
+| --                       | --             | --       | --   | -- |
+
 
 
 ## 功能说明与使用方式：
