@@ -9,7 +9,9 @@ const asideKeys = [
   'feedBackComponents',
   'echartsShowComponents',
   'mapShowComponents',
-  'directiveComponents'
+  'directiveComponents',
+  'chatComponents',
+  'aiComponents',
 ]
 </script>
 

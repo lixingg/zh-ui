@@ -15,7 +15,7 @@ import baseMapChart from './baseMapChart.vue';
 
 
 > **Tip**<br>
-> Props（继承 zh-chart 所有 Props，以下为特有项）
+> Props（继承 zh-basechart 所有 Props，以下为特有项）
 
 ## mapChart 属性
 

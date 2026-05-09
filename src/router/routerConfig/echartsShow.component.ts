@@ -28,6 +28,11 @@ export const echartsShowComponent: RouteRecordRaw[] = [
     component: () => import('@/docs/charts/scatterchart/README.md')
   },
   {
+    path: 'radar-chart',
+    meta: { title: '雷达图' },
+    component: () => import('@/docs/charts/radarchart/README.md')
+  },
+  {
     path: 'map-chart',
     meta: { title: '地图' },
     component: () => import('@/docs/charts/mapchart/README.md')

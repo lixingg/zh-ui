@@ -16,7 +16,7 @@ import basePieChart from './basePieChart.vue';
 
 
 > **Tip**<br>
-> Props（继承 zh-chart 所有 Props，以下为特有项）
+> Props（继承 zh-basechart 所有 Props，以下为特有项）
 
 ## piechart 属性
 

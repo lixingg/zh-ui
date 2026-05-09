@@ -22,6 +22,8 @@ export * from './image'
 export * from './hideNumber'
 export * from './operationColumn'
 export * from './charts'
+export * from './chat'
+export * from './AI'
 export * from './map'
 export * from './table'
 
@@ -41,6 +43,8 @@ import upload from "./upload";
 import noData from './noData';
 import operationColumn from './operationColumn';
 import charts from './charts';
+import chat from './chat';
+import AI from './AI';
 import map from './map';
 import table from './table';
 import directives from "./directive"
@@ -65,6 +69,8 @@ const components = [
   charts,
   map,
   table,
+  chat,
+  AI
 ]
 
 export default {

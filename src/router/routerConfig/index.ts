@@ -7,6 +7,8 @@ import { beforeComponent } from './before.component'
 import { echartsShowComponent } from './echartsShow.component'
 import { mapShowComponent } from './mapShow.component'
 import { directiveComponent} from "./directive.component";
+import { chatComponent} from "./chatShow.component";
+import { aiComponent} from "./aiShow.component";
 export interface routerType {
   title: string
   routerData: RouteRecordRaw[]
@@ -48,7 +50,15 @@ export const routerDocsComponentConfig = {
   formComponents: {
     title: 'Form 表单组件',
     routerData: formComponent
-  }
+  },
+    chatComponents: {
+        title: '即时通讯',
+        routerData: chatComponent
+    },
+    aiComponents: {
+        title: 'AI通讯',
+        routerData: aiComponent
+    }
 } as routerConfigType
 
 export const routerDocsComponent = Object.values(routerDocsComponentConfig).flatMap(

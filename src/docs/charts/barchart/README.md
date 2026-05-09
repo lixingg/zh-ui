@@ -1,5 +1,6 @@
 <script setup>
-import barChart from './barChart.vue';
+import stackedBarChart from './stackedBarChart.vue';
+import unstackedBarChart from './unstackedBarChart.vue';
 </script>
 
 # barChart 柱状图
@@ -8,13 +9,17 @@ import barChart from './barChart.vue';
 > 应用场景：图表展示
 
 ## 基础用法
-<show-code showPath="charts/barchart/barChart">
-<barChart></barChart>
+<show-code showPath="charts/barchart/stackedBarChart">
+<stackedBarChart></stackedBarChart>
 </show-code>
 
+## 非堆叠柱状图
+<show-code showPath="charts/barchart/unstackedBarChart">
+<unstackedBarChart></unstackedBarChart>
+</show-code>
 
 > **Tip**<br>
-> Props（继承 zh-chart 所有 Props，以下为特有项）
+> Props（继承 zh-basechart 所有 Props，以下为特有项）
 
 ## barchart 属性
 
@@ -34,8 +39,6 @@ import barChart from './barChart.vue';
 | 事件名称       | 说明       | 回调参数          |
 |------------|----------|---------------|
 | chartClick | 点击柱状条时触发 | (params: any) |
-
-
 
 ## 源代码
 [gitee chart](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/charts)
