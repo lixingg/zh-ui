@@ -2,6 +2,6 @@
   <zh-aichat />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 
 </script>
