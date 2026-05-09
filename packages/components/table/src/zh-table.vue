@@ -131,6 +131,7 @@ const displayData = computed(() => {
   }
   const start = (internalCurrentPage.value - 1) * internalPageSize.value;
   const end = start + internalPageSize.value;
+  console.log('props.data',props.data)
   return props.data.slice(start, end);
 });
 

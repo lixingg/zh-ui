@@ -55,7 +55,7 @@
 
 ## 源代码
 
-[gitee image](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/map)
+[gitee map](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/map)
 
 
 

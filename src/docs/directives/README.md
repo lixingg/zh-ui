@@ -37,4 +37,4 @@ import Number from './number.vue';
 
 
 ## 源代码
-[gitee upload](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/directive)
+[gitee directive](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/directive)
