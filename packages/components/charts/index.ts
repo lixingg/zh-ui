@@ -5,7 +5,7 @@ import ZhPiechart from './src/zh-piechart.vue'
 import ZhMapchart from './src/zh-mapchart.vue'
 import ZhPictorialBar from './src/zh-pictorialBar.vue'
 import ZhLinebarchart from './src/zh-linebarchart.vue'
-
+import ZhScatterchart from './src/zh-scatterchart.vue'
 import {App} from 'vue'
 
 export default {
@@ -17,6 +17,7 @@ export default {
         app.component('ZhMapchart', ZhMapchart)
         app.component('ZhPictorialBar', ZhPictorialBar)
         app.component('ZhLinebarchart', ZhLinebarchart)
+        app.component('ZhScatterchart', ZhScatterchart)
     }
 }
 export {
@@ -26,5 +27,6 @@ export {
     ZhPiechart,
     ZhMapchart,
     ZhPictorialBar,
-    ZhLinebarchart
+    ZhLinebarchart,
+    ZhScatterchart
 }

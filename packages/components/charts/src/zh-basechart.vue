@@ -49,7 +49,7 @@ const props = defineProps({
     default: ''
   }
 })
-
+console.log('props.customOption',props.customOption)
 const emit = defineEmits(['chartReady', 'chartClick'])
 
 // 生成唯一 ID（避免多个图表实例冲突）[reference:3]
