@@ -32,4 +32,4 @@ import baseAiChat from './baseAiChat.vue';
 |交互细节 | 消息气泡靠左/右对齐、时间格式化、滚动到底部、历史消息加载提示等。 |
 
 ## 源代码
-[gitee AI](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/chat)
+[gitee AI](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/AI)
