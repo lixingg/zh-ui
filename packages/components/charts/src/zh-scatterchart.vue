@@ -6,7 +6,7 @@
       :chart-data="internalData"
       :height="height"
       :width="width"
-      @chartReady="$emit('chartReady', $event)"
+      @chartReady="onChartReady"
       @chartClick="$emit('chartClick', $event)"
   />
 </template>
