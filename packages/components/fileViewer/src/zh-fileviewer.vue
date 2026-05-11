@@ -242,6 +242,7 @@ const rotateRight = async () => {
 const renderOfdFile = async (buffer: ArrayBuffer) => {
   if (!ofdContainer.value) return
   ofdContainer.value.innerHTML = '' // 清空旧内容
+  const width = ofdContainer.value.clientWidth
   console.log('renderOfdFile', buffer)
   console.log(parseOfdDocument)
   const ofdObj = await parseOfdDocument({ofd:buffer,success:(result)=>{console.log('result',result)},fail: (err) => {
@@ -249,7 +250,7 @@ const renderOfdFile = async (buffer: ArrayBuffer) => {
       error.value = '文件加载失败，请检查文件链接是否有效';
     }})
   console.log('ofdObj', ofdObj)
-  const svgRoot = await renderOfd(100,ofdObj) as any
+  const svgRoot = await renderOfd(width,ofdObj) as any
   ofdContainer.value.appendChild(svgRoot)
 }
 
