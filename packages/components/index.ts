@@ -28,6 +28,7 @@ export * from './map'
 export * from './table'
 export * from './qrcode'
 export * from './ signature'
+export * from './fileViewer'
 
 import button from './button'
 import icon from './icon'
@@ -50,6 +51,7 @@ import map from './map';
 import table from './table';
 import qrcode from './qrcode';
 import signature from "./ signature"
+import fileViewer from "./fileViewer"
 import directives from "./directive"
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
@@ -75,7 +77,8 @@ const components = [
   chat,
   AI,
   qrcode,
-  signature
+  signature,
+  fileViewer
 ]
 
 export default {

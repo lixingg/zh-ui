@@ -32,3 +32,7 @@ declare module '*.md' {
   export default Component
 }
 
+declare module '*?url' {
+  const src: string
+  export default src
+}

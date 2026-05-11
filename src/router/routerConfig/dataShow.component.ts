@@ -23,6 +23,11 @@ export const dataShowComponent: RouteRecordRaw[] = [
     component: () => import('@/docs/signature/README.md')
   },
   {
+    path: 'fileViewer',
+    meta: { title: 'fileViewer 文件阅读器' },
+    component: () => import('@/docs/fileviewer/README.md')
+  },
+  {
     path: 'hideNumber',
     meta: { title: 'hideNumber 脱敏' },
     component: () => import('@/docs/hideNumber/README.md')

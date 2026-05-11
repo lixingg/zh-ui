@@ -21,17 +21,21 @@
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
     "@element-plus/icons-vue": "^1.1.4",
+    "docx-preview": "^0.3.7",
     "echarts": "^5.4.3",
     "echarts-gl": "^2.0.9",
     "element-plus": "^2.13.5",
     "github-markdown-css": "^5.1.0",
     "js-file-download": "^0.4.12",
+    "ofd.js": "^1.5.0",
     "ol": "^10.9.0",
+    "pdfjs-dist": "^5.7.284",
     "qrcode": "^1.5.4",
     "rollup-plugin-copy": "^3.5.0",
     "sass": "^1.80.6",
     "vue": "^3.5.22",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.17.10",
