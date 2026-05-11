@@ -211,7 +211,8 @@ const renderPdfPage = async () => {
     canvas.width = viewport.width
     canvas.height = viewport.height
     const ctx = canvas.getContext('2d')!
-    renderTask = page.render({ canvasContext: ctx, viewport })
+    renderTask = page.render(
+        { canvasContext: ctx, viewport } as any)
     await renderTask.promise
   } catch (e: any) {
     if (e?.name !== 'RenderingCancelledException') throw e
@@ -248,7 +249,7 @@ const renderOfdFile = async (buffer: ArrayBuffer) => {
       error.value = '文件加载失败，请检查文件链接是否有效';
     }})
   console.log('ofdObj', ofdObj)
-  const svgRoot = await renderOfd(ofdObj)
+  const svgRoot = await renderOfd(100,ofdObj) as any
   ofdContainer.value.appendChild(svgRoot)
 }
 
