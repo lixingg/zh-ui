@@ -259,12 +259,12 @@
 
     <!-- 图片预览 -->
     <el-dialog v-model="imagePreviewVisible" width="70%" center>
-      <img :src="previewUrl" style="width: 100%"/>
+      <img :src="previewUrl" style="width: 100%;height: 40%;"/>
     </el-dialog>
 
     <!-- 视频预览 -->
     <el-dialog v-model="videoPreviewVisible" width="70%" center>
-      <video :src="previewVideoUrl" controls style="width: 100%"></video>
+      <video :src="previewVideoUrl" controls style="width: 100%;height: 40%;"></video>
     </el-dialog>
   </div>
 </template>

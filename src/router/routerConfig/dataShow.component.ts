@@ -13,6 +13,16 @@ export const dataShowComponent: RouteRecordRaw[] = [
     component: () => import('@/docs/image/README.md')
   },
   {
+    path: 'qrcode',
+    meta: { title: 'qrcode 二维码' },
+    component: () => import('@/docs/qrcode/README.md')
+  },
+  {
+    path: 'signature',
+    meta: { title: 'signature 签名' },
+    component: () => import('@/docs/signature/README.md')
+  },
+  {
     path: 'hideNumber',
     meta: { title: 'hideNumber 脱敏' },
     component: () => import('@/docs/hideNumber/README.md')

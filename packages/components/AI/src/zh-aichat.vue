@@ -1,35 +1,28 @@
 <template>
-  <div class="ai-chat-panel" :class="{ dark: isDark }">
-    <!-- 顶部栏：模型选择 + 主题切换 -->
+  <div class="zh-ai-chat-panel" :class="{ dark: isDark }">
+    <!-- 头部：模型选择 + 主题切换 -->
     <header class="chat-header">
       <div class="header-left">
         <el-select
-            v-model="currentModel"
-            placeholder="选择AI模型"
+            v-model="currentModelId"
+            placeholder="选择模型"
             size="large"
             class="model-select"
-            popper-class="model-popper"
         >
           <el-option
-              v-for="model in models"
-              :key="model.value"
-              :label="model.label"
-              :value="model.value"
+              v-for="m in modelOptions"
+              :key="m.id"
+              :label="m.name"
+              :value="m.id"
           >
             <span class="model-option">
-              <span class="model-icon">{{ model.icon }}</span>
-              <span>{{ model.label }}</span>
+              <span class="model-icon">{{ m.icon || '🤖' }}</span>
+              <span>{{ m.name }}</span>
             </span>
           </el-option>
         </el-select>
-        <el-tag
-            :type="modelTagType"
-            effect="dark"
-            size="small"
-            round
-            class="active-tag"
-        >
-          当前：{{ currentModelLabel }}
+        <el-tag type="success" effect="dark" size="small" round>
+          {{ currentModel?.name || '未选择' }}
         </el-tag>
       </div>
       <div class="header-right">
@@ -37,7 +30,6 @@
             :icon="isDark ? Sunny : Moon"
             circle
             @click="toggleTheme"
-            class="theme-btn"
         />
       </div>
     </header>
@@ -50,20 +42,17 @@
           class="message-item"
           :class="msg.role"
       >
-        <!-- 消息头像 -->
         <div class="message-avatar">
-          <el-avatar
-              :size="36"
-              :src="msg.role === 'user' ? userAvatar : botAvatar"
-          />
+          <el-avatar :size="36" :src="msg.role === 'user' ? userAvatar : botAvatar" />
         </div>
-        <!-- 消息主体 -->
         <div class="message-body">
           <div class="message-header">
-            <span class="message-sender">{{ msg.role === 'user' ? '我' : currentModelLabel }}</span>
-            <span class="message-time">{{ formatTime(msg.createdAt) }}</span>
+            <span class="message-sender">
+              {{ msg.role === 'user' ? '我' : (currentModel?.name || 'AI') }}
+            </span>
+            <span class="message-time">{{ formatTime(msg.timestamp) }}</span>
           </div>
-          <!-- 文件附件（用户上传） -->
+          <!-- 用户附件展示 -->
           <div v-if="msg.attachments?.length" class="message-attachments">
             <div
                 v-for="file in msg.attachments"
@@ -74,9 +63,9 @@
               <span class="attachment-name">{{ file.name }}</span>
             </div>
           </div>
-          <!-- 文本内容（Markdown 简单渲染） -->
+          <!-- 文本内容（简单 Markdown 渲染） -->
           <div class="message-content" v-html="renderMarkdown(msg.content)" />
-          <!-- 生成内容卡片（PPT/图片/文档） -->
+          <!-- 生成资源卡片 -->
           <div
               v-if="msg.generated"
               class="generated-card"
@@ -84,7 +73,7 @@
           >
             <div class="generated-icon">
               <el-icon :size="28">
-                <component :is="generatedIcon(msg.generated.type)" />
+                <component :is="typeIcon(msg.generated.type)" />
               </el-icon>
             </div>
             <div class="generated-info">
@@ -95,10 +84,13 @@
               <el-icon><ArrowRight /></el-icon>
             </el-button>
           </div>
+          <!-- 操作按钮 -->
+          <div v-if="msg.role === 'ai' && msg.content" class="message-actions">
+            <el-button text size="small" @click="copyText(msg.content)">复制</el-button>
+          </div>
         </div>
       </div>
-
-      <!-- 加载状态 -->
+      <!-- 加载动画 -->
       <div v-if="isLoading" class="message-item ai">
         <div class="message-avatar">
           <el-avatar :size="36" :src="botAvatar" />
@@ -111,8 +103,29 @@
       </div>
     </main>
 
-    <!-- 底部输入区 -->
+    <!-- 底部输入区域（文件标签+文本输入） -->
     <footer class="chat-input-area">
+      <!-- 文件标签栏（类似 DeepSeek 输入框） -->
+      <div v-if="pendingFiles.length" class="file-tags-bar">
+        <TransitionGroup name="file-tag">
+          <div
+              v-for="(file, index) in pendingFiles"
+              :key="file.name"
+              class="file-tag-item"
+          >
+            <el-icon><Document /></el-icon>
+            <span class="file-tag-name">{{ file.name }}</span>
+            <el-button
+                text
+                size="small"
+                @click="removeFile(index)"
+                class="file-remove-btn"
+            >
+              <el-icon><Close /></el-icon>
+            </el-button>
+          </div>
+        </TransitionGroup>
+      </div>
       <!-- 快捷功能按钮 -->
       <div class="quick-actions">
         <el-upload
@@ -120,14 +133,14 @@
             :auto-upload="false"
             :show-file-list="false"
             :on-change="handleFileChange"
-            accept=".pdf,.doc,.docx,.txt,.jpg,.png"
+            accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif"
             multiple
         >
           <el-tooltip content="上传文件" placement="top">
             <el-button :icon="Upload" circle class="action-btn" />
           </el-tooltip>
         </el-upload>
-        <el-tooltip content="生成PPT" placement="top">
+        <el-tooltip content="生成 PPT" placement="top">
           <el-button :icon="Present" circle class="action-btn" @click="quickGenerate('ppt')" />
         </el-tooltip>
         <el-tooltip content="生成图片/海报" placement="top">
@@ -137,23 +150,23 @@
           <el-button :icon="DocumentCopy" circle class="action-btn" @click="quickGenerate('document')" />
         </el-tooltip>
       </div>
-      <!-- 文本输入 -->
+      <!-- 文本输入框 + 发送按钮 -->
       <div class="input-row">
         <el-input
             v-model="inputText"
             type="textarea"
-            :rows="1"
-            placeholder="输入消息，或使用上方功能按钮..."
-            @keydown.enter.exact.prevent="sendMessage"
+            :rows="2"
+            placeholder="输入消息，或点击上方按钮上传文件/生成内容..."
+            @keydown.enter.exact.prevent="handleSend"
             resize="none"
             class="text-input"
         />
         <el-button
             type="primary"
             :icon="Promotion"
-            :disabled="!inputText.trim() && !pendingFiles.length"
+            :disabled="!canSend"
             :loading="isLoading"
-            @click="sendMessage"
+            @click="handleSend"
             size="large"
             class="send-btn"
         />
@@ -165,18 +178,16 @@
         v-model="previewVisible"
         :title="previewData?.title || '预览'"
         width="60%"
-        center
         destroy-on-close
+        center
     >
       <div class="preview-content">
-        <!-- 图片预览 -->
         <img
             v-if="previewData?.type === 'image'"
             :src="previewData.url"
             alt="生成图片"
             class="preview-image"
         />
-        <!-- PPT 或文档预览（模拟 iframe 或下载） -->
         <div v-else class="preview-file">
           <el-icon :size="64"><DocumentCopy /></el-icon>
           <p>文件已生成：{{ previewData?.title }}</p>
@@ -190,106 +201,127 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, nextTick, watch, onMounted } from 'vue'
+import { ref, computed, nextTick, watch, onMounted, type PropType } from 'vue'
 import {
-  Sunny,
-  Moon,
-  Upload,
-  Present,
-  Picture,
-  DocumentCopy,
-  Document,
-  Promotion,
-  ArrowRight,
-  VideoCamera,
-  PictureFilled,
-  Document as DocumentIcon,
-  Files
+  Sunny, Moon, Upload, Present, Picture, DocumentCopy,
+  Document, Promotion, ArrowRight, PictureFilled, Files, Close
 } from '@element-plus/icons-vue'
 import { ElMessage, ElUpload } from 'element-plus'
 
-// ---------- 类型定义 ----------
-interface Attachment {
+// ================== 类型定义 ==================
+export interface Attachment {
   name: string
   size: number
   type?: string
+  dataUrl?: string       // base64 / 临时 URL
 }
 
-interface GeneratedItem {
+export interface GeneratedItem {
   type: 'ppt' | 'image' | 'document'
   title: string
-  url: string // 模拟下载/预览地址
+  url: string
 }
 
-interface Message {
+export interface Message {
   id: string
   role: 'user' | 'ai'
   content: string
-  createdAt: number
+  timestamp: number
   attachments?: Attachment[]
   generated?: GeneratedItem
 }
 
-interface ModelOption {
-  label: string
-  value: string
-  icon: string
-  provider: string
-  color: string
+export interface ModelConfig {
+  id: string
+  name: string
+  icon?: string
+  apiUrl: string
+  apiKey?: string
+  headers?: Record<string, string>
 }
 
-// ---------- 响应式数据 ----------
-const isDark = ref(false)
-const currentModel = ref('gpt-4')
+export interface ChatRequest {
+  model: ModelConfig
+  messages: Message[]         // 完整对话历史
+  prompt: string              // 当前用户输入
+  attachments?: Attachment[]
+  generationType?: 'ppt' | 'image' | 'document'
+}
+
+export interface ChatResponse {
+  content: string
+  generated?: GeneratedItem
+  error?: string
+}
+
+// ================== Props ==================
+const props = defineProps({
+  modelOptions: {
+    type: Array as PropType<ModelConfig[]>,
+    default: () => [
+      { id: 'gpt-4', name: 'GPT-4', icon: '🧠', apiUrl: 'https://api.openai.com/v1/chat/completions' },
+      { id: 'deepseek', name: 'DeepSeek', icon: '🔍', apiUrl: 'https://api.deepseek.com/v1/chat/completions' },
+      { id: 'claude-3', name: 'Claude 3', icon: '🎭', apiUrl: 'https://api.anthropic.com/v1/messages' },
+      { id: 'ernie', name: '文心一言', icon: '📖', apiUrl: 'https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/ernie-speed-128k' },
+      { id: 'qwen', name: '通义千问', icon: '☁️', apiUrl: 'https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation' }
+    ]
+  },
+  defaultModel: { type: String, default: 'gpt-4' },
+  userAvatar: { type: String, default: 'https://api.dicebear.com/7.x/avataaars/svg?seed=user' },
+  botAvatar: { type: String, default: 'https://api.dicebear.com/7.x/bottts/svg?seed=ai' },
+  chatHandler: {
+    type: Function as PropType<(request: ChatRequest) => Promise<ChatResponse>>,
+    default: null
+  },
+  dark: { type: Boolean, default: false }
+})
+
+// ================== Emits ==================
+const emit = defineEmits<{
+  (e: 'message-sent', message: Message): void
+  (e: 'message-received', message: Message): void
+  (e: 'generated', item: GeneratedItem): void
+  (e: 'error', error: string): void
+  (e: 'update:dark', value: boolean): void
+}>()
+
+// ================== 内部状态 ==================
+const currentModelId = ref(props.defaultModel)
 const inputText = ref('')
 const pendingFiles = ref<Attachment[]>([])
-const messages = ref<Message[]>([])
+const messages = ref<Message[] | any>([])
 const isLoading = ref(false)
 const messageContainer = ref<HTMLElement>()
 const uploadRef = ref<InstanceType<typeof ElUpload>>()
 const previewVisible = ref(false)
-const previewData = ref<GeneratedItem | null>(null)
+const previewData = ref<GeneratedItem | any>(null)
 
-// 头像（可替换为实际图片）
-const userAvatar = 'https://api.dicebear.com/7.x/avataaars/svg?seed=user'
-const botAvatar = 'https://api.dicebear.com/7.x/bottts/svg?seed=ai'
-
-// ---------- 可用模型列表 ----------
-const models: ModelOption[] = [
-  { label: 'DeepSeek-V3', value: 'deepseek', icon: '🔍', provider: 'deepseek', color: '#4f46e5' },
-  { label: 'OpenAI GPT-4', value: 'gpt-4', icon: '🧠', provider: 'openai', color: '#10a37f' },
-  { label: 'Claude 3', value: 'claude-3', icon: '🎭', provider: 'anthropic', color: '#d97706' },
-  { label: '文心一言', value: 'ernie', icon: '📖', provider: 'baidu', color: '#2468f2' },
-  { label: '通义千问', value: 'qwen', icon: '☁️', provider: 'alibaba', color: '#6b21a8' },
-]
-
-// 当前模型标签
-const currentModelLabel = computed(() => {
-  return models.find(m => m.value === currentModel.value)?.label || currentModel.value
+const isDark = computed({
+  get: () => props.dark,
+  set: (val) => emit('update:dark', val)
 })
 
-// 模型标签颜色
-const modelTagType = computed(() => {
-  const map: Record<string, string> = {
-    deepseek: 'primary',
-    'gpt-4': 'success',
-    'claude-3': 'warning',
-    ernie: 'danger',
-    qwen: 'info',
+const currentModel = computed(() =>
+    props.modelOptions.find(m => m.id === currentModelId.value)
+)
+
+const canSend = computed(() =>
+    (inputText.value.trim() || pendingFiles.value.length > 0) && !isLoading.value
+)
+
+// ================== 工具函数 ==================
+const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2)
+const formatTime = (ts: number) => new Date(ts).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+
+const copyText = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text)
+    ElMessage.success('已复制')
+  } catch {
+    ElMessage.error('复制失败')
   }
-  return map[currentModel.value] || 'info'
-})
-
-// ---------- 工具函数 ----------
-function generateId() {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2)
 }
 
-function formatTime(timestamp: number) {
-  return new Date(timestamp).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
-}
-
-// 简单的 Markdown 渲染（演示用，实际可使用 marked 等库）
 function renderMarkdown(content: string) {
   if (!content) return ''
   return content
@@ -298,72 +330,15 @@ function renderMarkdown(content: string) {
       .replace(/`([^`]+)`/g, '<code>$1</code>')
 }
 
-function generatedIcon(type: string) {
+const typeIcon = (type: string) => {
   switch (type) {
     case 'ppt': return Present
     case 'image': return PictureFilled
-    case 'document': return DocumentIcon
+    case 'document': return Files
     default: return Files
   }
 }
 
-// 模拟 AI 回复（根据模型和用户意图生成不同内容）
-function mockAIResponse(userMessage: string, model: string, attachments?: Attachment[]): Message {
-  const lower = userMessage.toLowerCase()
-  let content = ''
-  let generated: GeneratedItem | undefined
-
-  // 根据模型风格微调回复
-  const modelSign = model === 'deepseek' ? ' (来自DeepSeek)' :
-      model === 'claude-3' ? ' (Claude 3)' :
-          model === 'ernie' ? ' (文心一言)' :
-              model === 'qwen' ? ' (通义千问)' : ''
-
-  // 检测生成意图
-  if (lower.includes('ppt') || lower.includes('演示文稿') || lower.includes('幻灯片')) {
-    generated = {
-      type: 'ppt',
-      title: `AI生成的演示文稿${modelSign}`,
-      url: 'https://example.com/sample.pptx', // 模拟链接
-    }
-    content = `好的，已根据你的需求生成了一份PPT大纲及初稿。你可以点击下方卡片预览或下载完整文件。`
-  } else if (lower.includes('图片') || lower.includes('海报') || lower.includes('image')) {
-    generated = {
-      type: 'image',
-      title: `AI创作的海报${modelSign}`,
-      url: 'https://picsum.photos/800/600?random=' + Date.now(), // 随机示例图
-    }
-    content = `这是一张为你生成的创意图片/海报，请查看下方预览。`
-  } else if (lower.includes('文档') || lower.includes('doc') || lower.includes('报告')) {
-    generated = {
-      type: 'document',
-      title: `智能文档${modelSign}`,
-      url: 'https://example.com/sample.docx',
-    }
-    content = `已根据你的要求撰写了一份详细文档，点击卡片即可下载。`
-  } else {
-    // 普通对话
-    const replies = [
-      `感谢你的提问。作为${currentModelLabel}，我乐意为你解答任何问题。`,
-      `这是一个很好的问题，让我来梳理一下...`,
-      `根据最新的知识库，我的分析如下：`,
-    ]
-    content = replies[Math.floor(Math.random() * replies.length)]
-    if (attachments?.length) {
-      content += ` 我已经收到了你上传的 ${attachments.length} 个文件，正在分析中...`
-    }
-  }
-
-  return {
-    id: generateId(),
-    role: 'ai',
-    content,
-    createdAt: Date.now(),
-    generated,
-  }
-}
-
-// 滚动到底部
 async function scrollToBottom() {
   await nextTick()
   if (messageContainer.value) {
@@ -371,71 +346,119 @@ async function scrollToBottom() {
   }
 }
 
-// 发送消息
-async function sendMessage() {
+// 文件转 base64
+async function fileToDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result as string)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
+
+// ================== 文件上传处理 ==================
+async function handleFileChange(uploadFile: any) {
+  const raw = uploadFile.raw as File
+  if (!raw) return
+  try {
+    const dataUrl = await fileToDataUrl(raw)
+    pendingFiles.value.push({
+      name: raw.name,
+      size: raw.size,
+      type: raw.type,
+      dataUrl
+    })
+    ElMessage.success(`已添加：${raw.name}`)
+  } catch {
+    ElMessage.error('文件读取失败')
+  }
+}
+
+function removeFile(index: number) {
+  pendingFiles.value.splice(index, 1)
+}
+
+// ================== 发送消息 ==================
+async function handleSend(generationType?: 'ppt' | 'image' | 'document') {
   const text = inputText.value.trim()
   const files = [...pendingFiles.value]
 
   if (!text && files.length === 0) return
 
-  // 添加用户消息
   const userMsg: Message = {
     id: generateId(),
     role: 'user',
     content: text || '请处理上传的文件',
-    createdAt: Date.now(),
-    attachments: files.length > 0 ? files : undefined,
+    timestamp: Date.now(),
+    attachments: files.length > 0 ? files : undefined
   }
+
   messages.value.push(userMsg)
   inputText.value = ''
   pendingFiles.value = []
+  emit('message-sent', userMsg)
   await scrollToBottom()
 
-  // 模拟 AI 思考
+  // 发送请求
   isLoading.value = true
-  await new Promise(resolve => setTimeout(resolve, 1200 + Math.random() * 800))
-  isLoading.value = false
+  try {
+    const model = currentModel.value
+    if (!model) throw new Error('未选择有效模型')
 
-  // 生成 AI 回复
-  const aiMsg = mockAIResponse(userMsg.content, currentModel.value, userMsg.attachments)
-  messages.value.push(aiMsg)
-  await scrollToBottom()
+    const request: ChatRequest = {
+      model,
+      messages: messages.value,
+      prompt: userMsg.content,
+      attachments: files.length > 0 ? files : undefined,
+      generationType
+    }
+
+    let response: ChatResponse
+    if (props.chatHandler) {
+      response = await props.chatHandler(request)
+    } else {
+      response = await mockDefaultChat(request)
+    }
+
+    if (response.error) throw new Error(response.error)
+
+    const aiMsg: Message = {
+      id: generateId(),
+      role: 'ai',
+      content: response.content,
+      timestamp: Date.now(),
+      generated: response.generated
+    }
+
+    messages.value.push(aiMsg)
+    emit('message-received', aiMsg)
+    if (response.generated) emit('generated', response.generated)
+
+  } catch (err: any) {
+    const errorMsg = err.message || '请求失败'
+    ElMessage.error(errorMsg)
+    emit('error', errorMsg)
+    messages.value.push({
+      id: generateId(),
+      role: 'ai',
+      content: `❌ 错误：${errorMsg}`,
+      timestamp: Date.now()
+    })
+  } finally {
+    isLoading.value = false
+    await scrollToBottom()
+  }
 }
 
-// 快捷生成功能
+// 快捷生成
 function quickGenerate(type: 'ppt' | 'image' | 'document') {
-  const prompts = {
-    ppt: '请根据我的需求生成一份演示文稿PPT',
-    image: '请根据我的描述创作一张海报图片',
-    document: '请帮我撰写一份详细的文档',
+  const prompts: Record<string, string> = {
+    ppt: '请生成一份演示文稿PPT',
+    image: '请根据我的描述创作一张海报或图片',
+    document: '请撰写一份详细文档'
   }
   inputText.value = prompts[type]
-  sendMessage()
-}
-
-// 文件上传处理
-function handleFileChange(file: any) {
-  const raw = file.raw
-  if (!raw) return
-  pendingFiles.value.push({
-    name: raw.name,
-    size: raw.size,
-    type: raw.type,
-  })
-  ElMessage.success(`文件 ${raw.name} 已添加`)
-}
-
-// 预览生成内容
-function previewGenerated(item: GeneratedItem) {
-  previewData.value = item
-  previewVisible.value = true
-}
-
-// 模拟下载
-function downloadFile(item: GeneratedItem | null) {
-  if (!item) return
-  ElMessage.success(`开始下载：${item.title}`)
-  // 实际项目中使用 window.open(item.url) 或 axios 下载
+  handleSend(type)
 }
 
 // 主题切换
@@ -443,26 +466,72 @@ function toggleTheme() {
   isDark.value = !isDark.value
 }
 
-// 初始化欢迎消息
+// 预览/下载
+function previewGenerated(item: GeneratedItem) {
+  previewData.value = item
+  previewVisible.value = true
+}
+
+function downloadFile(item: GeneratedItem | null) {
+  if (!item) return
+  window.open(item.url, '_blank')
+  ElMessage.success('开始下载')
+}
+
+// 默认模拟响应（当未传入 chatHandler 时）
+async function mockDefaultChat(request: ChatRequest): Promise<ChatResponse> {
+  await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 800))
+
+  const prompt = request.prompt.toLowerCase()
+  let generated: GeneratedItem | undefined
+
+  if (request.generationType === 'ppt' || prompt.includes('ppt')) {
+    generated = {
+      type: 'ppt',
+      title: 'AI 生成的演示文稿',
+      url: 'https://example.com/sample.pptx'
+    }
+    return { content: '已根据需求生成PPT，请点击卡片查看。', generated }
+  } else if (request.generationType === 'image' || prompt.includes('图片') || prompt.includes('海报')) {
+    generated = {
+      type: 'image',
+      title: 'AI 创作的海报',
+      url: `https://picsum.photos/800/600?random=${Date.now()}`
+    }
+    return { content: '为你生成了图像/海报，预览如下。', generated }
+  } else if (request.generationType === 'document' || prompt.includes('文档')) {
+    generated = {
+      type: 'document',
+      title: '智能生成文档',
+      url: 'https://example.com/sample.docx'
+    }
+    return { content: '文档已撰写完成，点击卡片下载。', generated }
+  }
+
+  return {
+    content: `来自 ${request.model.name} 的回复：收到你的问题“${request.prompt}”，我将尽力解答。`
+  }
+}
+
+// ================== 初始化 ==================
 onMounted(() => {
-  if (messages.value.length === 0) {
+  if (messages.value.length === 0 && currentModel.value) {
     messages.value.push({
       id: generateId(),
       role: 'ai',
-      content: `👋 你好！我是${currentModelLabel}。\n我可以进行智能对话、处理文件，并一键生成PPT、图片/海报、文档。\n请选择模型并开始使用吧！`,
-      createdAt: Date.now(),
+      content: `👋 你好！我是 ${currentModel.value.name}。\n可以提问、上传文件，或让我生成 PPT/图片/文档。`,
+      timestamp: Date.now()
     })
   }
   scrollToBottom()
 })
 
-// 监听消息变化自动滚动
 watch(messages, () => scrollToBottom(), { deep: true })
 </script>
 
-<style scoped>
-/* ---------- 全局变量与布局 ---------- */
-.ai-chat-panel {
+<style lang="scss" scoped>
+/* ========== 全局变量与布局 ========== */
+.zh-ai-chat-panel {
   --bg-primary: #ffffff;
   --bg-secondary: #f8fafc;
   --text-primary: #1e293b;
@@ -496,7 +565,7 @@ watch(messages, () => scrollToBottom(), { deep: true })
   --border-color: #334155;
 }
 
-/* 头部 */
+/* ========== 头部 ========== */
 .chat-header {
   display: flex;
   align-items: center;
@@ -516,17 +585,7 @@ watch(messages, () => scrollToBottom(), { deep: true })
   width: 190px;
 }
 
-.active-tag {
-  font-weight: 500;
-}
-
-.theme-btn {
-  border: none;
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-}
-
-/* 消息区域 */
+/* ========== 消息区域 ========== */
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -556,7 +615,6 @@ watch(messages, () => scrollToBottom(), { deep: true })
   padding: 14px 16px;
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
-  position: relative;
 }
 
 .message-item.user .message-body {
@@ -567,7 +625,6 @@ watch(messages, () => scrollToBottom(), { deep: true })
 .message-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 6px;
   font-size: 0.8rem;
 }
@@ -589,10 +646,6 @@ watch(messages, () => scrollToBottom(), { deep: true })
 .message-content {
   line-height: 1.6;
   word-break: break-word;
-}
-
-.message-item.user .message-content {
-  color: white;
 }
 
 .message-attachments {
@@ -636,12 +689,17 @@ watch(messages, () => scrollToBottom(), { deep: true })
 
 .generated-title {
   font-weight: 600;
-  margin-bottom: 2px;
 }
 
 .generated-desc {
   font-size: 0.8rem;
   color: var(--text-secondary);
+}
+
+.message-actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 /* 打字指示器 */
@@ -667,17 +725,54 @@ watch(messages, () => scrollToBottom(), { deep: true })
   40% { transform: scale(1); }
 }
 
-/* 底部输入 */
+/* ========== 底部输入区域 ========== */
 .chat-input-area {
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
-  padding: 16px 20px;
+  padding: 12px 20px 16px;
 }
 
+/* 文件标签栏（类似 DeepSeek） */
+.file-tags-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.file-tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.file-tag-name {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-remove-btn {
+  padding: 0;
+  color: var(--text-secondary);
+}
+
+.file-remove-btn:hover {
+  color: #e53e3e;
+}
+
+/* 快捷功能按钮 */
 .quick-actions {
   display: flex;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .action-btn {
@@ -692,6 +787,7 @@ watch(messages, () => scrollToBottom(), { deep: true })
   border-color: #2563eb;
 }
 
+/* 文本输入 + 发送 */
 .input-row {
   display: flex;
   gap: 12px;
@@ -708,7 +804,7 @@ watch(messages, () => scrollToBottom(), { deep: true })
   border-radius: 12px;
 }
 
-/* 预览弹窗 */
+/* ========== 预览弹窗 ========== */
 .preview-content {
   display: flex;
   justify-content: center;
@@ -720,24 +816,26 @@ watch(messages, () => scrollToBottom(), { deep: true })
   max-width: 100%;
   max-height: 70vh;
   border-radius: 12px;
-  box-shadow: var(--shadow-md);
 }
 
 .preview-file {
   text-align: center;
   padding: 40px;
-  color: var(--text-secondary);
 }
 
-/* 动画 */
+/* Transition 动画 */
+.file-tag-enter-active,
+.file-tag-leave-active {
+  transition: all 0.25s ease;
+}
+.file-tag-enter-from,
+.file-tag-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>

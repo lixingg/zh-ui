@@ -7,3 +7,8 @@ interface ZHVueProps {
 declare module 'echarts'
 declare module 'echarts-gl'
 
+declare module '*.vue' {
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<{}, {}, any>
+  export default component
+}
