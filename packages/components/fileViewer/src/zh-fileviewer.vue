@@ -54,8 +54,6 @@
 import {ref, computed, watch, onMounted, onUnmounted} from 'vue'
 // PDF
 import * as pdfjsLib from 'pdfjs-dist'
-// 静态导入 worker（Vite 会将 .mjs 作为资源处理）
-import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
 // OFD
 import {parseOfdDocument, renderOfd} from 'ofd.js'
 // Word
@@ -64,7 +62,11 @@ import {renderAsync as renderDocx} from 'docx-preview'
 import * as XLSX from 'xlsx'
 
 // ==================== 全局配置 ====================
-pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc
+// 注意：路径字符串必须是完整的、静态的，不能是动态拼接的
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+    'pdfjs-dist/build/pdf.worker.mjs',
+    import.meta.url
+).href;
 
 // ==================== Props ====================
 const props = withDefaults(
