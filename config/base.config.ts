@@ -11,6 +11,12 @@ export default defineConfig({
     publicDir: 'public',
     logLevel: 'error',
     envDir: process.cwd(),
+    optimizeDeps: {
+        exclude: ['pdfjs-dist']  // 避免预构建时解析 Worker 语法
+    },
+    worker: {
+        format: 'es'  // 确保 Worker 使用 ES 模块格式
+    },
     resolve: {
         alias: {
             '@': path.resolve(process.cwd(), './src'),
