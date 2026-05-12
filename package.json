@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
+    "@bundled-es-modules/pdfjs-dist": "^3.6.172-alpha.1",
     "@element-plus/icons-vue": "^1.1.4",
     "docx-preview": "^0.3.7",
     "echarts": "^5.4.3",
@@ -30,7 +31,6 @@
     "ofd-xml-parser": "^0.0.6",
     "ofd.js": "^1.5.0",
     "ol": "^10.9.0",
-    "pdfjs-dist": "^5.7.284",
     "qrcode": "^1.5.4",
     "rollup-plugin-copy": "^3.5.0",
     "sass": "^1.80.6",
