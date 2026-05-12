@@ -54,8 +54,6 @@
 import {ref, computed, watch, onMounted, onUnmounted} from 'vue'
 // PDF
 import * as pdfjsLib from 'pdfjs-dist'
-// 静态导入 worker（Vite 会将 .mjs 作为资源处理）
-// import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
 // OFD
 import {parseOfdDocument, renderOfd} from 'ofd.js'
 // Word
