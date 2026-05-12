@@ -63,7 +63,7 @@ import * as XLSX from 'xlsx'
 
 // ==================== 全局配置 ====================
 // 注意：路径字符串必须是完整的、静态的，不能是动态拼接的
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("/pdf.worker.mjs", import.meta.url).href;
+// pdfjsLib.GlobalWorkerOptions.workerSrc = new URL("/pdf.worker.mjs", import.meta.url).href;
 
 // ==================== Props ====================
 const props = withDefaults(
