@@ -19,7 +19,7 @@
         <button @click="nextPage" :disabled="currentPage >= totalPages">下一页</button>
         <label>
           缩放：
-          <select v-model.number="scale" @change="renderPdfPage">
+          <select v-model.number="scale" >
             <option :value="0.5">50%</option>
             <option :value="0.75">75%</option>
             <option :value="1">100%</option>
@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import {ref, computed, watch, onMounted, onUnmounted} from 'vue'
 // PDF
-import * as pdfjsLib from 'pdfjs-dist'
+// import * as pdfjsLib from 'pdfjs-dist'
 // OFD
 import {parseOfdDocument, renderOfd} from 'ofd.js'
 // Word
@@ -105,8 +105,8 @@ const currentPage = ref(props.initialPage)
 const totalPages = ref(0)
 const scale = ref(props.initialScale)
 const rotation = ref(props.initialRotation)
-let pdfDoc: pdfjsLib.PDFDocumentProxy | null = null
-let renderTask: pdfjsLib.RenderTask | null = null
+// let pdfDoc: pdfjsLib.PDFDocumentProxy | null = null
+// let renderTask: pdfjsLib.RenderTask | null = null
 
 // 其他格式容器
 const ofdContainer = ref<HTMLDivElement | null>(null)
@@ -157,7 +157,7 @@ const loadFile = async () => {
 
   try {
     if (normalizedType.value === 'pdf') {
-      await loadPdf()
+      // await loadPdf()
     } else {
       const buffer = await fetchFileBuffer(props.url)
       if (!buffer) return
@@ -188,7 +188,7 @@ const fetchFileBuffer = async (url: string): Promise<ArrayBuffer | null> => {
 }
 
 // ==================== PDF 渲染 ====================
-const loadPdf = async () => {
+/*const loadPdf = async () => {
   if (!props.url) return
   const loadingTask = pdfjsLib.getDocument(props.url)
   pdfDoc = await loadingTask.promise
@@ -216,25 +216,25 @@ const renderPdfPage = async () => {
   } catch (e: any) {
     if (e?.name !== 'RenderingCancelledException') throw e
   }
-}
+}*/
 
 const prevPage = async () => {
   if (currentPage.value <= 1) return
   currentPage.value--
-  await renderPdfPage()
+  // await renderPdfPage()
 }
 const nextPage = async () => {
   if (currentPage.value >= totalPages.value) return
   currentPage.value++
-  await renderPdfPage()
+  // await renderPdfPage()
 }
 const rotateLeft = async () => {
   rotation.value = (rotation.value - 90 + 360) % 360
-  await renderPdfPage()
+  // await renderPdfPage()
 }
 const rotateRight = async () => {
   rotation.value = (rotation.value + 90) % 360
-  await renderPdfPage()
+  // await renderPdfPage()
 }
 
 // ==================== OFD 渲染 ====================
@@ -304,10 +304,10 @@ watch(() => props.url, () => {
 
 // 组件卸载时取消未完成的 PDF 渲染任务
 onUnmounted(() => {
-  if (renderTask) {
+/*  if (renderTask) {
     renderTask.cancel()
     renderTask = null
-  }
+  }*/
 })
 </script>
 
