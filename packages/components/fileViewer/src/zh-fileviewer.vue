@@ -51,15 +51,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import {ref, computed, watch, onMounted, onUnmounted} from 'vue'
 // PDF
 import * as pdfjsLib from 'pdfjs-dist'
 // 静态导入 worker（Vite 会将 .mjs 作为资源处理）
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
 // OFD
-import { parseOfdDocument, renderOfd } from 'ofd.js'
+import {parseOfdDocument, renderOfd} from 'ofd.js'
 // Word
-import { renderAsync as renderDocx } from 'docx-preview'
+import {renderAsync as renderDocx} from 'docx-preview'
 // Excel
 import * as XLSX from 'xlsx'
 
@@ -183,7 +183,7 @@ const loadFile = async () => {
 
 /** 通用文件下载（用于 OFD/Word/Excel） */
 const fetchFileBuffer = async (url: string): Promise<ArrayBuffer | null> => {
-  const res = await fetch(url, { mode: 'cors' })
+  const res = await fetch(url, {mode: 'cors'})
   if (!res.ok) throw new Error(`文件请求失败: ${res.status}`)
   return res.arrayBuffer()
 }
@@ -206,13 +206,13 @@ const renderPdfPage = async () => {
   }
   try {
     const page = await pdfDoc.getPage(currentPage.value)
-    const viewport = page.getViewport({ scale: scale.value, rotation: rotation.value })
+    const viewport = page.getViewport({scale: scale.value, rotation: rotation.value})
     const canvas = pdfCanvas.value
     canvas.width = viewport.width
     canvas.height = viewport.height
     const ctx = canvas.getContext('2d')!
     renderTask = page.render(
-        { canvasContext: ctx, viewport } as any)
+        {canvasContext: ctx, viewport} as any)
     await renderTask.promise
   } catch (e: any) {
     if (e?.name !== 'RenderingCancelledException') throw e
@@ -243,15 +243,21 @@ const renderOfdFile = async (buffer: ArrayBuffer) => {
   if (!ofdContainer.value) return
   ofdContainer.value.innerHTML = '' // 清空旧内容
   const width = ofdContainer.value.clientWidth
-  console.log('renderOfdFile', buffer)
-  console.log(parseOfdDocument)
-  const ofdObj = await parseOfdDocument({ofd:buffer,success:(result)=>{console.log('result',result)},fail: (err) => {
-      console.error('OFD解析失败:', err);
-      error.value = '文件加载失败，请检查文件链接是否有效';
-    }})
-  console.log('ofdObj', ofdObj)
-  const svgRoot = await renderOfd(width,ofdObj) as any
-  ofdContainer.value.appendChild(svgRoot)
+  parseOfdDocument({
+    ofd: buffer,
+    success: (result) => {
+      if (!ofdContainer.value) return;
+      const divs = renderOfd(width, result[0]);
+      ofdContainer.value.innerHTML = '';
+      divs.forEach(div => ofdContainer.value!.appendChild(div));
+      loading.value = false;
+    },
+    fail: (err: any) => {
+      console.error('OFD加载失败:', err);
+      error.value = err.message || '文件加载失败，请重试。';
+      loading.value = false;
+    }
+  })
 }
 
 // ==================== Word 渲染 ====================
@@ -276,11 +282,11 @@ const renderWordFile = async (buffer: ArrayBuffer) => {
 const renderExcelFile = async (buffer: ArrayBuffer) => {
   if (!excelContainer.value) return
   excelContainer.value.innerHTML = ''
-  const workbook = XLSX.read(buffer, { type: 'array' })
+  const workbook = XLSX.read(buffer, {type: 'array'})
   // 默认展示第一个工作表
   const sheetName = workbook.SheetNames[0]
   const sheet = workbook.Sheets[sheetName]
-  const html = XLSX.utils.sheet_to_html(sheet, { editable: false })
+  const html = XLSX.utils.sheet_to_html(sheet, {editable: false})
   excelContainer.value.innerHTML = html
 }
 
@@ -295,7 +301,7 @@ onMounted(() => loadFile())
 // 监听 URL 变化（支持动态切换文件）
 watch(() => props.url, () => {
   if (props.url) loadFile()
-},{immediate:true})
+}, {immediate: true})
 
 // 组件卸载时取消未完成的 PDF 渲染任务
 onUnmounted(() => {
@@ -359,17 +365,21 @@ canvas {
   padding: 20px;
   background: #fff;
 }
+
 .preview-ofd :deep(svg) {
   max-width: 100%;
   height: auto;
 }
+
 .preview-word :deep(.docx-wrapper) {
   max-width: 100%;
 }
+
 .preview-excel :deep(table) {
   border-collapse: collapse;
   width: 100%;
 }
+
 .preview-excel :deep(td),
 .preview-excel :deep(th) {
   border: 1px solid #ddd;
