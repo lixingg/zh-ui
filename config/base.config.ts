@@ -4,7 +4,6 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import Markdown from 'vite-plugin-md'
 // import DefineOptions from 'unplugin-vue-define-options/vite'
 const path = require('path')
-
 // https://vitejs.dev/config/
 export default defineConfig({
     root: process.cwd(),
