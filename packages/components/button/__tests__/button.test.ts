@@ -69,6 +69,7 @@ describe('zh-button.vue', () => {
         default: '<span class="inner-slot"></span>'
       }
     })
+    // @ts-ignore
     wrapper.element.querySelector<HTMLElement>('.inner-slot')!.click()
     expect(wrapper.emitted()).toBeDefined()
   })

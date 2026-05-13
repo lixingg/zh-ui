@@ -11,7 +11,7 @@
 
   <h4>ofd预览</h4>
   <zh-fileviewer style="width: 100%; height: 600px;"
-      url="/demo.ofd"
+      url="/test.ofd"
       fileType="ofd"
   />
 

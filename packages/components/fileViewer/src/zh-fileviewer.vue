@@ -46,7 +46,10 @@
     </div>
 
     <!-- OFD 预览 -->
-    <div v-else-if="normalizedType === 'ofd'" class="preview-ofd" ref="ofdContainer"></div>
+    <div v-else-if="normalizedType === 'ofd'" class="preview-ofd" ref="ofdContainer">
+      <OfdPreview v-if="useOfdPreview" :url="url"/>
+      <OfdViewer v-if="useOfdViewer" :url="url"></OfdViewer>
+    </div>
 
     <!-- Word 预览 -->
     <div v-else-if="normalizedType === 'word'" class="preview-word" ref="wordContainer"></div>
@@ -65,7 +68,9 @@ import {ref, computed, watch, onMounted, onUnmounted, nextTick} from 'vue'
 import pdfjsLib from "@bundled-es-modules/pdfjs-dist/build/pdf";
 import workerSrc from '@bundled-es-modules/pdfjs-dist/build/pdf.worker.js?url'
 // OFD
-import {parseOfdDocument, renderOfd} from 'ofd.js'
+import OfdPreview from './ofd/OfdPreview.vue';
+import OfdViewer from './ofd/OfdViewer.vue';
+import LiteOfd from './liteofd/liteOfd'
 // Word
 import {renderAsync as renderDocx} from 'docx-preview'
 // Excel
@@ -97,6 +102,8 @@ const props = withDefaults(
       autoDetect?: boolean
       usePdfViewer?: boolean
       isBlank?: boolean
+      useOfdPreview?: boolean
+      useOfdViewer?: boolean
 
     }>(),
     {
@@ -106,7 +113,9 @@ const props = withDefaults(
       initialRotation: 0,
       autoDetect: true,
       usePdfViewer: true,
-      isBlank: false
+      isBlank: false,
+      useOfdPreview: true,
+      useOfdViewer: false
     }
 )
 
@@ -125,9 +134,10 @@ let pdfDoc: pdfjsLib.PDFDocumentProxy | null = null
 let renderTask: pdfjsLib.RenderTask | null = null
 
 // 其他格式容器
-const ofdContainer = ref<HTMLDivElement | null>(null)
-const wordContainer = ref<HTMLDivElement | null>(null)
-const excelContainer = ref<HTMLDivElement | null>(null)
+const ofdContainer = ref<HTMLDivElement | any>(null)
+const ofdContent = ref<HTMLDivElement | any>(null)
+const wordContainer = ref<HTMLDivElement | any>(null)
+const excelContainer = ref<HTMLDivElement | any>(null)
 
 // ==================== 类型推断与标准化 ====================
 const extensionMap: Record<string, string> = {
@@ -186,7 +196,9 @@ const loadFile = async () => {
       if (!buffer) return
       switch (normalizedType.value) {
         case 'ofd':
-          await renderOfdFile(buffer)
+          if (!props.useOfdPreview && !props.useOfdViewer) {
+            await renderOfdFile(buffer)
+          }
           break
         case 'word':
           await renderWordFile(buffer)
@@ -263,23 +275,14 @@ const rotateRight = async () => {
 // ==================== OFD 渲染 ====================
 const renderOfdFile = async (buffer: ArrayBuffer) => {
   if (!ofdContainer.value) return
+  const liteOfd = new LiteOfd();
   ofdContainer.value.innerHTML = '' // 清空旧内容
-  const width = ofdContainer.value.clientWidth
-  parseOfdDocument({
-    ofd: buffer,
-    success: (result) => {
-      if (!ofdContainer.value) return;
-      const divs = renderOfd(width, result[0]);
-      ofdContainer.value.innerHTML = '';
-      divs.forEach(div => ofdContainer.value!.appendChild(div));
-      loading.value = false;
-    },
-    fail: (err: any) => {
-      console.error('OFD加载失败:', err);
-      error.value = err.message || '文件加载失败，请重试。';
-      loading.value = false;
-    }
-  })
+  liteOfd.parse(buffer).then((data: any) => {
+    let ofdDiv = liteOfd.render(undefined, 'background-color: white; margin-top: 12px;width: 100%;')
+    ofdContainer.value.appendChild(ofdDiv)
+  }).catch((error) => {
+    console.error('解析OFD文件失败:', error);
+  });
 }
 
 // ==================== Word 渲染 ====================
