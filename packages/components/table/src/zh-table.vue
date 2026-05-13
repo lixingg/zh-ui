@@ -1,5 +1,5 @@
 <template>
-  <div class="pro-table">
+  <div class="zh-table">
     <el-table
         v-bind="$attrs"
         :data="displayData"
