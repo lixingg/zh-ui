@@ -1,5 +1,5 @@
 <template>
-  <div class="file-preview" :style="{ width: computedWidth }">
+  <div class="file-preview" :style="{ width: computedWidth,height:'100%' }">
     <!-- 加载状态 -->
     <div v-if="loading" class="preview-loading">
       <span class="spinner"></span> 文件加载中...
@@ -13,27 +13,36 @@
 
     <!-- PDF 预览 -->
     <div v-else-if="normalizedType === 'pdf'" class="preview-pdf">
-      <div class="toolbar">
-        <button @click="prevPage" :disabled="currentPage <= 1">上一页</button>
-        <span>{{ currentPage }} / {{ totalPages }}</span>
-        <button @click="nextPage" :disabled="currentPage >= totalPages">下一页</button>
-        <label>
-          缩放：
-          <select v-model.number="scale" @change="renderPdfPage">
-            <option :value="0.5">50%</option>
-            <option :value="0.75">75%</option>
-            <option :value="1">100%</option>
-            <option :value="1.25">125%</option>
-            <option :value="1.5">150%</option>
-            <option :value="2">200%</option>
-          </select>
-        </label>
-        <button @click="rotateLeft">↺ 左旋</button>
-        <button @click="rotateRight">↻ 右旋</button>
-      </div>
-      <div class="canvas-wrapper">
-        <canvas ref="pdfCanvas"></canvas>
-      </div>
+      <template v-if="usePdfViewer">
+        <iframe v-if="!isBlank"
+                :src="url"
+                style="width:100%; height:100%; border:none;"
+        />
+      </template>
+
+      <template v-else>
+        <div class="toolbar">
+          <button @click="prevPage" :disabled="currentPage <= 1">上一页</button>
+          <span>{{ currentPage }} / {{ totalPages }}</span>
+          <button @click="nextPage" :disabled="currentPage >= totalPages">下一页</button>
+          <label>
+            缩放：
+            <select v-model.number="scale" @change="renderPdfPage">
+              <option :value="0.5">50%</option>
+              <option :value="0.75">75%</option>
+              <option :value="1">100%</option>
+              <option :value="1.25">125%</option>
+              <option :value="1.5">150%</option>
+              <option :value="2">200%</option>
+            </select>
+          </label>
+          <button @click="rotateLeft">↺ 左旋</button>
+          <button @click="rotateRight">↻ 右旋</button>
+        </div>
+        <div class="canvas-wrapper" ref="pdfViewerRef" id="pdfViewerRef">
+          <canvas ref="pdfCanvas" class="pdfViewer"></canvas>
+        </div>
+      </template>
     </div>
 
     <!-- OFD 预览 -->
@@ -51,14 +60,9 @@
 </template>
 
 <script setup lang="ts">
-import {ref, computed, watch, onMounted, onUnmounted} from 'vue'
+import {ref, computed, watch, onMounted, onUnmounted, nextTick} from 'vue'
 // PDF
-// import * as pdfjsLib from 'pdfjs-dist/build/pdf.mjs'
-// 静态导入 worker（Vite 会将 .mjs 作为资源处理）
-// import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
-
 import pdfjsLib from "@bundled-es-modules/pdfjs-dist/build/pdf";
-import viewer from "@bundled-es-modules/pdfjs-dist/web/pdf_viewer";
 import workerSrc from '@bundled-es-modules/pdfjs-dist/build/pdf.worker.js?url'
 // OFD
 import {parseOfdDocument, renderOfd} from 'ofd.js'
@@ -91,6 +95,9 @@ const props = withDefaults(
       initialRotation?: number
       /** 是否自动根据文件扩展名推断类型（默认 true） */
       autoDetect?: boolean
+      usePdfViewer?: boolean
+      isBlank?: boolean
+
     }>(),
     {
       width: '100%',
@@ -98,6 +105,8 @@ const props = withDefaults(
       initialScale: 1,
       initialRotation: 0,
       autoDetect: true,
+      usePdfViewer: true,
+      isBlank: false
     }
 )
 
@@ -106,6 +115,7 @@ const loading = ref(false)
 const error = ref<string | null>(null)
 
 // PDF 专用
+const pdfViewerRef = ref<HTMLDivElement | null>(null)
 const pdfCanvas = ref<HTMLCanvasElement | null>(null)
 const currentPage = ref(props.initialPage)
 const totalPages = ref(0)
@@ -163,7 +173,14 @@ const loadFile = async () => {
 
   try {
     if (normalizedType.value === 'pdf') {
-      await loadPdf()
+      if (!props.usePdfViewer) {
+        await loadPdf()
+      } else {
+        if (props.isBlank) {
+          window.open(props.url)
+        }
+      }
+
     } else {
       const buffer = await fetchFileBuffer(props.url)
       if (!buffer) return
@@ -390,4 +407,17 @@ canvas {
   border: 1px solid #ddd;
   padding: 4px 8px;
 }
+
+.preview-pdf {
+  height: 100%;
+  width: 100%;
+}
+
+/*.preview-pdf {
+  position: relative;
+}
+
+.canvas-wrapper {
+  position: absolute;
+}*/
 </style>
