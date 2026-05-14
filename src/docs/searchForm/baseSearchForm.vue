@@ -1,6 +1,6 @@
 <template>
   <div class="demo">
-    <h4>多个筛选条件展示</h4>
+    <h3>多个筛选条件展示</h3>
     <zh-search-form
         v-model="queryParams"
         :items="searchItems"
@@ -10,7 +10,6 @@
         @search="onSearch"
         @reset="onReset"
         @export="handleExport"
-        @collapse-change="(c) => console.log('折叠状态:', c)"
     >
       <!-- 自定义一个条件：使用插槽，注意插槽名与 prop 相同 -->
       <template #customField="{ value, update }">
@@ -26,7 +25,7 @@
       </template>
     </zh-search-form>
     <el-divider />
-    <h4>单行筛选条件展示</h4>
+    <h3>单行筛选条件展示</h3>
     <zh-search-form
         v-model="queryParams"
         :items="searchItems1"
@@ -37,7 +36,6 @@
         @search="onSearch"
         @reset="onReset"
         @export="handleExport"
-        @collapse-change="(c) => console.log('折叠状态:', c)"
     >
       <!-- 自定义一个条件：使用插槽，注意插槽名与 prop 相同 -->
       <template #customField="{ value, update }">
@@ -67,6 +65,7 @@ const queryParams = ref({
   customField: '',
   customInput: ''
 })
+// 通过计算属性来实现双向绑定
 const localCustomInput = computed({
   get: () => queryParams.value.customInput,
   set: (val) => { queryParams.value.customInput = val }
@@ -114,6 +113,7 @@ const searchItems: any[] = [
   { type: 'input', prop: 'customField', label: '自定义1', span: 12 },
   { type: 'input', prop: 'customInput', label: '自定义2', span: 12 }
 ]
+// 搜索项配置2
 const searchItems1 = searchItems.slice(0, 3)
 const onSearch = (params: typeof queryParams.value) => {
   console.log('查询参数:', params)
