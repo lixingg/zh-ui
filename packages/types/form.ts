@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'vue'
 import type { FormItemRule, UploadUserFile } from 'element-plus'
+import any = jasmine.any;
 
 // 基础配置
 export interface BaseFieldConfig {
