@@ -80,7 +80,7 @@ const removeFile = (file: any) => {
     }, 500)
   }
 
-  const fields = [
+  const fields:any = [
     {
       field: 'name',
       label: '姓名',

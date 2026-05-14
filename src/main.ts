@@ -5,7 +5,7 @@ import App from './App.vue'
 import './assets/style/index.scss'
 import './assets/style/cyanosis.markdown.scss' // markdown主题 掘金
 import ElementPlus from 'element-plus'
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
 import ZHUI from '../packages/components'

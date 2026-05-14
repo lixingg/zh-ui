@@ -1,7 +1,6 @@
 import { App } from 'vue'
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 export * from 'echarts'
 export * from 'echarts-gl'
@@ -31,6 +30,7 @@ export * from './qrcode'
 export * from './ signature'
 export * from './fileViewer'
 export * from './form'
+export * from './searchForm'
 
 import button from './button'
 import icon from './icon'
@@ -56,6 +56,7 @@ import signature from "./ signature"
 import fileViewer from "./fileViewer"
 import directives from "./directive"
 import form from "./form"
+import searchForm from "./searchForm"
 
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
@@ -83,7 +84,8 @@ const components = [
   qrcode,
   signature,
   fileViewer,
-  form
+  form,
+  searchForm
 ]
 
 export default {
@@ -94,8 +96,5 @@ export default {
     ElementPlus.install(app, options);
     components.map((item) => item.install(app))
     app.use(directives)
-    app.use(ElementPlus, {
-      locale: zhCn,
-    })
   }
 }

@@ -27,4 +27,9 @@ export const formComponent: RouteRecordRaw[] = [
     meta: { title: 'form 表单' },
     component: () => import('@/docs/form/README.md')
   },
+  {
+    path: 'searchForm',
+    meta: { title: 'searchForm 搜索栏' },
+    component: () => import('@/docs/searchForm/README.md')
+  },
 ]
