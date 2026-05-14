@@ -59,31 +59,39 @@
     </el-table>
 
     <!-- 分页 -->
-    <el-pagination
-        v-if="paginationConfig.show"
-        v-model:current-page="internalCurrentPage"
-        v-model:page-size="internalPageSize"
-        :total="paginationConfig.total ?? totalForFront"
-        :page-sizes="paginationConfig.pageSizes ?? [10, 20, 50, 100]"
-        :layout="paginationConfig.layout ?? 'total, sizes, prev, pager, next, jumper'"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-    />
+    <div v-if="paginationConfig.show"
+         class="zh-pagination_wrapper"
+         :style="{'justify-content':POSITION[paginationConfig.align],...paginationConfig.style}">
+      <el-pagination
+          v-model:current-page="internalCurrentPage"
+          v-model:page-size="internalPageSize"
+          :total="paginationConfig.total ?? totalForFront"
+          :page-sizes="paginationConfig.pageSizes ?? [10, 20, 50, 100]"
+          :layout="paginationConfig.layout ?? 'total, sizes, prev, pager, next, jumper'"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, type VNode } from 'vue';
-import type { ProTableProps, Column, PaginationConfig } from './types';
+import {computed, ref, watch, type VNode} from 'vue';
+import type {ProTableProps, Column, PaginationConfig} from './types';
 
+const POSITION = {
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end'
+}
 const props = withDefaults(defineProps<ProTableProps>(), {
   border: true,
   stripe: false,
   rowKey: 'id',
   loading: false,
   pagination: undefined,
-  height:'auto',
-  maxHeight:'100%'
+  height: 'auto',
+  maxHeight: '100%',
 });
 
 const emit = defineEmits<{
@@ -99,14 +107,16 @@ const internalPageSize = ref(defaultPageSize);
 // 解析分页配置
 const paginationConfig = computed<PaginationConfig>(() => {
   if (props.pagination === false || props.pagination === undefined) {
-    return { show: false };
+    return {show: false};
   }
   if (props.pagination === true) {
-    return { show: true, type: 'front', currentPage: 1, pageSize: defaultPageSize };
+    return {show: true, align: 'right', type: 'front',style:{}, currentPage: 1, pageSize: defaultPageSize};
   }
   return {
     show: true,
     type: 'front',
+    align: 'right',
+    style:{},
     currentPage: 1,
     pageSize: defaultPageSize,
     ...props.pagination,
@@ -116,10 +126,10 @@ const paginationConfig = computed<PaginationConfig>(() => {
 // 同步外部页数（若外部受控）
 watch(() => paginationConfig.value.currentPage, (val) => {
   if (val !== undefined) internalCurrentPage.value = val;
-}, { immediate: true });
+}, {immediate: true});
 watch(() => paginationConfig.value.pageSize, (val) => {
   if (val !== undefined) internalPageSize.value = val;
-}, { immediate: true });
+}, {immediate: true});
 
 // 前端模式下 total 自动取数据长度
 const totalForFront = computed(() => props.data.length);
@@ -131,7 +141,7 @@ const displayData = computed(() => {
   }
   const start = (internalCurrentPage.value - 1) * internalPageSize.value;
   const end = start + internalPageSize.value;
-  console.log('props.data',props.data)
+  console.log('props.data', props.data)
   return props.data.slice(start, end);
 });
 
@@ -154,9 +164,9 @@ const computedSpanMethod = computed(() => {
   if (autoMergeCols.length === 0) return undefined;
 
   // 生成合并信息映射
-  return ({ row, column, rowIndex }: any) => {
+  return ({row, column, rowIndex}: any) => {
     const colConfig = props.columns.find(c => c.prop === column.property);
-    if (!colConfig || colConfig.merge !== 'auto') return { rowspan: 1, colspan: 1 };
+    if (!colConfig || colConfig.merge !== 'auto') return {rowspan: 1, colspan: 1};
 
     // 查找同列相邻相同值的范围
     const currentValue = row[column.property];
@@ -165,7 +175,7 @@ const computedSpanMethod = computed(() => {
     // 向上保留第一个
     for (let i = rowIndex - 1; i >= 0; i--) {
       if (allData[i][column.property] === currentValue) {
-        return { rowspan: 0, colspan: 0 }; // 已被上方合并，隐藏
+        return {rowspan: 0, colspan: 0}; // 已被上方合并，隐藏
       } else {
         break;
       }
@@ -178,13 +188,13 @@ const computedSpanMethod = computed(() => {
         break;
       }
     }
-    return { rowspan, colspan: 1 };
+    return {rowspan, colspan: 1};
   };
 });
 
 // 递归 props 转 el-table-column 属性
 const getColumnProps = (col: Column) => {
-  const { render, component, componentProps, componentEvents, formatter, merge, children, ...rest } = col;
+  const {render, component, componentProps, componentEvents, formatter, merge, children, ...rest} = col;
   return rest;
 };
 
@@ -198,3 +208,13 @@ const tableEvents = {
   // 可选择性绑定
 };
 </script>
+<style lang="scss" scoped>
+.zh-pagination_wrapper {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 24px 0;
+  text-align: right;
+}
+</style>
+

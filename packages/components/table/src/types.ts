@@ -1,4 +1,4 @@
-import type { VNode, Component } from 'vue';
+import type {VNode, Component} from 'vue';
 
 export interface Column {
     prop: string;                             // 字段名
@@ -35,9 +35,11 @@ export interface PaginationConfig {
     show?: boolean;
     /** 分页模式：前端假分页或后端分页 */
     type?: 'front' | 'backend';
+    align?: 'left' | 'center' | 'right';
     currentPage?: number;
     pageSize?: number;
     total?: number;
+    style?: any;
     pageSizes?: number[];
     layout?: string;
     /** 页码或页大小改变时触发 */
@@ -55,5 +57,6 @@ export interface ProTableProps {
     height?: string | number;
     maxHeight?: string | number;
     rowKey?: string;
+    paginationLayout?: any
     // ... 其它 el-table 原生属性均可透传
 }

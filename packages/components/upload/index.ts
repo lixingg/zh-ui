@@ -1,6 +1,7 @@
 import ZhUpload from './src/zh-upload.vue'
 import ZhUploadCard from "./src/zh-uploadCard.vue";
 import zhUploadDialog from './src/zh-uploadDialog.vue'
+import ZhCupload from './src/zh-cupload.vue'
 import { App } from 'vue'
 
 export default {
@@ -8,6 +9,7 @@ export default {
     app.component('ZhUpload', ZhUpload)
     app.component('ZhUploadCard', ZhUploadCard)
     app.component('zhUploadDialog', zhUploadDialog)
+    app.component('ZhCupload', ZhCupload)
   }
 }
-export { ZhUpload,ZhUploadCard,zhUploadDialog }
+export { ZhUpload,ZhUploadCard,zhUploadDialog,ZhCupload }

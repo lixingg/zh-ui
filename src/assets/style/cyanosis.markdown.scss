@@ -1,4 +1,3 @@
-
 $monospace-font: Menlo, Monaco, Consolas, "Courier New", monospace;
 $line-space: 16px;
 $id: "--cyanosis";
@@ -130,16 +129,16 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
   @include transitionColor();
   @include LightAndDark();
 
-  &.__dark{
+  &.__dark {
     @include LightAndDark(true);
   }
 
-  h1 {
+  > h1 {
     @include headTitle(4px, 30px);
     @include transitionColor();
   }
 
-  h2 {
+  > h2 {
     position: relative;
     padding-left: 10px;
     padding-right: 10px;
@@ -162,7 +161,7 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
     }
   }
 
-  h3 {
+  > h3 {
     position: relative;
     @include headTitle(0, 20px, 30px);
     padding-left: 6px;
@@ -175,35 +174,35 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
     }
   }
 
-  h4 {
+  > h4 {
     @include headTitle(0, 16px, 24px);
     padding-left: 6px;
     @include transitionColor();
   }
 
-  h5 {
+  > h5 {
     @include headTitle(0, 14px, 18px);
     padding-left: 6px;
     @include transitionColor();
   }
 
-  h6 {
+  > h6 {
     @include headTitle(0, 12px, 12px);
     padding-left: 6px;
     @include transitionColor();
   }
 
-  p {
+  > p {
     line-height: inherit;
     margin-top: $line-space;
     margin-bottom: $line-space;
   }
 
-  img {
+  > img {
     max-width: 100%;
   }
 
-  hr {
+  > hr {
     position: relative;
     width: 98%;
     height: 1px;
@@ -240,7 +239,7 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
     }
   }
 
-  code {
+  > code {
     padding: 0.065em 0.4em;
     font-family: $monospace-font;
     font-size: 0.87em;
@@ -251,7 +250,7 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
     border-radius: 2px;
   }
 
-  pre {
+  > pre {
     font-family: $monospace-font;
     overflow: auto;
     position: relative;
@@ -284,7 +283,7 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
     }
   }
 
-  a {
+  > a {
     position: relative;
     text-decoration: none;
     color: var(--cyanosis-link-color);
@@ -318,7 +317,7 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
     }
   }
 
-  >table {
+  > table {
     display: inline-block !important;
     font-size: 12px;
     width: auto;
@@ -360,7 +359,7 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
     }
   }
 
-  blockquote {
+  > blockquote {
     @include blockquoteColor;
     padding: 1px 20px;
     margin: 22px 0;
@@ -381,22 +380,22 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
     }
   }
 
-  b,
-  strong {
+  > b,
+  > strong {
     color: var(--cyanosis-strong-color);
   }
 
-  i,
-  em {
+  > i,
+  > em {
     color: var(--cyanosis-em-color);
   }
 
-  del {
+  > del {
     color: var(--cyanosis-del-color);
   }
 
-  ol,
-  ul {
+  > ol,
+  > ul {
     padding-left: 28px;
 
     li {
@@ -419,12 +418,12 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
     }
   }
 
-  ol li {
+  > ol li {
     padding-left: 6px;
   }
 
   // details & summary
-  details {
+  > details {
     & > summary {
       outline: none;
       color: var(--cyanosis-title-color);
@@ -444,12 +443,12 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
   }
 
   // selection
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  > h1,
+  > h2,
+  > h3,
+  > h4,
+  > h5,
+  > h6 {
     &::selection {
       @include selectionColor();
       color: var(--cyanosis-slct-title-color);
@@ -457,36 +456,37 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
     }
   }
 
-  p,
-  ol li,
-  ul li {
+  > p,
+  > ol li,
+  > ul li {
     &::selection {
       color: var(--cyanosis-slct-text-color);
       background-color: var(--cyanosis-slct-bg-color);
     }
   }
 
-  a,
-  b,
-  strong,
-  i,
-  em {
+  > a,
+  > b,
+  > strong,
+  > i,
+  > em {
     &::selection {
       background-color: var(--cyanosis-slct-elbg-color);
     }
   }
 
-  del::selection {
+  > del::selection {
     color: var(--cyanosis-slct-del-color);
     background-color: var(--cyanosis-slct-elbg-color);
   }
 
-  table {
+  > table {
     thead th {
       &::selection {
         background-color: transparent;
       }
     }
+
     tbody td {
       &::selection {
         background-color: var(--cyanosis-slct-bg-color);
@@ -494,17 +494,17 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
     }
   }
 
-  code::selection {
+  > code::selection {
     background-color: var(--cyanosis-slct-codebg-color);
   }
 
-  pre {
+  > pre {
     > code::selection {
       background-color: var(--cyanosis-slct-prebg-color);
     }
   }
 
-  .contains-task-list {
+  > .contains-task-list {
     padding-left: 14px;
     list-style: none;
 
@@ -548,15 +548,15 @@ $d-selectionPreCodeBgColor: rgba(160, 200, 255, 0.25);
 
   // @media
   @media (max-width: 720px) {
-    h1 {
+    > h1 {
       font-size: 24px;
     }
 
-    h2 {
+    > h2 {
       font-size: 20px;
     }
 
-    h3 {
+    > h3 {
       font-size: 18px;
     }
   }
