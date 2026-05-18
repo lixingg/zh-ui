@@ -31,6 +31,8 @@ export * from './ signature'
 export * from './fileViewer'
 export * from './form'
 export * from './searchForm'
+export * from './provider'
+export * from '../utils/hooks/usePermission'
 
 import button from './button'
 import icon from './icon'
@@ -57,6 +59,7 @@ import fileViewer from "./fileViewer"
 import directives from "./directive"
 import form from "./form"
 import searchForm from "./searchForm"
+import provider from "./provider"
 
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
@@ -85,7 +88,8 @@ const components = [
   signature,
   fileViewer,
   form,
-  searchForm
+  searchForm,
+  provider
 ]
 
 export default {

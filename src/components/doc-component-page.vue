@@ -10,8 +10,10 @@ const asideKeys = [
   'echartsShowComponents',
   'mapShowComponents',
   'directiveComponents',
+  'providerShowComponents',
   'chatComponents',
   'aiComponents',
+
 ]
 </script>
 
