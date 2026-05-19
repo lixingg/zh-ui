@@ -13,6 +13,7 @@ const asideKeys = [
   'providerShowComponents',
   'chatComponents',
   'aiComponents',
+  'videoPlayerComponents',
 
 ]
 </script>

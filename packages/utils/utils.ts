@@ -89,3 +89,48 @@ export function getMacaronColor(index: number): string {
     ]
     return colors[index % colors.length]
 }
+
+/**
+ * 动态加载 JavaScript
+ */
+export function loadScript(src: string, id?: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        // 避免重复加载
+        if (id && document.getElementById(id)) return resolve()
+        const existing = document.querySelector(`script[src="${src}"]`)
+        if (existing) {
+            existing.addEventListener('load', () => resolve())
+            existing.addEventListener('error', () => reject(new Error(`脚本加载失败: ${src}`)))
+            return
+        }
+        const script = document.createElement('script')
+        script.src = src
+        script.async = false            // 保证执行顺序
+        if (id) script.id = id
+        script.onload = () => resolve()
+        script.onerror = () => reject(new Error(`脚本加载失败: ${src}`))
+        document.head.appendChild(script)
+    })
+}
+
+/**
+ * 动态加载 CSS
+ */
+export function loadCSS(href: string, id?: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        if (id && document.getElementById(id)) return resolve()
+        const existing = document.querySelector(`link[href="${href}"]`)
+        if (existing) {
+            // 样式加载不易监听，直接认为成功
+            resolve()
+            return
+        }
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = href
+        if (id) link.id = id
+        link.onload = () => resolve()
+        link.onerror = () => reject(new Error(`样式加载失败: ${href}`))
+        document.head.appendChild(link)
+    })
+}

@@ -11,6 +11,7 @@ import baseAuthControl from './baseAuthControl.vue';
 ## 基础用法
 
 在根组件（App.vue）定义全局权限
+
 <show-code showPath="provider/baseAuthProvider">
 <baseAuthProvider></baseAuthProvider>
 </show-code>

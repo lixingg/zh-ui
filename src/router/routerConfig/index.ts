@@ -10,6 +10,7 @@ import {directiveComponent} from "./directive.component";
 import {chatComponent} from "./chatShow.component";
 import {aiComponent} from "./aiShow.component";
 import {providerShowComponent} from "./providerShow.component";
+import {videoPlayerComponent} from "./videoPlayer.component"
 
 export interface routerType {
     title: string
@@ -64,7 +65,12 @@ export const routerDocsComponentConfig = {
     aiComponents: {
         title: 'AI通讯',
         routerData: aiComponent
+    },
+    videoPlayerComponents: {
+        title: '播放器',
+        routerData: videoPlayerComponent
     }
+
 } as routerConfigType
 
 export const routerDocsComponent = Object.values(routerDocsComponentConfig).flatMap(
