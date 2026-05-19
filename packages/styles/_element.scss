@@ -1,3 +1,5 @@
+@use "./_variable.scss" as *;
+
 :root {
   --el-menu-base-level-padding: 38px !important;
   --el-menu-level-padding: 24px !important;
@@ -108,7 +110,7 @@
   --el-input-inner-height: 40px !important;
 }
 
-.el-tree-node__content>.el-tree-node__expand-icon {
+.el-tree-node__content > .el-tree-node__expand-icon {
   padding: 6px 10px !important;
 }
 
@@ -130,11 +132,11 @@
     height: $headerHeight;
     border: none;
 
-    >.el-menu-item {
+    > .el-menu-item {
       margin: 0 16px;
     }
 
-    >.el-sub-menu {
+    > .el-sub-menu {
       margin: 0 16px;
     }
   }
@@ -167,7 +169,7 @@
   --el-upload-list-picture-card-size: 90px !important;
 }
 
-.el-upload-list__item>div {
+.el-upload-list__item > div {
   width: 100%;
   display: flex;
   align-items: center;
@@ -236,12 +238,9 @@
 
 .el-button:not(.is-link):hover {
   color: var(--el-button-hover-text-color) !important;
-  border-color: var(--el-button-hover-border-color) !important;
-  ;
-  background-color: var(--el-button-hover-bg-color) !important;
-  ;
-  outline: 0 !important;
-  ;
+  border-color: var(--el-button-hover-border-color) !important;;
+  background-color: var(--el-button-hover-bg-color) !important;;
+  outline: 0 !important;;
 }
 
 .el-dropdown {
@@ -260,13 +259,13 @@
   outline: 0 !important;
 }
 
-.el-radio-button__original-radio:checked+.el-radio-button__inner {
+.el-radio-button__original-radio:checked + .el-radio-button__inner {
   color: var(--el-radio-button-checked-bg-color, var(--el-color-primary)) !important;
   background-color: #fff !important;
   border-color: var(--el-radio-button-checked-bg-color, var(--el-color-primary)) !important;
 }
 
-.radioBtn .el-radio-button__original-radio:checked+.el-radio-button__inner {
+.radioBtn .el-radio-button__original-radio:checked + .el-radio-button__inner {
   color: #fff !important;
   background-color: var(--el-radio-button-checked-bg-color, var(--el-color-primary)) !important;
   border-color: var(--el-radio-button-checked-bg-color, var(--el-color-primary)) !important;
@@ -319,6 +318,7 @@
 .mb0 {
   margin-bottom: 0 !important;
 }
-.pd-t0{
-  padding-top: 0!important;
+
+.pd-t0 {
+  padding-top: 0 !important;
 }

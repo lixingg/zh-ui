@@ -1,8 +1,9 @@
 {
   "name": "zhui-plus",
-  "version": "1.0.12",
+  "version": "1.0.17",
   "description": "打造属于自己的个性化ui组件库",
-  "main": "dist/zh-ui.es.js",
+  "main": "dist/zhui-plus.cjs.js",
+  "module": "dist/zhui-plus.es.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

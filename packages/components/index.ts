@@ -66,7 +66,7 @@ import videoPlayer from "./videoPlayer"
 
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
-import '../../src/assets/style/index.scss'
+import '../styles/index.scss'
 
 const components = [
     button,
@@ -102,8 +102,11 @@ export default {
         /*    for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
               app.component(key, component)
             }*/
+        console.log('zhui-plus-install', options)
+        alert(JSON.stringify(options))
         ElementPlus.install(app, options);
         components.map((item) => item.install(app))
         app.use(directives)
     }
 }
+

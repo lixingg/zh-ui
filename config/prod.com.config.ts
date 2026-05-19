@@ -14,7 +14,7 @@ export default defineConfig({
     terserOptions: {
       // 生产环境移除console
       compress: {
-        drop_console: true,
+        drop_console: false,
         drop_debugger: true
       }
     },
@@ -33,6 +33,8 @@ export default defineConfig({
       // 确保外部化处理那些你不想打包进库的依赖
       external: ['vue', 'tailwindcss', '@element-plus/icons-vue'],
       output: {
+        exports: 'named',  // 告诉 Rollup 这是一个有具名导出的模块
+        preserveModules: false, // 可以是 true 保留文件结构，按需选择
         // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
         globals: {
           vue: 'Vue',
