@@ -97,16 +97,13 @@ const components = [
     videoPlayer
 ]
 
-export default {
-    install(app: App, options?: any) {
-        /*    for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
-              app.component(key, component)
-            }*/
-        console.log('zhui-plus-install', options)
-        alert(JSON.stringify(options))
-        ElementPlus.install(app, options);
-        components.map((item) => item.install(app))
-        app.use(directives)
-    }
+const install = (app: App, options?: any) => {
+    /*    for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
+          app.component(key, component)
+        }*/
+    // ElementPlus.install(app, options);
+    components.map((item) => item.install(app))
+    app.use(directives)
 }
+export default install
 

@@ -9,35 +9,40 @@
       ref="containerRef"
   >
     <!-- 视频元素 -->
-    <video
-        ref="videoRef"
-        :src="isNative ? src : undefined"
-        :poster="poster"
-        :autoplay="autoplay"
-        :muted="muted"
-        :loop="false"
-        playsinline
-        webkit-playsinline
-        x5-video-player-type="h5"
-        x5-video-player-fullscreen="true"
-        @loadedmetadata="onLoadedMetadata"
-        @canplay="onCanPlay"
-        @play="onPlay"
-        @pause="onPause"
-        @ended="onEnded"
-        @timeupdate="onTimeUpdate"
-        @volumechange="onVolumeChange"
-        @error="onVideoError"
-        @waiting="onWaiting"
-        class="hls-player__video"
+    <video v-if="src"
+           ref="videoRef"
+           :src="isNative ? src : undefined"
+           :poster="poster"
+           :autoplay="autoplay"
+           :muted="muted"
+           :loop="false"
+           :controls="defaultControls"
+           playsinline
+           webkit-playsinline
+           x5-video-player-type="h5"
+           x5-video-player-fullscreen="true"
+           @loadedmetadata="onLoadedMetadata"
+           @canplay="onCanPlay"
+           @play="onPlay"
+           @pause="onPause"
+           @ended="onEnded"
+           @timeupdate="onTimeUpdate"
+           @volumechange="onVolumeChange"
+           @error="onVideoError"
+           @waiting="onWaiting"
+           class="hls-player__video"
     />
-
+    <div v-else class="noData">
+      暂无监控数据
+    </div>
     <!-- 错误覆盖层 -->
     <Transition name="fade">
       <div v-if="error" class="hls-player__error-overlay">
         <slot name="error" :error="error" :retry="retry">
           <div class="hls-player__error-content">
-            <el-icon :size="32"><WarningFilled /></el-icon>
+            <el-icon :size="32">
+              <WarningFilled/>
+            </el-icon>
             <p class="hls-player__error-text">
               {{ error.message || '播放失败' }}
             </p>
@@ -73,7 +78,7 @@
             :model-value="currentTime"
             :max="duration || 0"
             :show-tooltip="false"
-            @input="seek"
+            @change="seek"
             size="small"
         />
       </div>
@@ -133,7 +138,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted, shallowRef } from 'vue'
+import {ref, computed, watch, onMounted, onUnmounted, shallowRef} from 'vue'
 import Hls from 'hls.js'
 import {
   VideoPlay,
@@ -156,7 +161,8 @@ interface Props {
   width?: string | number
   height?: string | number
   hlsConfig?: Partial<Hls['config']>
-  errorDisplay?: 'all' | 'fatal'
+  errorDisplay?: 'all' | 'fatal',
+  defaultControls?:boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -168,6 +174,9 @@ const props = withDefaults(defineProps<Props>(), {
   height: 'auto',
   hlsConfig: () => ({}),
   errorDisplay: 'fatal',
+  defaultControls:false,
+  src: "",
+  poster: ""
 })
 
 // ==================== Emits ====================
@@ -183,6 +192,7 @@ const emit = defineEmits<{
   (e: 'hls-error', data: any): void
   (e: 'hls-manifest-parsed', data: any): void
   (e: 'fullscreenchange', isFullscreen: boolean): void
+  (e: 'hls-level-updated', data: any): void
 }>()
 
 // ==================== Refs ====================
@@ -246,22 +256,20 @@ function initHls() {
   })
 
   hls.attachMedia(video)
-  hls.loadSource(props.src)
+  hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+    hls.loadSource(props.src);
 
-  hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-    emit('hls-manifest-parsed', data)
-    if (props.autoplay) {
-      video.play().catch(() => {})
-    }
-  })
-
-  hls.on(Hls.Events.ERROR, (event, data) => {
-    emit('hls-error', data)
-    if (data.fatal) {
-      setError(data.details, true, data)
-    } else if (props.errorDisplay === 'all') {
-      setError(data.details, false, data)
-    }
+    hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+      emit("hls-manifest-parsed", data);
+      if (props.autoplay) {
+        video.play().catch(() => {
+        });
+      }
+    });
+    hls.on(Hls.Events.LEVEL_UPDATED, (event, data) => {
+      duration.value = data.details?.totalduration || 0
+      emit("hls-level-updated", data);
+    })
   })
 
   hlsInstance.value = hls
@@ -275,8 +283,8 @@ function destroyHls() {
 }
 
 function setError(message: string, fatal: boolean, originalEvent?: any) {
-  error.value = { message, fatal }
-  emit('error', { type: 'hls', message, originalEvent })
+  error.value = {message, fatal}
+  emit('error', {type: 'hls', message, originalEvent})
 }
 
 function clearError() {
@@ -292,7 +300,8 @@ function togglePlay() {
   const video = videoRef.value
   if (!video) return
   if (video.paused) {
-    video.play().catch(() => {})
+    video.play().catch(() => {
+    })
   } else {
     video.pause()
   }
@@ -337,37 +346,45 @@ async function toggleFullscreen() {
 function onLoadedMetadata(e: Event) {
   duration.value = (e.target as HTMLVideoElement).duration || 0
 }
+
 function onCanPlay(e: Event) {
   emit('canplay', e)
 }
+
 function onPlay(e: Event) {
   playing.value = true
   emit('play', e)
 }
+
 function onPause(e: Event) {
   playing.value = false
   emit('pause', e)
 }
+
 function onEnded(e: Event) {
   playing.value = false
   emit('ended', e)
 }
+
 function onTimeUpdate(e: Event) {
   currentTime.value = (e.target as HTMLVideoElement).currentTime
   emit('timeupdate', e)
 }
+
 function onVolumeChange(e: Event) {
   const video = e.target as HTMLVideoElement
   volume.value = video.volume
   muted.value = video.muted
   emit('volumechange', e)
 }
+
 function onVideoError(e: Event) {
   const video = e.target as HTMLVideoElement
   const msg = video.error?.message || '视频加载错误'
   setError(msg, true, e)
-  emit('error', { type: 'video', message: msg, originalEvent: e })
+  emit('error', {type: 'video', message: msg, originalEvent: e})
 }
+
 function onWaiting() {
   // 可扩展 loading 状态
 }
@@ -418,6 +435,8 @@ watch(() => props.src, () => {
   background-color: #000;
   line-height: 0;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
   --hls-controls-bg: rgba(0, 0, 0, 0.7);
   --hls-text-color: #fff;
   --hls-primary-color: #409eff;
@@ -440,10 +459,12 @@ watch(() => props.src, () => {
   justify-content: center;
   z-index: 10;
 }
+
 .hls-player__error-content {
   text-align: center;
   color: var(--hls-text-color);
 }
+
 .hls-player__error-text {
   margin: 12px 0;
   font-size: 14px;
@@ -465,6 +486,7 @@ watch(() => props.src, () => {
   opacity: 0;
   transition: opacity 0.3s;
 }
+
 .hls-player:hover .hls-player__controls {
   opacity: 1;
 }
@@ -475,6 +497,7 @@ watch(() => props.src, () => {
   gap: 8px;
   flex-shrink: 0;
 }
+
 .hls-player__live-badge {
   display: inline-flex;
   align-items: center;
@@ -487,11 +510,13 @@ watch(() => props.src, () => {
   font-weight: bold;
   line-height: 20px;
 }
+
 .hls-player__time {
   color: var(--hls-text-color);
   font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
+
 .hls-player__time-separator {
   color: rgba(255, 255, 255, 0.5);
   margin: 0 2px;
@@ -508,12 +533,14 @@ watch(() => props.src, () => {
   gap: 8px;
   flex-shrink: 0;
 }
+
 .hls-player__volume {
   display: flex;
   align-items: center;
   gap: 4px;
   width: 120px;
 }
+
 .hls-player__volume-slider {
   flex: 1;
 }
@@ -532,8 +559,17 @@ watch(() => props.src, () => {
 .fade-leave-active {
   transition: opacity 0.3s;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.noData {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  height: 100%;
 }
 </style>

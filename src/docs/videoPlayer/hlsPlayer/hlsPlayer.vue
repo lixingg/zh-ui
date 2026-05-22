@@ -16,7 +16,7 @@
     <el-divider/>
     <h3>自定义 Hls.js 配置</h3>
     <zh-hls-player
-        src="/stream.m3u8"
+        src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
         :hlsConfig="{
     maxBufferLength: 30,
     maxMaxBufferLength: 60,
@@ -26,12 +26,12 @@
     <el-divider/>
     <h3>自定义样式（通过 CSS 变量）</h3>
     <zh-hls-player
-        src="/stream.m3u8"
+        src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
         class="my-player"
     />
   <el-divider/>
   <h3>完全自定义控制栏</h3>
-  <zh-hls-player src="/stream.m3u8">
+  <zh-hls-player src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8">
     <template #controls="{ playing, togglePlay, currentTime, duration, seek }">
       <div style="background: #333; padding: 10px;">
         <button @click="togglePlay">{{ playing ? '暂停' : '播放' }}</button>
@@ -53,6 +53,10 @@
         <el-button @click="retry">重新加载</el-button>
       </div>
     </template>
+  </zh-hls-player>
+  <el-divider/>
+  <h3>使用默认空件</h3>
+  <zh-hls-player autoplay src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" :controls="false" :default-controls="true">
   </zh-hls-player>
 </template>
 <script setup lang="ts">

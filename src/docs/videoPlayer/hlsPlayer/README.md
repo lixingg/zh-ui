@@ -19,18 +19,19 @@ import hlsPlayer from './hlsPlayer.vue';
 
 ## hlsPlayer 属性
 
-| 属性           | 说明                                 | 类型                       | 默认值     |
-|--------------|------------------------------------|--------------------------|---------|
-| src          | m3u8 播放地址                          | string                   | --      | --   |
-| live         | 是否为直播，直播时会隐藏进度条并显示 LIVE 标识         | boolean                  | false   |
-| autoplay     | 是否自动播放（需配合 muted 使用）               | boolean                  | false   |
-| muted        | 是否静音                               | boolean                  | false   |
-| controls     | 是否显示默认控制栏（若使用自定义 controls 插槽则自动隐藏） | boolean                  | true    |
-| poster       | 视频封面图                              | string                   | --      |
-| width        | 播放器宽度                              | string \| number         | '100%'  |
-| height       | 播放器高度                              | string \| number         | 'auto'  |
-| hlsConfig    | Hls.js 初始化配置，会与组件内置配置合并            | Partial\<Hls\['config']> | {}      |
-| errorDisplay | 错误展示策略：'fatal' 仅致命错误，'all' 全部错误    | 'fatal' \| 'all'         | 'fatal' |
+| 属性               | 说明                                 | 类型                       | 默认值     |
+|------------------|------------------------------------|--------------------------|---------|
+| src              | m3u8 播放地址                          | string                   | --      | --   |
+| live             | 是否为直播，直播时会隐藏进度条并显示 LIVE 标识         | boolean                  | false   |
+| autoplay         | 是否自动播放（需配合 muted 使用）               | boolean                  | false   |
+| muted            | 是否静音                               | boolean                  | false   |
+| controls         | 是否显示默认控制栏（若使用自定义 controls 插槽则自动隐藏） | boolean                  | true    |
+| poster           | 视频封面图                              | string                   | --      |
+| width            | 播放器宽度                              | string \| number         | '100%'  |
+| height           | 播放器高度                              | string \| number         | 'auto'  |
+| hlsConfig        | Hls.js 初始化配置，会与组件内置配置合并            | Partial\<Hls\['config']> | {}      |
+| errorDisplay     | 错误展示策略：'fatal' 仅致命错误，'all' 全部错误    | 'fatal' \| 'all'         | 'fatal' |
+| default-controls | 是否使用默认控件                           | boolean                  | false   |
 
 ## hlsPlayer 事件
 
