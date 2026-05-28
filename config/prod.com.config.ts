@@ -4,6 +4,9 @@ import { resolve } from 'path'
 import baseConfig from './base.config' // 主要用于alias文件路径别名
 import copyPlugin from 'rollup-plugin-copy'
 import { fileURLToPath, URL } from "node:url";
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import AutoImport from 'unplugin-auto-import/vite'
 export default defineConfig({
   ...baseConfig,
   // 打包配置
@@ -28,6 +31,16 @@ export default defineConfig({
       plugins: [
         copyPlugin({
           targets: [{ src: 'node_modules/element-plus/dist/locale/*', dest: 'dist/locale' }],
+        }),
+        Components({
+          resolvers: [ElementPlusResolver()],
+          // 👇 这里指定自动生成的类型文件路径
+          dts: 'dist/types/components.d.ts',
+        }),
+        AutoImport({
+          resolvers: [ElementPlusResolver()],
+          // 👇 生成 API 的类型文件
+          dts: 'dist/types/auto-imports.d.ts',
         }),
       ],
       // 确保外部化处理那些你不想打包进库的依赖

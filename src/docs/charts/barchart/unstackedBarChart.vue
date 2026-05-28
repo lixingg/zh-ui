@@ -1,5 +1,5 @@
 <template>
-  <zh-barchart :seriesData="seriesData"
+  <zh-barChart :seriesData="seriesData"
                :stacked="false"
                :xAxisData="xAxisData"/>
 </template>

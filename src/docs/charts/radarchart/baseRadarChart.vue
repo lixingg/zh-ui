@@ -1,6 +1,6 @@
 <template>
   <div class="radar-demo">
-    <zh-radarchart
+    <zh-radarChart
         chart-id="skills"
         :indicator="indicators"
         :series-data="series"

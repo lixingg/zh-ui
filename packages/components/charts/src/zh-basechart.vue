@@ -8,7 +8,9 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount, markRaw ,defineProps,defineEmits} from 'vue'
-import * as echarts from 'echarts'
+import * as echarts from 'echarts';
+import * as glCharts from 'echarts-gl';
+
 import type { EChartsOption} from 'echarts/types/dist/shared'
 import { merge } from 'lodash-es'
 import { macaronsTheme } from '../../../utils/utils'

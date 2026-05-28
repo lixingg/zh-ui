@@ -1,5 +1,5 @@
 <template>
-  <zh-scatterchart
+  <zh-scatterChart
       chart-id="scatter-2"
       :data="scatterData"
       :symbol-size="10"

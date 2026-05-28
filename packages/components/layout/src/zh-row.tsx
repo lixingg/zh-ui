@@ -21,7 +21,7 @@ const props = {
 }
 
 const ZhRow = defineComponent({
-  name: 'BlRow',
+  name: 'ZhRow',
   props: props,
   setup(props, { slots }) {
     provide(

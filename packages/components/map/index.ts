@@ -1,18 +1,18 @@
-import zhAmap from './src/zh-amap.vue'
-import zhBmap from './src/zh-bmap.vue'
-import zhTmap from './src/zh-tmap.vue'
-import zhSmap from './src/zh-smap.vue'
-import zhOmap from './src/zh-omap.vue'
+import ZhAmap from './src/zh-amap.vue'
+import ZhBmap from './src/zh-bmap.vue'
+import ZhTmap from './src/zh-tmap.vue'
+import ZhSmap from './src/zh-smap.vue'
+import ZhOmap from './src/zh-omap.vue'
 import { App } from 'vue'
 
 export default {
   install(app: App) {
-    app.component('zh-amap', zhAmap)
-    app.component('zh-bmap', zhBmap)
-    app.component('zh-tmap', zhTmap)
-    app.component('zh-smap', zhSmap)
-    app.component('zh-omap', zhOmap)
+    app.component('ZhAmap', ZhAmap)
+    app.component('ZhBmap', ZhBmap)
+    app.component('ZhTmap', ZhTmap)
+    app.component('ZhSmap', ZhSmap)
+    app.component('ZhOmap', ZhOmap)
   }
 }
 
-export { zhAmap,zhBmap,zhTmap,zhSmap,zhOmap }
+export { ZhAmap,ZhBmap,ZhTmap,ZhSmap,ZhOmap }

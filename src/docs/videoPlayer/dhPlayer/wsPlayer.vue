@@ -1,5 +1,5 @@
 <template>
-  <zh-dh-player
+  <zh-dhPlayer
       ref="livePlayer"
       :config="liveConfig"
       height="500px"

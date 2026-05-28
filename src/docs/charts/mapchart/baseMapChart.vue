@@ -1,5 +1,5 @@
 <template>
-  <zh-mapchart :data="chartData" :points="points"/>
+  <zh-mapChart :data="chartData" :points="points"/>
 </template>
 <script setup lang="ts">
 import {ref, onMounted} from "vue";

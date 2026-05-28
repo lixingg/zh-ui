@@ -1,6 +1,6 @@
 <!-- components/LineChart.vue -->
 <template>
-  <zh-basechart
+  <zh-baseChart
       ref="baseChartRef"
       :chart-id="chartId"
       :custom-option="mergedOption"

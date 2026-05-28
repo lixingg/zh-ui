@@ -1,6 +1,6 @@
 <!-- components/MapChart.vue -->
 <template>
-  <zh-basechart
+  <zh-baseChart
       :chart-id="chartId"
       :custom-option="mergedOption"
       :chart-data="chartData"
@@ -27,7 +27,7 @@ const props = defineProps({
   width: {type: String, default: '100%'},
   background:{type: String, default:'#013954'},
   customOption: {type: Object as () => Partial<EChartsOption>, default: () => ({})},
-  geoJson: {type: Object, default: chinaGeoJson},
+  geoJson: {type: Object as any, default: chinaGeoJson},
   points: {type: Array as () => { value: []; itemStyle: Object }[], required: true},
 })
 

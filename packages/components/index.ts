@@ -1,9 +1,10 @@
 import {App} from 'vue'
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-
-export * from 'echarts'
-export * from 'echarts-gl'
+export * from '@element-plus/icons-vue'
+// export * from 'echarts'
+// export * from 'echarts-gl'
+// @ts-ignore
 export * from 'element-plus'
 export * from './button'
 export * from './icon'
@@ -101,8 +102,10 @@ const install = (app: App, options?: any) => {
     /*    for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
           app.component(key, component)
         }*/
-    // ElementPlus.install(app, options);
-    components.map((item) => item.install(app))
+    ElementPlus.install(app, options);
+    components.map((item) => {
+        item.install(app)
+    })
     app.use(directives)
 }
 export default install

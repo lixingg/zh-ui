@@ -1,4 +1,4 @@
-import ZhSignature from './src/zh- signature.vue'
+import ZhSignature from './src/zh-signature.vue'
 import { App } from 'vue'
 
 export default {

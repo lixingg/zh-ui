@@ -1,5 +1,5 @@
 <template>
-  <zh-aichat
+  <zh-aiChat
       :model-options="myModels"
       default-model="claude-3"
       v-model:dark="dark"

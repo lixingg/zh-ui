@@ -25,7 +25,7 @@ const props = {
 }
 
 const ZhCol = defineComponent({
-  name: 'BlCol',
+  name: 'ZhCol',
   props: props,
   setup(props, { slots }) {
     const gutter = inject(

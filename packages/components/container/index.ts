@@ -5,6 +5,7 @@ import ZhFooter from './src/zh-footer.vue'
 import ZhAside from './src/zh-aside.vue'
 import { App } from 'vue'
 
+
 export default {
   install(app: App) {
     app.component('ZhContainer', ZhContainer)

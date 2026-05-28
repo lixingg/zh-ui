@@ -1,5 +1,5 @@
 <template>
-  <zh-linechart :customOption="componentProps"/>
+  <zh-lineChart :customOption="componentProps"/>
 </template>
 <script setup lang="ts">
 import {defineProps} from "vue";

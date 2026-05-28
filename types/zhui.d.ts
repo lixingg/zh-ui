@@ -38,3 +38,39 @@ declare module 'ofd.js' {
 
   // 如果其他API，可以在这里继续补充
 }
+declare module 'unplugin-vue-components/vite' {
+  import { Plugin } from 'vite'
+
+  interface Options {
+    dirs?: string[]
+    extensions?: string[]
+    resolvers?: any[]
+    dts?: string | boolean
+    include?: RegExp[]
+    exclude?: RegExp[]
+    version?: number
+  }
+
+  function Components(options?: Options): Plugin
+  export default Components
+}
+
+declare module 'unplugin-auto-import/vite' {
+  import { Plugin } from 'vite'
+
+  interface Options {
+    resolvers?: any[]
+    dts?: string | boolean
+    eslintrc?: {
+      enabled?: boolean
+    }
+    imports?: (string | {
+      [key: string]: (string | [string, string])[]
+    })[]
+  }
+
+  function AutoImport(options?: Options): Plugin
+  export default AutoImport
+}
+
+

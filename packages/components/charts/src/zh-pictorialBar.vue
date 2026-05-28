@@ -1,6 +1,6 @@
 <!-- components/PictorialChart.vue -->
 <template>
-  <zh-basechart
+  <zh-baseChart
       :chart-id="chartId"
       :custom-option="mergedOption"
       :chart-data="chartData"
