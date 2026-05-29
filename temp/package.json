@@ -1,6 +1,6 @@
 {
   "name": "zhui-plus",
-  "version": "1.0.30",
+  "version": "1.0.32",
   "description": "打造属于自己的个性化ui组件库",
   "main": "dist/zhui-plus.cjs.js",
   "module": "dist/zhui-plus.es.js",
@@ -16,7 +16,10 @@
     },
     "./*": "./*"
   },
-  "files": ["dist", "types"],
+  "files": [
+    "dist",
+    "types"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

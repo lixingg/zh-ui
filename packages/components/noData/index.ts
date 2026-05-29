@@ -1,4 +1,4 @@
-import ZhNoData from './src/zh-nodata.vue'
+import ZhNoData from './src/zh-no-data.vue'
 import { App } from 'vue'
 
 export default {

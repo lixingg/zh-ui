@@ -28,7 +28,7 @@ export * from './AI'
 export * from './map'
 export * from './table'
 export * from './qrcode'
-export * from './ signature'
+export * from './signature'
 export * from './fileViewer'
 export * from './form'
 export * from './searchForm'
@@ -57,7 +57,7 @@ import AI from './AI';
 import map from './map';
 import table from './table';
 import qrcode from './qrcode';
-import signature from "./ signature"
+import signature from "./signature"
 import fileViewer from "./fileViewer"
 import directives from "./directive"
 import form from "./form"

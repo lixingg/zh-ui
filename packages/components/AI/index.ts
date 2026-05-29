@@ -1,4 +1,4 @@
-import ZhAiChat from './src/zh-aichat.vue'
+import ZhAiChat from './src/zh-aiChat.vue'
 import { App } from 'vue'
 
 export default {

@@ -1,4 +1,4 @@
-import ZhFileViewer from './src/zh-fileviewer.vue'
+import ZhFileViewer from './src/zh-fileViewer.vue'
 import { App } from 'vue'
 
 export default {
