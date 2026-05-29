@@ -30,17 +30,19 @@ export default defineConfig({
     rollupOptions: {
       plugins: [
         copyPlugin({
-          targets: [{ src: 'node_modules/element-plus/dist/locale/*', dest: 'dist/locale' }],
+          targets: [{ src: 'node_modules/element-plus/dist/locale/*', dest: 'dist/locale' },
+            { src: 'node_modules/element-plus/global.d.ts', dest: 'types/' }
+          ],
         }),
         Components({
           resolvers: [ElementPlusResolver()],
           // 👇 这里指定自动生成的类型文件路径
-          dts: 'dist/types/components.d.ts',
+          dts: 'ZHUI/types/components.d.ts',
         }),
         AutoImport({
           resolvers: [ElementPlusResolver()],
           // 👇 生成 API 的类型文件
-          dts: 'dist/types/auto-imports.d.ts',
+          dts: 'ZHUI/types/auto-imports.d.ts',
         }),
       ],
       // 确保外部化处理那些你不想打包进库的依赖

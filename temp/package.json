@@ -1,11 +1,22 @@
 {
   "name": "zhui-plus",
-  "version": "1.0.22",
+  "version": "1.0.30",
   "description": "打造属于自己的个性化ui组件库",
-  "main": "dist/index.js",
+  "main": "dist/zhui-plus.cjs.js",
+  "module": "dist/zhui-plus.es.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/zhui-plus.es.js",
+      "require": "./dist/zhui-plus.cjs.js",
+      "types": "./types/index.d.ts"
+    },
+    "./*": "./*"
+  },
+  "files": ["dist", "types"],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
