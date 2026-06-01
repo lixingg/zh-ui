@@ -5,7 +5,9 @@ import baseConfig from './base.config' // 主要用于alias文件路径别名
 import copyPlugin from 'rollup-plugin-copy'
 import { fileURLToPath, URL } from "node:url";
 import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { ZhuiPlusResolver } from '../packages/resolver'
+import AutoImport from 'unplugin-auto-import/vite'
 export default defineConfig({
   ...baseConfig,
   // 打包配置
@@ -31,8 +33,20 @@ export default defineConfig({
         copyPlugin({
           targets: [{ src: 'node_modules/element-plus/dist/locale/*', dest: 'dist/locale' },
             { src: 'node_modules/element-plus/global.d.ts', dest: 'types/' },
-            // { src: 'packages', dest: 'ZHUI/' }
+            { src: 'packages', dest: 'ZHUI/' }
           ],
+        }),
+        // ✅ AutoImport 必须在 Components 前面
+        AutoImport({
+          resolvers: [ElementPlusResolver()],
+          // 生成类型文件
+          dts: 'ZHUI/types/auto-imports.d.ts',
+          // 排除不需要自动导入的包
+          exclude: [/node_modules/],
+          // ESLint 支持
+          eslintrc: {
+            enabled: false, // 默认 false，避免打包时报错
+          },
         }),
         Components({
           resolvers: [ ZhuiPlusResolver({
@@ -40,17 +54,23 @@ export default defineConfig({
             importStyle: true
           })],
           // 👇 这里指定自动生成的类型文件路径
-          dts: 'ZHUI/types/components.d.ts',
+          dts: 'ZHUI/types/zh-components.d.ts',
         }),
-
+        Components({
+          resolvers: [ElementPlusResolver()],
+          dts: 'ZHUI/types/el-components.d.ts',
+          // 组件库打包时，排除某些目录
+          exclude: [/[\\/]node_modules[\\/]/, /[\\/]\.git[\\/]/],
+        }),
       ],
       // 确保外部化处理那些你不想打包进库的依赖
-      external: ['vue', 'tailwindcss', '@element-plus/icons-vue'],
+      external: ['vue', 'tailwindcss','element-plus'],
       output: {
         // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
         globals: {
           vue: 'Vue',
           tailwindcss: 'tailwindcss',
+          'element-plus': 'element-plus',
           '@element-plus/icons-vue': '@element-plus/icons-vue'
         }
       }

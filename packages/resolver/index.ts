@@ -1,7 +1,7 @@
 // ============================================
 // 🤖 自动生成的 Resolver 配置
 // ============================================
-// 生成时间: 2026-05-29T06:38:51.030Z
+// 生成时间: 2026-06-01T01:55:04.718Z
 // 主组件: 0 个
 // 子组件: 59 个
 // 总计: 59 个
@@ -17,111 +17,111 @@ import type { ComponentResolver } from 'unplugin-vue-components/types'
 // 值格式: zhui-plus/packages/components/相对路径/组件名
 const COMPONENT_MAP: Record<string, string> = {
   // 子组件 (父组件: undefined)
-  'MessageIcon': 'zhui-plus/packages/components/message/message-icon',
+  'MessageIcon': 'zhui-plus/packages/components/message/src/message-icon',
   // 子组件 (父组件: undefined)
-  'ZhAiChat': 'zhui-plus/packages/components/AI/zh-aiChat',
+  'ZhAiChat': 'zhui-plus/packages/components/AI/src/zh-aiChat',
   // 子组件 (父组件: undefined)
-  'ZhAmap': 'zhui-plus/packages/components/map/zh-amap',
+  'ZhAmap': 'zhui-plus/packages/components/map/src/zh-amap',
   // 子组件 (父组件: undefined)
-  'ZhAside': 'zhui-plus/packages/components/container/zh-aside',
+  'ZhAside': 'zhui-plus/packages/components/container/src/zh-aside',
   // 子组件 (父组件: undefined)
-  'ZhAuthControl': 'zhui-plus/packages/components/provider/zh-authControl',
+  'ZhAuthControl': 'zhui-plus/packages/components/provider/src/zh-authControl',
   // 子组件 (父组件: undefined)
-  'ZhAuthProvider': 'zhui-plus/packages/components/provider/zh-authProvider',
+  'ZhAuthProvider': 'zhui-plus/packages/components/provider/src/zh-authProvider',
   // 子组件 (父组件: undefined)
-  'ZhBadge': 'zhui-plus/packages/components/badge/zh-badge',
+  'ZhBadge': 'zhui-plus/packages/components/badge/src/zh-badge',
   // 子组件 (父组件: undefined)
-  'ZhBarChart': 'zhui-plus/packages/components/charts/zh-barChart',
+  'ZhBarChart': 'zhui-plus/packages/components/charts/src/zh-barChart',
   // 子组件 (父组件: undefined)
-  'ZhBaseChart': 'zhui-plus/packages/components/charts/zh-baseChart',
+  'ZhBaseChart': 'zhui-plus/packages/components/charts/src/zh-baseChart',
   // 子组件 (父组件: undefined)
-  'ZhBmap': 'zhui-plus/packages/components/map/zh-bmap',
+  'ZhBmap': 'zhui-plus/packages/components/map/src/zh-bmap',
   // 子组件 (父组件: undefined)
-  'ZhButton': 'zhui-plus/packages/components/button/zh-button',
+  'ZhButton': 'zhui-plus/packages/components/button/src/zh-button',
   // 子组件 (父组件: undefined)
-  'ZhButtonGroup': 'zhui-plus/packages/components/button/zh-button-group',
+  'ZhButtonGroup': 'zhui-plus/packages/components/button/src/zh-button-group',
   // 子组件 (父组件: undefined)
-  'ZhChat': 'zhui-plus/packages/components/chat/zh-chat',
+  'ZhChat': 'zhui-plus/packages/components/chat/src/zh-chat',
   // 子组件 (父组件: undefined)
-  'ZhCol': 'zhui-plus/packages/components/layout/zh-col',
+  'ZhCol': 'zhui-plus/packages/components/layout/src/zh-col',
   // 子组件 (父组件: undefined)
-  'ZhContainer': 'zhui-plus/packages/components/container/zh-container',
+  'ZhContainer': 'zhui-plus/packages/components/container/src/zh-container',
   // 子组件 (父组件: undefined)
-  'ZhCupload': 'zhui-plus/packages/components/upload/zh-cupload',
+  'ZhCupload': 'zhui-plus/packages/components/upload/src/zh-cupload',
   // 子组件 (父组件: undefined)
-  'ZhDhPlayer': 'zhui-plus/packages/components/videoPlayer/zh-dhPlayer',
+  'ZhDhPlayer': 'zhui-plus/packages/components/videoPlayer/src/zh-dhPlayer',
   // 子组件 (父组件: undefined)
-  'ZhDrawer': 'zhui-plus/packages/components/drawer/zh-drawer',
+  'ZhDrawer': 'zhui-plus/packages/components/drawer/src/zh-drawer',
   // 子组件 (父组件: undefined)
-  'ZhFileViewer': 'zhui-plus/packages/components/fileViewer/zh-fileViewer',
+  'ZhFileViewer': 'zhui-plus/packages/components/fileViewer/src/zh-fileViewer',
   // 子组件 (父组件: undefined)
-  'ZhFooter': 'zhui-plus/packages/components/container/zh-footer',
+  'ZhFooter': 'zhui-plus/packages/components/container/src/zh-footer',
   // 子组件 (父组件: undefined)
-  'ZhForm': 'zhui-plus/packages/components/form/zh-form',
+  'ZhForm': 'zhui-plus/packages/components/form/src/zh-form',
   // 子组件 (父组件: undefined)
-  'ZhFormItem': 'zhui-plus/packages/components/form/zh-form-item',
+  'ZhFormItem': 'zhui-plus/packages/components/form/src/zh-form-item',
   // 子组件 (父组件: undefined)
-  'ZhHeader': 'zhui-plus/packages/components/container/zh-header',
+  'ZhHeader': 'zhui-plus/packages/components/container/src/zh-header',
   // 子组件 (父组件: undefined)
-  'ZhHideNumber': 'zhui-plus/packages/components/hideNumber/zh-hide-number',
+  'ZhHideNumber': 'zhui-plus/packages/components/hideNumber/src/zh-hide-number',
   // 子组件 (父组件: undefined)
-  'ZhHlsPlayer': 'zhui-plus/packages/components/videoPlayer/zh-hlsPlayer',
+  'ZhHlsPlayer': 'zhui-plus/packages/components/videoPlayer/src/zh-hlsPlayer',
   // 子组件 (父组件: undefined)
-  'ZhIcon': 'zhui-plus/packages/components/icon/zh-icon',
+  'ZhIcon': 'zhui-plus/packages/components/icon/src/zh-icon',
   // 子组件 (父组件: undefined)
-  'ZhImage': 'zhui-plus/packages/components/image/zh-image',
+  'ZhImage': 'zhui-plus/packages/components/image/src/zh-image',
   // 子组件 (父组件: undefined)
-  'ZhInput': 'zhui-plus/packages/components/input/zh-input',
+  'ZhInput': 'zhui-plus/packages/components/input/src/zh-input',
   // 子组件 (父组件: undefined)
-  'ZhLineBarChart': 'zhui-plus/packages/components/charts/zh-lineBarChart',
+  'ZhLineBarChart': 'zhui-plus/packages/components/charts/src/zh-lineBarChart',
   // 子组件 (父组件: undefined)
-  'ZhLineChart': 'zhui-plus/packages/components/charts/zh-lineChart',
+  'ZhLineChart': 'zhui-plus/packages/components/charts/src/zh-lineChart',
   // 子组件 (父组件: undefined)
-  'ZhMain': 'zhui-plus/packages/components/container/zh-main',
+  'ZhMain': 'zhui-plus/packages/components/container/src/zh-main',
   // 子组件 (父组件: undefined)
-  'ZhMapChart': 'zhui-plus/packages/components/charts/zh-mapChart',
+  'ZhMapChart': 'zhui-plus/packages/components/charts/src/zh-mapChart',
   // 子组件 (父组件: undefined)
-  'ZhMessage': 'zhui-plus/packages/components/message/zh-message',
+  'ZhMessage': 'zhui-plus/packages/components/message/src/zh-message',
   // 子组件 (父组件: undefined)
-  'ZhMessageBox': 'zhui-plus/packages/components/message-box/zh-message-box',
+  'ZhMessageBox': 'zhui-plus/packages/components/message-box/src/zh-message-box',
   // 子组件 (父组件: undefined)
-  'ZhNoData': 'zhui-plus/packages/components/noData/zh-no-data',
+  'ZhNoData': 'zhui-plus/packages/components/noData/src/zh-no-data',
   // 子组件 (父组件: undefined)
-  'ZhOmap': 'zhui-plus/packages/components/map/zh-omap',
+  'ZhOmap': 'zhui-plus/packages/components/map/src/zh-omap',
   // 子组件 (父组件: undefined)
-  'ZhOperationColumn': 'zhui-plus/packages/components/operationColumn/zh-operationColumn',
+  'ZhOperationColumn': 'zhui-plus/packages/components/operationColumn/src/zh-operationColumn',
   // 子组件 (父组件: undefined)
-  'ZhPictorialBar': 'zhui-plus/packages/components/charts/zh-pictorialBar',
+  'ZhPictorialBar': 'zhui-plus/packages/components/charts/src/zh-pictorialBar',
   // 子组件 (父组件: undefined)
-  'ZhPieChart': 'zhui-plus/packages/components/charts/zh-pieChart',
+  'ZhPieChart': 'zhui-plus/packages/components/charts/src/zh-pieChart',
   // 子组件 (父组件: undefined)
-  'ZhQrcode': 'zhui-plus/packages/components/qrcode/zh-qrcode',
+  'ZhQrcode': 'zhui-plus/packages/components/qrcode/src/zh-qrcode',
   // 子组件 (父组件: undefined)
-  'ZhRadarChart': 'zhui-plus/packages/components/charts/zh-radarChart',
+  'ZhRadarChart': 'zhui-plus/packages/components/charts/src/zh-radarChart',
   // 子组件 (父组件: undefined)
-  'ZhRadio': 'zhui-plus/packages/components/radio/zh-radio',
+  'ZhRadio': 'zhui-plus/packages/components/radio/src/zh-radio',
   // 子组件 (父组件: undefined)
-  'ZhRow': 'zhui-plus/packages/components/layout/zh-row',
+  'ZhRow': 'zhui-plus/packages/components/layout/src/zh-row',
   // 子组件 (父组件: undefined)
-  'ZhScatterChart': 'zhui-plus/packages/components/charts/zh-scatterChart',
+  'ZhScatterChart': 'zhui-plus/packages/components/charts/src/zh-scatterChart',
   // 子组件 (父组件: undefined)
-  'ZhSearchForm': 'zhui-plus/packages/components/searchForm/zh-search-form',
+  'ZhSearchForm': 'zhui-plus/packages/components/searchForm/src/zh-search-form',
   // 子组件 (父组件: undefined)
-  'ZhSignature': 'zhui-plus/packages/components/signature/zh-signature',
+  'ZhSignature': 'zhui-plus/packages/components/signature/src/zh-signature',
   // 子组件 (父组件: undefined)
-  'ZhSmap': 'zhui-plus/packages/components/map/zh-smap',
+  'ZhSmap': 'zhui-plus/packages/components/map/src/zh-smap',
   // 子组件 (父组件: undefined)
-  'ZhSwitch': 'zhui-plus/packages/components/switch/zh-switch',
+  'ZhSwitch': 'zhui-plus/packages/components/switch/src/zh-switch',
   // 子组件 (父组件: undefined)
-  'ZhTable': 'zhui-plus/packages/components/table/zh-table',
+  'ZhTable': 'zhui-plus/packages/components/table/src/zh-table',
   // 子组件 (父组件: undefined)
-  'ZhTmap': 'zhui-plus/packages/components/map/zh-tmap',
+  'ZhTmap': 'zhui-plus/packages/components/map/src/zh-tmap',
   // 子组件 (父组件: undefined)
-  'ZhUpload': 'zhui-plus/packages/components/upload/zh-upload',
+  'ZhUpload': 'zhui-plus/packages/components/upload/src/zh-upload',
   // 子组件 (父组件: undefined)
-  'ZhUploadCard': 'zhui-plus/packages/components/upload/zh-uploadCard',
+  'ZhUploadCard': 'zhui-plus/packages/components/upload/src/zh-uploadCard',
   // 子组件 (父组件: undefined)
-  'ZhUploadDialog': 'zhui-plus/packages/components/upload/zh-uploadDialog',
+  'ZhUploadDialog': 'zhui-plus/packages/components/upload/src/zh-uploadDialog',
   // 子组件 (父组件: undefined)
   'CircleLoading': 'zhui-plus/packages/components/fileViewer/src/ofd/CircleLoading',
   // 子组件 (父组件: undefined)
@@ -256,59 +256,59 @@ export const COMPONENT_INFO = {
   ],
   /** 子组件列表 */
   sub: [
-    { name: 'MessageIcon', path: 'zhui-plus/packages/components/message/message-icon', parent: 'undefined' },
-    { name: 'ZhAiChat', path: 'zhui-plus/packages/components/AI/zh-aiChat', parent: 'undefined' },
-    { name: 'ZhAmap', path: 'zhui-plus/packages/components/map/zh-amap', parent: 'undefined' },
-    { name: 'ZhAside', path: 'zhui-plus/packages/components/container/zh-aside', parent: 'undefined' },
-    { name: 'ZhAuthControl', path: 'zhui-plus/packages/components/provider/zh-authControl', parent: 'undefined' },
-    { name: 'ZhAuthProvider', path: 'zhui-plus/packages/components/provider/zh-authProvider', parent: 'undefined' },
-    { name: 'ZhBadge', path: 'zhui-plus/packages/components/badge/zh-badge', parent: 'undefined' },
-    { name: 'ZhBarChart', path: 'zhui-plus/packages/components/charts/zh-barChart', parent: 'undefined' },
-    { name: 'ZhBaseChart', path: 'zhui-plus/packages/components/charts/zh-baseChart', parent: 'undefined' },
-    { name: 'ZhBmap', path: 'zhui-plus/packages/components/map/zh-bmap', parent: 'undefined' },
-    { name: 'ZhButton', path: 'zhui-plus/packages/components/button/zh-button', parent: 'undefined' },
-    { name: 'ZhButtonGroup', path: 'zhui-plus/packages/components/button/zh-button-group', parent: 'undefined' },
-    { name: 'ZhChat', path: 'zhui-plus/packages/components/chat/zh-chat', parent: 'undefined' },
-    { name: 'ZhCol', path: 'zhui-plus/packages/components/layout/zh-col', parent: 'undefined' },
-    { name: 'ZhContainer', path: 'zhui-plus/packages/components/container/zh-container', parent: 'undefined' },
-    { name: 'ZhCupload', path: 'zhui-plus/packages/components/upload/zh-cupload', parent: 'undefined' },
-    { name: 'ZhDhPlayer', path: 'zhui-plus/packages/components/videoPlayer/zh-dhPlayer', parent: 'undefined' },
-    { name: 'ZhDrawer', path: 'zhui-plus/packages/components/drawer/zh-drawer', parent: 'undefined' },
-    { name: 'ZhFileViewer', path: 'zhui-plus/packages/components/fileViewer/zh-fileViewer', parent: 'undefined' },
-    { name: 'ZhFooter', path: 'zhui-plus/packages/components/container/zh-footer', parent: 'undefined' },
-    { name: 'ZhForm', path: 'zhui-plus/packages/components/form/zh-form', parent: 'undefined' },
-    { name: 'ZhFormItem', path: 'zhui-plus/packages/components/form/zh-form-item', parent: 'undefined' },
-    { name: 'ZhHeader', path: 'zhui-plus/packages/components/container/zh-header', parent: 'undefined' },
-    { name: 'ZhHideNumber', path: 'zhui-plus/packages/components/hideNumber/zh-hide-number', parent: 'undefined' },
-    { name: 'ZhHlsPlayer', path: 'zhui-plus/packages/components/videoPlayer/zh-hlsPlayer', parent: 'undefined' },
-    { name: 'ZhIcon', path: 'zhui-plus/packages/components/icon/zh-icon', parent: 'undefined' },
-    { name: 'ZhImage', path: 'zhui-plus/packages/components/image/zh-image', parent: 'undefined' },
-    { name: 'ZhInput', path: 'zhui-plus/packages/components/input/zh-input', parent: 'undefined' },
-    { name: 'ZhLineBarChart', path: 'zhui-plus/packages/components/charts/zh-lineBarChart', parent: 'undefined' },
-    { name: 'ZhLineChart', path: 'zhui-plus/packages/components/charts/zh-lineChart', parent: 'undefined' },
-    { name: 'ZhMain', path: 'zhui-plus/packages/components/container/zh-main', parent: 'undefined' },
-    { name: 'ZhMapChart', path: 'zhui-plus/packages/components/charts/zh-mapChart', parent: 'undefined' },
-    { name: 'ZhMessage', path: 'zhui-plus/packages/components/message/zh-message', parent: 'undefined' },
-    { name: 'ZhMessageBox', path: 'zhui-plus/packages/components/message-box/zh-message-box', parent: 'undefined' },
-    { name: 'ZhNoData', path: 'zhui-plus/packages/components/noData/zh-no-data', parent: 'undefined' },
-    { name: 'ZhOmap', path: 'zhui-plus/packages/components/map/zh-omap', parent: 'undefined' },
-    { name: 'ZhOperationColumn', path: 'zhui-plus/packages/components/operationColumn/zh-operationColumn', parent: 'undefined' },
-    { name: 'ZhPictorialBar', path: 'zhui-plus/packages/components/charts/zh-pictorialBar', parent: 'undefined' },
-    { name: 'ZhPieChart', path: 'zhui-plus/packages/components/charts/zh-pieChart', parent: 'undefined' },
-    { name: 'ZhQrcode', path: 'zhui-plus/packages/components/qrcode/zh-qrcode', parent: 'undefined' },
-    { name: 'ZhRadarChart', path: 'zhui-plus/packages/components/charts/zh-radarChart', parent: 'undefined' },
-    { name: 'ZhRadio', path: 'zhui-plus/packages/components/radio/zh-radio', parent: 'undefined' },
-    { name: 'ZhRow', path: 'zhui-plus/packages/components/layout/zh-row', parent: 'undefined' },
-    { name: 'ZhScatterChart', path: 'zhui-plus/packages/components/charts/zh-scatterChart', parent: 'undefined' },
-    { name: 'ZhSearchForm', path: 'zhui-plus/packages/components/searchForm/zh-search-form', parent: 'undefined' },
-    { name: 'ZhSignature', path: 'zhui-plus/packages/components/signature/zh-signature', parent: 'undefined' },
-    { name: 'ZhSmap', path: 'zhui-plus/packages/components/map/zh-smap', parent: 'undefined' },
-    { name: 'ZhSwitch', path: 'zhui-plus/packages/components/switch/zh-switch', parent: 'undefined' },
-    { name: 'ZhTable', path: 'zhui-plus/packages/components/table/zh-table', parent: 'undefined' },
-    { name: 'ZhTmap', path: 'zhui-plus/packages/components/map/zh-tmap', parent: 'undefined' },
-    { name: 'ZhUpload', path: 'zhui-plus/packages/components/upload/zh-upload', parent: 'undefined' },
-    { name: 'ZhUploadCard', path: 'zhui-plus/packages/components/upload/zh-uploadCard', parent: 'undefined' },
-    { name: 'ZhUploadDialog', path: 'zhui-plus/packages/components/upload/zh-uploadDialog', parent: 'undefined' },
+    { name: 'MessageIcon', path: 'zhui-plus/packages/components/message/src/message-icon', parent: 'undefined' },
+    { name: 'ZhAiChat', path: 'zhui-plus/packages/components/AI/src/zh-aiChat', parent: 'undefined' },
+    { name: 'ZhAmap', path: 'zhui-plus/packages/components/map/src/zh-amap', parent: 'undefined' },
+    { name: 'ZhAside', path: 'zhui-plus/packages/components/container/src/zh-aside', parent: 'undefined' },
+    { name: 'ZhAuthControl', path: 'zhui-plus/packages/components/provider/src/zh-authControl', parent: 'undefined' },
+    { name: 'ZhAuthProvider', path: 'zhui-plus/packages/components/provider/src/zh-authProvider', parent: 'undefined' },
+    { name: 'ZhBadge', path: 'zhui-plus/packages/components/badge/src/zh-badge', parent: 'undefined' },
+    { name: 'ZhBarChart', path: 'zhui-plus/packages/components/charts/src/zh-barChart', parent: 'undefined' },
+    { name: 'ZhBaseChart', path: 'zhui-plus/packages/components/charts/src/zh-baseChart', parent: 'undefined' },
+    { name: 'ZhBmap', path: 'zhui-plus/packages/components/map/src/zh-bmap', parent: 'undefined' },
+    { name: 'ZhButton', path: 'zhui-plus/packages/components/button/src/zh-button', parent: 'undefined' },
+    { name: 'ZhButtonGroup', path: 'zhui-plus/packages/components/button/src/zh-button-group', parent: 'undefined' },
+    { name: 'ZhChat', path: 'zhui-plus/packages/components/chat/src/zh-chat', parent: 'undefined' },
+    { name: 'ZhCol', path: 'zhui-plus/packages/components/layout/src/zh-col', parent: 'undefined' },
+    { name: 'ZhContainer', path: 'zhui-plus/packages/components/container/src/zh-container', parent: 'undefined' },
+    { name: 'ZhCupload', path: 'zhui-plus/packages/components/upload/src/zh-cupload', parent: 'undefined' },
+    { name: 'ZhDhPlayer', path: 'zhui-plus/packages/components/videoPlayer/src/zh-dhPlayer', parent: 'undefined' },
+    { name: 'ZhDrawer', path: 'zhui-plus/packages/components/drawer/src/zh-drawer', parent: 'undefined' },
+    { name: 'ZhFileViewer', path: 'zhui-plus/packages/components/fileViewer/src/zh-fileViewer', parent: 'undefined' },
+    { name: 'ZhFooter', path: 'zhui-plus/packages/components/container/src/zh-footer', parent: 'undefined' },
+    { name: 'ZhForm', path: 'zhui-plus/packages/components/form/src/zh-form', parent: 'undefined' },
+    { name: 'ZhFormItem', path: 'zhui-plus/packages/components/form/src/zh-form-item', parent: 'undefined' },
+    { name: 'ZhHeader', path: 'zhui-plus/packages/components/container/src/zh-header', parent: 'undefined' },
+    { name: 'ZhHideNumber', path: 'zhui-plus/packages/components/hideNumber/src/zh-hide-number', parent: 'undefined' },
+    { name: 'ZhHlsPlayer', path: 'zhui-plus/packages/components/videoPlayer/src/zh-hlsPlayer', parent: 'undefined' },
+    { name: 'ZhIcon', path: 'zhui-plus/packages/components/icon/src/zh-icon', parent: 'undefined' },
+    { name: 'ZhImage', path: 'zhui-plus/packages/components/image/src/zh-image', parent: 'undefined' },
+    { name: 'ZhInput', path: 'zhui-plus/packages/components/input/src/zh-input', parent: 'undefined' },
+    { name: 'ZhLineBarChart', path: 'zhui-plus/packages/components/charts/src/zh-lineBarChart', parent: 'undefined' },
+    { name: 'ZhLineChart', path: 'zhui-plus/packages/components/charts/src/zh-lineChart', parent: 'undefined' },
+    { name: 'ZhMain', path: 'zhui-plus/packages/components/container/src/zh-main', parent: 'undefined' },
+    { name: 'ZhMapChart', path: 'zhui-plus/packages/components/charts/src/zh-mapChart', parent: 'undefined' },
+    { name: 'ZhMessage', path: 'zhui-plus/packages/components/message/src/zh-message', parent: 'undefined' },
+    { name: 'ZhMessageBox', path: 'zhui-plus/packages/components/message-box/src/zh-message-box', parent: 'undefined' },
+    { name: 'ZhNoData', path: 'zhui-plus/packages/components/noData/src/zh-no-data', parent: 'undefined' },
+    { name: 'ZhOmap', path: 'zhui-plus/packages/components/map/src/zh-omap', parent: 'undefined' },
+    { name: 'ZhOperationColumn', path: 'zhui-plus/packages/components/operationColumn/src/zh-operationColumn', parent: 'undefined' },
+    { name: 'ZhPictorialBar', path: 'zhui-plus/packages/components/charts/src/zh-pictorialBar', parent: 'undefined' },
+    { name: 'ZhPieChart', path: 'zhui-plus/packages/components/charts/src/zh-pieChart', parent: 'undefined' },
+    { name: 'ZhQrcode', path: 'zhui-plus/packages/components/qrcode/src/zh-qrcode', parent: 'undefined' },
+    { name: 'ZhRadarChart', path: 'zhui-plus/packages/components/charts/src/zh-radarChart', parent: 'undefined' },
+    { name: 'ZhRadio', path: 'zhui-plus/packages/components/radio/src/zh-radio', parent: 'undefined' },
+    { name: 'ZhRow', path: 'zhui-plus/packages/components/layout/src/zh-row', parent: 'undefined' },
+    { name: 'ZhScatterChart', path: 'zhui-plus/packages/components/charts/src/zh-scatterChart', parent: 'undefined' },
+    { name: 'ZhSearchForm', path: 'zhui-plus/packages/components/searchForm/src/zh-search-form', parent: 'undefined' },
+    { name: 'ZhSignature', path: 'zhui-plus/packages/components/signature/src/zh-signature', parent: 'undefined' },
+    { name: 'ZhSmap', path: 'zhui-plus/packages/components/map/src/zh-smap', parent: 'undefined' },
+    { name: 'ZhSwitch', path: 'zhui-plus/packages/components/switch/src/zh-switch', parent: 'undefined' },
+    { name: 'ZhTable', path: 'zhui-plus/packages/components/table/src/zh-table', parent: 'undefined' },
+    { name: 'ZhTmap', path: 'zhui-plus/packages/components/map/src/zh-tmap', parent: 'undefined' },
+    { name: 'ZhUpload', path: 'zhui-plus/packages/components/upload/src/zh-upload', parent: 'undefined' },
+    { name: 'ZhUploadCard', path: 'zhui-plus/packages/components/upload/src/zh-uploadCard', parent: 'undefined' },
+    { name: 'ZhUploadDialog', path: 'zhui-plus/packages/components/upload/src/zh-uploadDialog', parent: 'undefined' },
     { name: 'CircleLoading', path: 'zhui-plus/packages/components/fileViewer/src/ofd/CircleLoading', parent: 'undefined' },
     { name: 'OfdPreview', path: 'zhui-plus/packages/components/fileViewer/src/ofd/OfdPreview', parent: 'undefined' },
     { name: 'OfdViewer', path: 'zhui-plus/packages/components/fileViewer/src/ofd/OfdViewer', parent: 'undefined' },

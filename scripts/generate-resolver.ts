@@ -247,10 +247,10 @@ class ComponentScanner {
 
             // 构建相对路径
             let relativeToComponents = relative(this.componentsDir, dirPath)
-            if (fromSrc) {
+    /*        if (fromSrc) {
                 // 如果来自 src 目录，去掉 src 部分
                 relativeToComponents = relative(this.componentsDir, dirname(dirPath))
-            }
+            }*/
 
             // 构建映射值路径
             const mapValue = `zhui-plus/packages/components/${relativeToComponents.replace(/\\/g, '/')}/${nameWithoutExt}`
