@@ -1,10 +1,10 @@
 // ============================================
 // 🤖 自动生成的 Resolver 配置
 // ============================================
-// 生成时间: 2026-06-01T01:55:04.718Z
+// 生成时间: 2026-06-01T09:45:00.104Z
 // 主组件: 0 个
-// 子组件: 59 个
-// 总计: 59 个
+// 子组件: 57 个
+// 总计: 57 个
 // ============================================
 // ⚠️  警告：请勿手动修改此文件！
 // 运行 'npm run generate-resolver' 重新生成
@@ -51,8 +51,6 @@ const COMPONENT_MAP: Record<string, string> = {
   // 子组件 (父组件: undefined)
   'ZhDhPlayer': 'zhui-plus/packages/components/videoPlayer/src/zh-dhPlayer',
   // 子组件 (父组件: undefined)
-  'ZhDrawer': 'zhui-plus/packages/components/drawer/src/zh-drawer',
-  // 子组件 (父组件: undefined)
   'ZhFileViewer': 'zhui-plus/packages/components/fileViewer/src/zh-fileViewer',
   // 子组件 (父组件: undefined)
   'ZhFooter': 'zhui-plus/packages/components/container/src/zh-footer',
@@ -82,8 +80,6 @@ const COMPONENT_MAP: Record<string, string> = {
   'ZhMapChart': 'zhui-plus/packages/components/charts/src/zh-mapChart',
   // 子组件 (父组件: undefined)
   'ZhMessage': 'zhui-plus/packages/components/message/src/zh-message',
-  // 子组件 (父组件: undefined)
-  'ZhMessageBox': 'zhui-plus/packages/components/message-box/src/zh-message-box',
   // 子组件 (父组件: undefined)
   'ZhNoData': 'zhui-plus/packages/components/noData/src/zh-no-data',
   // 子组件 (父组件: undefined)
@@ -155,11 +151,12 @@ export function ZhuiPlusResolver(
     importStyle = true,
     exclude = [] 
   } = options
-
+ // console.log('ZhuiPlusResolver====options', options)
   return [
     {
       type: 'component',
       resolve: (name: string) => {
+          // console.log('ZhuiPlusResolver====name1',name, name.startsWith(prefix))
         // 检查前缀
         if (!name.startsWith(prefix)) return
         
@@ -172,7 +169,8 @@ export function ZhuiPlusResolver(
         // 查找组件路径
         const from = COMPONENT_MAP[name]
         if (!from) return
-        
+        console.log('组件名称', componentName)
+        console.log('组件路径', from)
         // 返回解析结果
         return {
           name: componentName,
@@ -207,7 +205,6 @@ export const COMPONENT_INFO = {
     'ZhContainer',
     'ZhCupload',
     'ZhDhPlayer',
-    'ZhDrawer',
     'ZhFileViewer',
     'ZhFooter',
     'ZhForm',
@@ -223,7 +220,6 @@ export const COMPONENT_INFO = {
     'ZhMain',
     'ZhMapChart',
     'ZhMessage',
-    'ZhMessageBox',
     'ZhNoData',
     'ZhOmap',
     'ZhOperationColumn',
@@ -273,7 +269,6 @@ export const COMPONENT_INFO = {
     { name: 'ZhContainer', path: 'zhui-plus/packages/components/container/src/zh-container', parent: 'undefined' },
     { name: 'ZhCupload', path: 'zhui-plus/packages/components/upload/src/zh-cupload', parent: 'undefined' },
     { name: 'ZhDhPlayer', path: 'zhui-plus/packages/components/videoPlayer/src/zh-dhPlayer', parent: 'undefined' },
-    { name: 'ZhDrawer', path: 'zhui-plus/packages/components/drawer/src/zh-drawer', parent: 'undefined' },
     { name: 'ZhFileViewer', path: 'zhui-plus/packages/components/fileViewer/src/zh-fileViewer', parent: 'undefined' },
     { name: 'ZhFooter', path: 'zhui-plus/packages/components/container/src/zh-footer', parent: 'undefined' },
     { name: 'ZhForm', path: 'zhui-plus/packages/components/form/src/zh-form', parent: 'undefined' },
@@ -289,7 +284,6 @@ export const COMPONENT_INFO = {
     { name: 'ZhMain', path: 'zhui-plus/packages/components/container/src/zh-main', parent: 'undefined' },
     { name: 'ZhMapChart', path: 'zhui-plus/packages/components/charts/src/zh-mapChart', parent: 'undefined' },
     { name: 'ZhMessage', path: 'zhui-plus/packages/components/message/src/zh-message', parent: 'undefined' },
-    { name: 'ZhMessageBox', path: 'zhui-plus/packages/components/message-box/src/zh-message-box', parent: 'undefined' },
     { name: 'ZhNoData', path: 'zhui-plus/packages/components/noData/src/zh-no-data', parent: 'undefined' },
     { name: 'ZhOmap', path: 'zhui-plus/packages/components/map/src/zh-omap', parent: 'undefined' },
     { name: 'ZhOperationColumn', path: 'zhui-plus/packages/components/operationColumn/src/zh-operationColumn', parent: 'undefined' },

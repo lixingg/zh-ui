@@ -15,6 +15,7 @@
 import {computed, ref,defineProps} from 'vue'
 import type {EChartsOption} from 'echarts/types/dist/shared'
 import {generateLinearGradient} from '../../../utils/utils'
+import zhBaseChart from "./zh-baseChart.vue"
 
 const props = withDefaults(
     defineProps<{

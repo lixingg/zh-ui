@@ -14,7 +14,7 @@
 import { computed, toRefs } from 'vue'
 import type { EChartsOption, EChartsType } from 'echarts/types/dist/shared'
 import { getMacaronColor} from '../../../utils/utils'
-
+import zhBaseChart from "./zh-baseChart.vue"
 export interface RadarIndicator {
   name: string
   max: number

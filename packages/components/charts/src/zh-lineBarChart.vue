@@ -13,7 +13,7 @@
 import {computed, defineProps} from 'vue'
 import type {EChartsOption} from 'echarts/types/dist/shared'
 import {generateLinearGradient,} from '../../../utils/utils'
-
+import zhBaseChart from "./zh-baseChart.vue"
 const props = defineProps({
   chartId: {type: String, required: true},
   xAxisData: {type: Array as () => string[], required: true},

@@ -30,7 +30,7 @@
 import { ref, reactive, provide, watch, computed } from 'vue'
 import type { FormInstance, UploadInstance } from 'element-plus'
 import type { FormFieldConfig } from '../../../types'
-
+import zhFormItem from "./zh-form-item.vue"
 interface Props {
   modelValue: Record<string, any>
   fields: FormFieldConfig[]

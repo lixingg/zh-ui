@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { onMounted, ref, watch } from 'vue'
   import { style } from './data.com'
-  import BlBadge from '../../badge/src/zh-badge.vue'
+  import zhBadge from '../../badge/src/zh-badge.vue'
   import { Close } from '@element-plus/icons-vue'
   import MessageIcon from './message-icon.vue'
 

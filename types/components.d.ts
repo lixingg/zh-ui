@@ -1,7 +1,7 @@
 // ============================================
 // 🤖 自动生成的类型声明
 // ============================================
-// 生成时间: 2026-06-01T01:55:04.719Z
+// 生成时间: 2026-06-01T09:45:00.106Z
 // ⚠️  警告：请勿手动修改此文件！
 // ============================================
 
@@ -43,8 +43,6 @@ declare module 'vue' {
   ZhCupload: typeof import('zhui-plus')['ZhCupload']
   /** ZhDhPlayer 子组件 (父组件: undefined) */
   ZhDhPlayer: typeof import('zhui-plus')['ZhDhPlayer']
-  /** ZhDrawer 子组件 (父组件: undefined) */
-  ZhDrawer: typeof import('zhui-plus')['ZhDrawer']
   /** ZhFileViewer 子组件 (父组件: undefined) */
   ZhFileViewer: typeof import('zhui-plus')['ZhFileViewer']
   /** ZhFooter 子组件 (父组件: undefined) */
@@ -75,8 +73,6 @@ declare module 'vue' {
   ZhMapChart: typeof import('zhui-plus')['ZhMapChart']
   /** ZhMessage 子组件 (父组件: undefined) */
   ZhMessage: typeof import('zhui-plus')['ZhMessage']
-  /** ZhMessageBox 子组件 (父组件: undefined) */
-  ZhMessageBox: typeof import('zhui-plus')['ZhMessageBox']
   /** ZhNoData 子组件 (父组件: undefined) */
   ZhNoData: typeof import('zhui-plus')['ZhNoData']
   /** ZhOmap 子组件 (父组件: undefined) */

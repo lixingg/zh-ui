@@ -14,7 +14,7 @@
 import {computed, onMounted, defineProps, defineEmits} from 'vue'
 import type {EChartsOption} from 'echarts/types/dist/shared'
 import * as echarts from 'echarts'
-
+import zhBaseChart from "./zh-baseChart.vue"
 // 注意：需要先注册地图 GeoJSON 数据
 import chinaGeoJson from '../geo.json'
 import {json} from "stream/consumers";

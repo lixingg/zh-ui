@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useNamespace } from '../../../utils/hooks/hooks.util'
-  import BlIcon from '../../icon/src/zh-icon.vue'
+  import ZhIcon from '../../icon/src/zh-icon.vue'
   import { useClearModel, useMouseEnterLeave, useShowPassword } from './input.com'
 
   defineProps({

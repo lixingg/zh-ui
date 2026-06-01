@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useNamespace } from '../../../utils/hooks/hooks.util'
+  import ZhIcon from '../../icon/src/zh-icon.vue'
   import { computed, nextTick, ref } from 'vue'
 
   const props = defineProps({

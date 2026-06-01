@@ -385,11 +385,12 @@ export function ZhuiPlusResolver(
     importStyle = true,
     exclude = [] 
   } = options
-
+ // console.log('ZhuiPlusResolver====options', options)
   return [
     {
       type: 'component',
       resolve: (name: string) => {
+          // console.log('ZhuiPlusResolver====name1',name, name.startsWith(prefix))
         // 检查前缀
         if (!name.startsWith(prefix)) return
         
@@ -402,7 +403,8 @@ export function ZhuiPlusResolver(
         // 查找组件路径
         const from = COMPONENT_MAP[name]
         if (!from) return
-        
+        console.log('组件名称', componentName)
+        console.log('组件路径', from)
         // 返回解析结果
         return {
           name: componentName,

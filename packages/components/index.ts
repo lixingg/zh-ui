@@ -4,6 +4,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 export * from '@element-plus/icons-vue'
 // export * as echarts from 'echarts'
 // export * as echartsGl from 'echarts-gl'
+
 // @ts-ignore
 export * from 'element-plus'
 export * from './button'
@@ -12,8 +13,6 @@ export * from './layout'
 export * from './badge'
 export * from './message'
 export * from './container'
-export * from './message-box'
-export * from './drawer'
 export * from './radio'
 export * from './switch'
 export * from './input'
@@ -42,7 +41,6 @@ import icon from './icon'
 import layout from './layout'
 import badge from './badge'
 import container from './container'
-import drawer from './drawer'
 import radio from './radio'
 import BlSwitch from './switch'
 import input from './input'
@@ -75,7 +73,6 @@ const components = [
     layout,
     badge,
     container,
-    drawer,
     radio,
     BlSwitch,
     input,

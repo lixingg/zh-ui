@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { computed,defineProps,defineEmits } from 'vue'
 import type { EChartsOption} from 'echarts/types/dist/shared'
-
+import zhBaseChart from "./zh-baseChart.vue"
 const props = defineProps({
   chartId: { type: String, required: true },
   categories: { type: Array as () => string[], required: true },

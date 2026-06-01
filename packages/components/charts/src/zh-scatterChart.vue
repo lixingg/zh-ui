@@ -15,7 +15,7 @@
 import {computed, toRefs} from 'vue'
 import type {EChartsOption} from 'echarts/types/dist/shared'
 import {generateLinearGradient, getMacaronColor} from '../../../utils/utils'
-
+import zhBaseChart from "./zh-baseChart.vue"
 // 单个散点数据格式：二维数组 [x, y] 或包含扩展字段的对象
 type ScatterDataItem = [number, number] | {
   value: [number, number], // 坐标
