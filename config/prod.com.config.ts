@@ -7,7 +7,7 @@ import dts from 'vite-plugin-dts'
 import { fileURLToPath, URL } from "node:url";
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import { ZhuiPlusResolver } from '../packages/resolver'
+// import { ZhuiPlusResolver } from '../packages/resolver'
 import AutoImport from 'unplugin-auto-import/vite'
 export default defineConfig({
   ...baseConfig,
@@ -73,8 +73,8 @@ export default defineConfig({
           outDir: 'dist',
           staticImport: true,
           insertTypesEntry: true,
-          rollupTypes: true
-        })
+          rollupTypes: true,
+        }),
       ],
       // 确保外部化处理那些你不想打包进库的依赖
       external: ['vue', 'tailwindcss'],
