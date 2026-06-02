@@ -1,16 +1,15 @@
 <template>
   <div class="nodata">
-    <img v-if="!icon" :style="$attrs.imgStyle" :src="src" alt="">
+    <img v-if="!icon" :style="$attrs.imgStyle as any" :src="src" alt="">
     <zh-icon v-else :name="icon" :color="color" :size="size"/>
-    <p v-if="showText" :style="$attrs.textStyle">{{ text }}</p>
+    <p v-if="showText" :style="$attrs.textStyle as any">{{ text }}</p>
   </div>
 </template>
 <script setup lang="ts">
-import {defineProps} from 'vue'
 import noDataIcon from "@/assets/images/no_data.svg"
 import zhIcon from '../../icon/src/zh-icon.vue'
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   src?: string,
   showText?: boolean,
   text?: string,

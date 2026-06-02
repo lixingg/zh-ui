@@ -39,7 +39,7 @@
 </template>
 <script lang="ts" setup>
 import { Download, UploadFilled } from "@element-plus/icons-vue";
-import { ref, defineProps, defineEmits, computed } from "vue";
+import { ref, computed } from "vue";
 import jsFileDownload from "js-file-download";
 import { ElLoading, ElMessage } from "element-plus";
 

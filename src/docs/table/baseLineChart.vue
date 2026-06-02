@@ -2,9 +2,7 @@
   <zh-lineChart :customOption="componentProps"/>
 </template>
 <script setup lang="ts">
-import {defineProps} from "vue";
-
-const props = defineProps(['componentProps'])
+ defineProps(['componentProps'])
 
 </script>
 

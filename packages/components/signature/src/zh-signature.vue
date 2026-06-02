@@ -41,6 +41,7 @@ interface Props {
   maxHistorySteps?: number
   showUndo?: boolean
   showSaveBtn?: boolean
+  filename?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -54,7 +55,8 @@ const props = withDefaults(defineProps<Props>(), {
   showControls: true,
   maxHistorySteps: 30,
   showUndo: true,
-  showSaveBtn: true
+  showSaveBtn: true,
+  filename:'signature.png'
 })
 
 // ---------- Emits ----------
@@ -245,7 +247,8 @@ function endDrawing() {
   }
 }
 
-function saveAsImage(filename = 'signature.png') {
+function saveAsImage() {
+  let filename = props.filename
   if (!canvasRef.value) return
   const link = document.createElement('a')
   link.download = filename

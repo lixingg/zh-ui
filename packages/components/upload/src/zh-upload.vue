@@ -73,7 +73,7 @@
 
 </template>
 <script lang="ts" setup>
-import { defineProps, ref, computed, defineEmits, useAttrs, useSlots } from "vue";
+import { ref, computed, useAttrs, useSlots } from "vue";
 import { Plus, UploadFilled } from "@element-plus/icons-vue";
 import { ElLoading, ElMessage } from "element-plus";
 import jsFileDownload from "js-file-download";
@@ -143,7 +143,7 @@ const uploadFile = computed({
   set(val) {
     emits("update:modelValue", val);
   }
-});
+}) as string[] | any;
 
 function authRemove(file, fileList) {
   uploadFile.value = fileList.map(ite => ite.url);

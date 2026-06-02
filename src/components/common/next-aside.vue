@@ -18,7 +18,7 @@
       required: true
     }
   })
-  const useNext = computed(() => {
+  const useNext = computed<any>(() => {
     const allData = props.asideData.flatMap((item) => item.routerData)
     const selfIndex = allData.findIndex(
       (item) => `${props.baseLink}/${item.path}` === props.selfLink

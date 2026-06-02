@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed,defineProps,defineEmits } from 'vue'
+import { computed } from 'vue'
 import type { EChartsOption} from 'echarts/types/dist/shared'
 import zhBaseChart from "./zh-baseChart.vue"
 const props = withDefaults(

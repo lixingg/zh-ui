@@ -39,7 +39,7 @@
             type="range"
             :value="currentTime"
             :max="duration"
-            @input="seek($event.target.value)"
+            @input="seek(($event.target as any).value)"
         />
       </div>
     </template>

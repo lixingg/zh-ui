@@ -595,7 +595,7 @@ const drawTrackLine = (): void => {
   if (!displayPoints.value.length) return;
 
   const points = displayPoints.value.map(p => fromLonLat([p.lng, p.lat]));
-  const lineGeometry = new LineString(points);
+  const lineGeometry:any = new LineString(points);
   trackLine.value = new Feature({ geometry: lineGeometry });
   trackLine.value.setStyle(
       new Style({
@@ -614,7 +614,7 @@ const addStartEndMarkers = (): void => {
   const startPoint = fromLonLat([displayPoints.value[0].lng, displayPoints.value[0].lat]);
   const endPoint = fromLonLat([displayPoints.value[displayPoints.value.length - 1].lng, displayPoints.value[displayPoints.value.length - 1].lat]);
 
-  startMarker.value = new Feature({ geometry: new Point(startPoint), title: "起点" });
+  startMarker.value = new Feature({ geometry: new Point(startPoint) as any, title: "起点" });
   startMarker.value.setStyle(
       new Style({
         image: new CircleStyle({ radius: 8, fill: new Fill({ color: "#4caf50" }), stroke: new Stroke({ color: "#fff", width: 2 }) }),
@@ -622,7 +622,7 @@ const addStartEndMarkers = (): void => {
       })
   );
 
-  endMarker.value = new Feature({ geometry: new Point(endPoint), title: "终点" });
+  endMarker.value = new Feature({ geometry: new Point(endPoint) as any, title: "终点" });
   endMarker.value.setStyle(
       new Style({
         image: new CircleStyle({ radius: 8, fill: new Fill({ color: "#f44336" }), stroke: new Stroke({ color: "#fff", width: 2 }) }),
@@ -640,7 +640,7 @@ const addCarMarker = (): void => {
   if (!displayPoints.value.length) return;
 
   const startPoint = fromLonLat([displayPoints.value[0].lng, displayPoints.value[0].lat]);
-  carMarker.value = new Feature({ geometry: new Point(startPoint), title: "车辆" });
+  carMarker.value = new Feature({ geometry: new Point(startPoint) as any , title: "车辆" });
 
   const style = new Style({
     image: new Icon({
@@ -852,7 +852,7 @@ const addMarker = (options: MarkerOptions): Feature | null => {
   const { position, title = "", icon, iconSize, iconOffset, label, draggable = false, autoShowInfo = false, infoContent = "", extData = {}, customStyle } = options;
 
   const coord = fromLonLat(position);
-  const feature:any = new Feature({ geometry: new Point(coord), title, extData, infoContent, autoShowInfo });
+  const feature:any = new Feature({ geometry: new Point(coord) as any, title, extData, infoContent, autoShowInfo });
 
   let style: Style;
   if (customStyle) {
@@ -916,7 +916,7 @@ const addPolyline = (options: PolylineOptions): Feature | null => {
 
   const points = path.map(p => fromLonLat(p));
   const lineGeometry = new LineString(points);
-  const feature:any = new Feature({ geometry: lineGeometry, extData });
+  const feature:any = new Feature({ geometry: lineGeometry as any, extData });
   feature.setStyle(
       new Style({
         stroke: new Stroke({
@@ -955,7 +955,7 @@ const addPolygon = (options: PolygonOptions): Feature | null => {
 
   const rings = paths.map(ring => ring.map(p => fromLonLat(p)));
   const polygonGeometry = new Polygon(rings);
-  const feature = new Feature({ geometry: polygonGeometry, extData });
+  const feature = new Feature({ geometry: polygonGeometry as any, extData });
   feature.setStyle(
       new Style({
         fill: new Fill({ color: fillColor || styles.fillColor }),
@@ -1043,7 +1043,7 @@ const addMarkerCluster = (points: ClusterPoint[], options: { distance?: number; 
 
   const features = points.map((point, index) => {
     const coord = fromLonLat(point.position);
-    const feature = new Feature({ geometry: new Point(coord), title: point.title || `点${index + 1}`, extData: point.extData || {} });
+    const feature = new Feature({ geometry: new Point(coord) as any, title: point.title || `点${index + 1}`, extData: point.extData || {} });
 
     if (point.customStyle?.iconUrl) {
       feature.setStyle(getDefaultMarkerStyle(point.customStyle));
@@ -1121,7 +1121,7 @@ const addHeatmap = async (data: HeatmapDataPoint[], options: { radius?: number; 
 
   const features = data.map(item => {
     const coord = fromLonLat([item.lng, item.lat]);
-    return new Feature({ geometry: new Point(coord), weight: item.weight || 1 });
+    return new Feature({ geometry: new Point(coord) as any, weight: item.weight || 1 });
   });
 
   heatmapLayer = new HeatmapLayer({
@@ -1141,7 +1141,7 @@ const updateHeatmapData = (data: HeatmapDataPoint[]): void => {
   if (!heatmapLayer) return;
   const features = data.map(item => {
     const coord = fromLonLat([item.lng, item.lat]);
-    return new Feature({ geometry: new Point(coord), weight: item.weight || 1 });
+    return new Feature({ geometry: new Point(coord) as any, weight: item.weight || 1 });
   });
   heatmapLayer.getSource().clear();
   heatmapLayer.getSource().addFeatures(features);

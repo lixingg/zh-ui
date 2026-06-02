@@ -199,7 +199,7 @@ const emit = defineEmits<{
 const videoRef = ref<HTMLVideoElement>()
 const containerRef = ref<HTMLDivElement>()
 const hlsInstance = shallowRef<Hls | null>(null)
-const error = ref<{ message: string; fatal: boolean } | null>(null)
+const error = ref<{ message: string; fatal: boolean } | any>(null)
 const playing = ref(false)
 const currentTime = ref(0)
 const duration = ref(0)
@@ -307,13 +307,13 @@ function togglePlay() {
   }
 }
 
-function seek(value: number) {
+function seek(value: any) {
   if (videoRef.value) {
     videoRef.value.currentTime = value
   }
 }
 
-function setVolume(value: number) {
+function setVolume(value: any) {
   if (videoRef.value) {
     videoRef.value.volume = value
     muted.value = value === 0

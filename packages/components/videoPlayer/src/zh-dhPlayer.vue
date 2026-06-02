@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch,defineProps } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { Loading, WarningFilled, VideoCamera } from '@element-plus/icons-vue'
 import { useDahuaPlayer } from './useDahuaPlayer'
 import type { DahuaPlayerProps, DahuaPlayerEmits, RealPlayOptions, PlaybackOptions } from '../../../types'

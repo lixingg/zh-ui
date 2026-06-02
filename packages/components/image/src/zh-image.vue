@@ -35,13 +35,10 @@
 </template>
 <script lang="ts" setup>
   import { computed,
-    defineProps,
-    defineEmits,
     ref,
     nextTick,
     h,
     render,
-    defineExpose,
     useAttrs ,
     useSlots} from "vue";
   import { Download } from '@element-plus/icons-vue';

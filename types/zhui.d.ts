@@ -74,3 +74,27 @@ declare module 'unplugin-auto-import/vite' {
 }
 
 
+// ✅ 完整声明
+declare global {
+  interface ImportMeta {
+    url: string
+    readonly env: ImportMetaEnv
+    glob: <T = any>(pattern: string, options?: {
+      eager?: boolean
+      import?: string
+      query?: string
+    }) => Record<string, () => Promise<T>>
+    globEager: <T = any>(pattern: string) => Record<string, T>
+  }
+
+  interface ImportMetaEnv {
+    [key: string]: string | boolean | undefined
+    BASE_URL: string
+    MODE: string
+    DEV: boolean
+    PROD: boolean
+    SSR: boolean
+  }
+}
+
+export {}

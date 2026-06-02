@@ -380,7 +380,7 @@ function removeFile(index: number) {
 }
 
 // ================== 发送消息 ==================
-async function handleSend(generationType?: 'ppt' | 'image' | 'document') {
+async function handleSend(generationType?: 'ppt' | 'image' | 'document' | any) {
   const text = inputText.value.trim()
   const files = [...pendingFiles.value]
 

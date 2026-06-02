@@ -114,7 +114,7 @@ export interface UploadConfig extends BaseFieldConfig {
     accept?: string
     maxSize?: number
     maxCount?: number
-    customRequest?: (option: any) => void
+    customRequest?: (option: Promise<unknown> | XMLHttpRequest) => void
     autoUpload?: boolean
     uploadTrigger?: 'button' | 'dragger'
     listType?: 'text' | 'picture' | 'picture-card'

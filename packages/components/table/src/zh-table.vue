@@ -105,7 +105,7 @@ const internalCurrentPage = ref(1);
 const internalPageSize = ref(defaultPageSize);
 
 // 解析分页配置
-const paginationConfig = computed<PaginationConfig>(() => {
+const paginationConfig = computed<PaginationConfig | any>(() => {
   if (props.pagination === false || props.pagination === undefined) {
     return {show: false};
   }

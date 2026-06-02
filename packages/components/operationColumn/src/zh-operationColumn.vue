@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, ref, computed } from "vue";
+import {ref, computed } from "vue";
 
 const id = ref('operation-buttons'+Math.random().toString(36).substr(2, 9));
 const props = defineProps({

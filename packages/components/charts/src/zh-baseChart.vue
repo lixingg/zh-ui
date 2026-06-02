@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onBeforeUnmount, markRaw ,defineProps,defineEmits} from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount, markRaw} from 'vue'
 import * as echarts from 'echarts';
 import * as glCharts from 'echarts-gl';
 

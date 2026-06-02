@@ -41,7 +41,7 @@
   </el-upload>
 </template>
 <script lang="ts" setup>
-import { defineProps , ref , computed ,defineEmits} from "vue"
+import { ref , computed } from "vue"
 import { UploadFilled } from "@element-plus/icons-vue";
 import { ElLoading, ElMessage } from "element-plus";
 import jsFileDownload from "js-file-download";
@@ -63,7 +63,7 @@ const props = defineProps({
 const accepts = computed(()=>props.accept.join(","))
 const uploadRef = ref(null)
 const file_list = ref<any>([])
-const uploadFile = computed({
+const uploadFile = computed<string[] | any>({
   get() {
     if(!Array.isArray(props.modelValue)){
       if(props.modelValue){

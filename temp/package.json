@@ -1,8 +1,9 @@
 {
   "name": "zhui-plus",
-  "version": "1.0.63",
+  "version": "1.0.72",
   "description": "打造属于自己的个性化ui组件库",
   "main": "dist/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +14,7 @@
   "peerDependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
     "@bundled-es-modules/pdfjs-dist": "^3.6.172-alpha.1",
-    "@element-plus/icons-vue": "^1.1.4",
+    "@element-plus/icons-vue": "^2.3.1",
     "docx-preview": "^0.3.7",
     "echarts": "^5.4.3",
     "echarts-gl": "^2.0.9",

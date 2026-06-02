@@ -57,7 +57,7 @@ const mergedOption = computed(() => {
   const series = data.value.map((serie, sIndex) => {
     console.log(serie)
     // 颜色计算
-    let color: string | ((params: any) => string)
+    let color: string | ((params: any) => string) | any
     const cfg = colorConfig.value
     if (typeof cfg === 'function') {
       color = (params: any) => cfg(params.data, sIndex)

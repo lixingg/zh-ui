@@ -4,8 +4,8 @@ import { App } from 'vue'
 
 export default {
   install(app: App) {
-    app.component(ZhRow.name, ZhRow)
-    app.component(ZhCol.name, ZhCol)
+    app.component(<string>ZhRow.name, ZhRow)
+    app.component(<string>ZhCol.name, ZhCol)
   }
 }
 

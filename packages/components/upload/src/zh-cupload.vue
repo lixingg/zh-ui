@@ -4,7 +4,7 @@
                :ref="setUploadRef"
                :file-list="fileList"
                :accept="field.accept"
-               :http-request="field.customRequest"
+               :http-request="field.customRequest as any"
                :list-type="field.listType ?? 'text'"
                :limit="field.maxCount"
                :disabled="disabled"

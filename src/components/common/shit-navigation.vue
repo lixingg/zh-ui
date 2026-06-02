@@ -38,8 +38,8 @@
       >Back to Top</span
     >
   </div>
-  <zh-drawer v-model="drawer" direction="ltr" :with-header="false">
+  <el-drawer v-model="drawer" direction="ltr" :with-header="false">
     <!--    <span>Hi there!</span>-->
     <aside-com :aside-data="asideData" :base-link="baseLink" @selectLink="selectLinkHandler" />
-  </zh-drawer>
+  </el-drawer>
 </template>

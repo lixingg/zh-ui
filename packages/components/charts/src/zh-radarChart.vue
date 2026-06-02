@@ -59,7 +59,7 @@ const internalData = computed(() => ({
 }))
 
 // 根据配置解析系列颜色
-function getSeriesColor(index: number): string {
+function getSeriesColor(index: number): string | any {
   const cfg = colorConfig.value
   if (typeof cfg === 'string' && cfg !== 'macaron') return cfg
   if (Array.isArray(cfg)) return cfg[index % cfg.length]

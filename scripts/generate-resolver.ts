@@ -1,334 +1,308 @@
-// scripts/generate-resolver.ts
-import {
-    readdirSync,
-    statSync,
-    writeFileSync,
-    existsSync,
-    mkdirSync
-} from 'fs'
+// scripts/generate-types.ts
+import { readdirSync, statSync, writeFileSync, existsSync, mkdirSync, readFileSync } from 'fs'
 import { resolve, relative, basename, join, extname } from 'path'
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
 
-// ESM 模块路径处理
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const __dirname =resolve(process.cwd(), 'scripts')
 
 // ============= 类型定义 =============
 interface ComponentInfo {
-    /** 组件原始名称（文件名去掉扩展名） */
-    rawName: string
-    /** 组件驼峰名称 */
+    /** 文件名（不含扩展名） */
+    fileName: string
+    /** PascalCase 组件名 */
     pascalName: string
-    /** 组件映射键名（Zh + 驼峰名） */
-    mapKey: string
-    /** 组件文件相对路径（不含扩展名） */
-    relativePath: string
-    /** 完整映射值路径 */
-    mapValue: string
+    /** 带前缀的标签名 */
+    tagName: string
+    /** 组件目录相对路径 */
+    dirPath: string
+    /** 组件入口文件路径 */
+    entryPath: string
     /** 是否为子组件 */
     isSubComponent: boolean
-    /** 父组件名称 */
+    /** 父组件名 */
     parentName?: string
-    /** 所在目录层级 */
-    depth: number
+    /** Props 类型定义 */
+    props?: PropInfo[]
+    /** Events 类型定义 */
+    events?: EventInfo[]
+    /** Slots 类型定义 */
+    slots?: SlotInfo[]
 }
 
-interface ScannerOptions {
-    /** packages 根目录 */
-    packagesDir: string
-    /** 组件前缀 */
-    prefix?: string
-    /** 最大扫描深度 */
-    maxDepth?: number
-    /** 排除的目录名 */
-    excludeDirs?: string[]
-    /** 组件文件扩展名 */
-    componentExtensions?: string[]
+interface PropInfo {
+    name: string
+    type: string
+    required: boolean
+    default?: string
+    description?: string
+}
+
+interface EventInfo {
+    name: string
+    params: string
+    description?: string
+}
+
+interface SlotInfo {
+    name: string
+    description?: string
+    params?: string
 }
 
 // ============= 组件扫描器 =============
 class ComponentScanner {
-    private options: Required<ScannerOptions>
-    private components: ComponentInfo[] = []
     private componentsDir: string
+    private components: ComponentInfo[] = []
 
-    constructor(options: ScannerOptions) {
-        this.options = {
-            prefix: 'Zh',
-            maxDepth: 5,
-            excludeDirs: [
-                'node_modules',
-                '__tests__',
-                'test',
-                'tests',
-                'utils',
-                'hooks',
-                'composables',
-                'style',
-                'styles',
-                'assets',
-                'demo',
-                'docs',
-                'dist',
-                'lib',
-                'es'
-            ],
-            componentExtensions: ['.vue', '.tsx', '.jsx'],
-            ...options
-        }
-        this.componentsDir = resolve(options.packagesDir, 'components')
+    constructor(packagesDir: string) {
+        this.componentsDir = resolve(packagesDir, 'components')
     }
 
-    /**
-     * 开始扫描
-     */
     scan(): ComponentInfo[] {
-        console.log('🔍 开始扫描组件目录...\n')
-        console.log(`📁 组件根目录: ${this.componentsDir}\n`)
-
+        console.log('🔍 扫描组件目录...\n')
         this.components = []
 
         if (!existsSync(this.componentsDir)) {
-            throw new Error(`组件目录不存在: ${this.componentsDir}`)
+            console.warn(`组件目录不存在: ${this.componentsDir}`)
+            return []
         }
 
-        // 扫描顶层目录
         this._scanDirectory(this.componentsDir, 0)
 
         // 排序
         this.components.sort((a, b) => {
-            if (a.depth !== b.depth) return a.depth - b.depth
+            if (a.isSubComponent !== b.isSubComponent) return a.isSubComponent ? 1 : -1
             return a.pascalName.localeCompare(b.pascalName)
         })
 
         return this.components
     }
 
-    /**
-     * 递归扫描目录
-     */
-    private _scanDirectory(
-        currentDir: string,
-        depth: number,
-        parentComponent?: ComponentInfo
-    ): void {
-        if (depth > this.options.maxDepth) return
-
-        const dirName = basename(currentDir)
-
-        // 跳过排除的目录
-        if (this.options.excludeDirs.includes(dirName)) return
-
-        // 跳过隐藏目录
-        if (dirName.startsWith('.') || dirName.startsWith('_')) return
-
+    private _scanDirectory(dirPath: string, depth: number, parentName?: string): void {
         try {
-            const entries = readdirSync(currentDir)
+            const entries = readdirSync(dirPath)
 
             // 1. 检查是否有 src 目录
             if (entries.includes('src')) {
-                // 处理 src 目录下的组件
-                this._processSrcDirectory(currentDir, depth, parentComponent)
-            } else {
-                // 2. 检查当前目录是否有组件文件
-                const componentFiles = this._findComponentFiles(currentDir, entries)
-
-                if (componentFiles.length > 0) {
-                    // 处理当前目录下的组件
-                    const mainComponent = this._processComponentFiles(
-                        currentDir,
-                        componentFiles,
-                        depth,
-                        parentComponent
-                    )
-
-                    // 继续扫描子目录
-                    this._scanSubDirectories(
-                        currentDir,
-                        entries,
-                        depth + 1,
-                        mainComponent || parentComponent
-                    )
-                } else {
-                    // 3. 没有组件文件，继续扫描子目录
-                    this._scanSubDirectories(currentDir, entries, depth, parentComponent)
-                }
+                this._processSrcDirectory(dirPath, depth, parentName)
+                return
             }
-        } catch (error) {
-            console.warn(`⚠️  无法读取目录: ${currentDir}`)
-        }
-    }
 
-    /**
-     * 处理 src 目录
-     */
-    private _processSrcDirectory(
-        parentDir: string,
-        depth: number,
-        parentComponent?: ComponentInfo
-    ): void {
-        const srcPath = join(parentDir, 'src')
+            // 2. 查找组件文件
+            const vueFiles = entries.filter(f => f.endsWith('.vue'))
 
-        try {
-            const srcEntries = readdirSync(srcPath)
-
-            // 查找 src 下的组件文件
-            const componentFiles = this._findComponentFiles(srcPath, srcEntries)
-
-            if (componentFiles.length > 0) {
-                // 处理组件文件
-                const mainComponent = this._processComponentFiles(
-                    srcPath,
-                    componentFiles,
-                    depth,
-                    parentComponent,
-                    true // 标记来自 src 目录
-                )
-
-                // 查找 src 下的子目录（可能是子组件）
-                const subDirs = srcEntries.filter(entry => {
-                    const fullPath = join(srcPath, entry)
-                    return statSync(fullPath).isDirectory() &&
-                        !this.options.excludeDirs.includes(entry) &&
-                        !entry.startsWith('.') &&
-                        !entry.startsWith('_')
+            if (vueFiles.length > 0) {
+                vueFiles.forEach(file => {
+                    const componentInfo = this._createComponentInfo(dirPath, file, depth, parentName)
+                    this.components.push(componentInfo)
+                    console.log(`  ${'  '.repeat(depth)}📦 ${componentInfo.tagName}`)
                 })
 
                 // 扫描子目录
-                subDirs.forEach(subDir => {
-                    const fullPath = join(srcPath, subDir)
-                    this._scanDirectory(fullPath, depth + 1, mainComponent || parentComponent)
+                entries.forEach(entry => {
+                    const fullPath = join(dirPath, entry)
+                    if (statSync(fullPath).isDirectory() && !entry.startsWith('.') && entry !== 'src') {
+                        const componentName = this._toPascalCase(basename(fullPath))
+                        this._scanDirectory(fullPath, depth + 1, componentName)
+                    }
+                })
+            } else {
+                // 3. 没有组件文件，继续扫描子目录
+                entries.forEach(entry => {
+                    const fullPath = join(dirPath, entry)
+                    if (statSync(fullPath).isDirectory() && !entry.startsWith('.') && !entry.startsWith('_')) {
+                        this._scanDirectory(fullPath, depth, parentName)
+                    }
                 })
             }
-
-            // 继续扫描父目录下的其他子目录（非 src）
-            const parentEntries = readdirSync(parentDir)
-            this._scanSubDirectories(
-                parentDir,
-                parentEntries.filter(e => e !== 'src'),
-                depth + 1,
-                parentComponent
-            )
         } catch (error) {
-            console.warn(`⚠️  无法读取 src 目录: ${srcPath}`)
+            console.warn(`无法读取目录: ${dirPath}`)
         }
     }
 
-    /**
-     * 查找目录中的组件文件
-     */
-    private _findComponentFiles(dirPath: string, entries: string[]): string[] {
-        return entries.filter(entry => {
-            const fullPath = join(dirPath, entry)
-            if (!statSync(fullPath).isFile()) return false
+    private _processSrcDirectory(dirPath: string, depth: number, parentName?: string): void {
+        const srcPath = join(dirPath, 'src')
 
-            const ext = extname(entry).toLowerCase()
-            return this.options.componentExtensions.includes(ext)
-        })
-    }
+        try {
+            const srcEntries = readdirSync(srcPath)
+            const vueFiles = srcEntries.filter(f => f.endsWith('.vue'))
 
-    /**
-     * 处理组件文件
-     */
-    private _processComponentFiles(
-        dirPath: string,
-        componentFiles: string[],
-        depth: number,
-        parentComponent?: ComponentInfo,
-        fromSrc: boolean = false
-    ): ComponentInfo | undefined {
-        let mainComponent: ComponentInfo | undefined
-
-        componentFiles.forEach(fileName => {
-            const nameWithoutExt = basename(fileName, extname(fileName))
-            const pascalName = this._toPascalCase(nameWithoutExt)
-            const mapKey = `${pascalName}`
-
-            // 构建相对路径
-            let relativeToComponents = relative(this.componentsDir, dirPath)
-    /*        if (fromSrc) {
-                // 如果来自 src 目录，去掉 src 部分
-                relativeToComponents = relative(this.componentsDir, dirname(dirPath))
-            }*/
-
-            // 构建映射值路径
-            const mapValue = `zhui-plus/packages/components/${relativeToComponents.replace(/\\/g, '/')}/${nameWithoutExt}`
-
-            // 判断是否为主组件（与目录名相同的组件）
-            const dirName = basename(dirname(dirPath))
-            const isMainComponent = pascalName === this._toPascalCase(dirName) ||
-                pascalName === this._toPascalCase(basename(relativeToComponents))
-
-            const componentInfo: ComponentInfo = {
-                rawName: nameWithoutExt,
-                pascalName,
-                mapKey,
-                relativePath: relativeToComponents.replace(/\\/g, '/'),
-                mapValue,
-                isSubComponent: !!parentComponent || !isMainComponent,
-                parentName: parentComponent?.pascalName,
-                depth
-            }
-
-            // 避免重复添加
-            if (!this.components.find(c => c.mapKey === mapKey)) {
+            vueFiles.forEach(file => {
+                const componentInfo = this._createComponentInfo(srcPath, file, depth, parentName)
                 this.components.push(componentInfo)
+                console.log(`  ${'  '.repeat(depth)}📦 ${componentInfo.tagName}`)
+            })
 
-                // 打印信息
-                const indent = '  '.repeat(Math.min(depth, 3))
-                const prefix = componentInfo.isSubComponent ? '└─ ' : '📦 '
-                console.log(`${indent}${prefix}${mapKey} -> ${mapValue}`)
-            }
-
-            // 设置主组件（用于后续子组件关联）
-            if (isMainComponent && !mainComponent) {
-                mainComponent = componentInfo
-            }
-        })
-
-        return mainComponent
-    }
-
-    /**
-     * 扫描子目录
-     */
-    private _scanSubDirectories(
-        parentDir: string,
-        entries: string[],
-        depth: number,
-        parentComponent?: ComponentInfo
-    ): void {
-        entries.forEach(entry => {
-            const fullPath = join(parentDir, entry)
-
-            try {
-                if (statSync(fullPath).isDirectory()) {
-                    if (this.options.excludeDirs.includes(entry)) return
-                    if (entry.startsWith('.') || entry.startsWith('_')) return
-
-                    this._scanDirectory(fullPath, depth, parentComponent)
+            // 扫描 src 下的子目录
+            srcEntries.forEach(entry => {
+                const fullPath = join(srcPath, entry)
+                if (statSync(fullPath).isDirectory() && !entry.startsWith('.')) {
+                    const componentName = this._toPascalCase(entry)
+                    this._scanDirectory(fullPath, depth + 1, componentName)
                 }
-            } catch (error) {
-                // 跳过无法访问的文件/目录
-            }
-        })
+            })
+        } catch (error) {
+            console.warn(`无法读取 src 目录: ${srcPath}`)
+        }
     }
 
-    /**
-     * 转换为 PascalCase
-     */
+    private _createComponentInfo(
+        dirPath: string,
+        fileName: string,
+        depth: number,
+        parentName?: string
+    ): ComponentInfo {
+        const fileNameWithoutExt = basename(fileName, extname(fileName))
+        const pascalName = this._toPascalCase(fileNameWithoutExt)
+        const tagName = `${pascalName}`
+
+        const relativeDir = relative(this.componentsDir, dirPath)
+        const entryPath = join(relativeDir, fileName).replace(/\\/g, '/')
+
+        // 解析 props 和 events
+        const filePath = join(dirPath, fileName)
+        const props = this._parseProps(filePath)
+        const events = this._parseEvents(filePath)
+        const slots = this._parseSlots(filePath)
+
+        return {
+            fileName: fileNameWithoutExt,
+            pascalName,
+            tagName,
+            dirPath: relativeDir,
+            entryPath,
+            isSubComponent: !!parentName,
+            parentName,
+            props,
+            events,
+            slots
+        }
+    }
+
+    private _parseProps(filePath: string): PropInfo[] {
+        try {
+            if (!existsSync(filePath)) return []
+
+            const content = readFileSync(filePath, 'utf-8')
+            const props: PropInfo[] = []
+
+            // 解析 defineProps
+            const propsMatch = content.match(/defineProps\s*\(\s*\{([^}]+)\}\s*\)/)
+            if (propsMatch) {
+                const propsContent = propsMatch[1]
+                const propLines = propsContent.split('\n')
+
+                propLines.forEach(line => {
+                    const nameMatch = line.match(/(\w+)\s*:\s*\{/)
+                    if (nameMatch) {
+                        const name = nameMatch[1]
+                        const typeMatch = line.match(/type\s*:\s*(\w+)/)
+                        const requiredMatch = line.match(/required\s*:\s*true/)
+                        const defaultMatch = line.match(/default\s*:\s*(.+)/)
+
+                        props.push({
+                            name,
+                            type: typeMatch ? typeMatch[1] : 'any',
+                            required: !!requiredMatch,
+                            default: defaultMatch ? defaultMatch[1].trim() : undefined
+                        })
+                    }
+                })
+            }
+
+            return props
+        } catch {
+            return []
+        }
+    }
+
+    private _parseEvents(filePath: string): EventInfo[] {
+        try {
+            if (!existsSync(filePath)) return []
+
+            const content = readFileSync(filePath, 'utf-8')
+            const events: EventInfo[] = []
+
+            // 解析 defineEmits
+            const emitsMatch = content.match(/defineEmits\s*\(\s*\[([^\]]+)\]\s*\)/)
+            if (emitsMatch) {
+                const emitsContent = emitsMatch[1]
+                const emitNames = emitsContent.match(/'([^']+)'/g)
+
+                if (emitNames) {
+                    emitNames.forEach(name => {
+                        events.push({
+                            name: name.replace(/'/g, ''),
+                            params: '...args: any[]'
+                        })
+                    })
+                }
+            }
+
+            // 解析 emits 选项
+            const emitsOptionMatch = content.match(/emits\s*:\s*\{([^}]+)\}/)
+            if (emitsOptionMatch) {
+                const emitsContent = emitsOptionMatch[1]
+                const emitLines = emitsContent.split('\n')
+
+                emitLines.forEach(line => {
+                    const nameMatch = line.match(/(\w+)\s*:/)
+                    if (nameMatch) {
+                        events.push({
+                            name: nameMatch[1],
+                            params: '...args: any[]'
+                        })
+                    }
+                })
+            }
+
+            return events
+        } catch {
+            return []
+        }
+    }
+
+    private _parseSlots(filePath: string): SlotInfo[] {
+        try {
+            if (!existsSync(filePath)) return []
+
+            const content = readFileSync(filePath, 'utf-8')
+            const slots: SlotInfo[] = []
+
+            // 解析 <slot> 标签
+            const slotRegex = /<slot\s+name="([^"]+)"[^>]*>/g
+            let match
+
+            while ((match = slotRegex.exec(content)) !== null) {
+                slots.push({
+                    name: match[1]
+                })
+            }
+
+            // 检查是否有默认插槽
+            if (content.includes('<slot') && !content.includes('name=')) {
+                slots.unshift({
+                    name: 'default',
+                    description: '默认插槽'
+                })
+            }
+
+            return slots
+        } catch {
+            return []
+        }
+    }
+
     private _toPascalCase(str: string): string {
         return str
-            .split(/[-_.]+/)
+            .split(/[-_.]/)
             .filter(Boolean)
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
             .join('')
     }
 }
 
-// ============= 代码生成器 =============
-class ResolverGenerator {
+// ============= 类型文件生成器 =============
+class TypesGenerator {
     private components: ComponentInfo[]
     private prefix: string
 
@@ -337,36 +311,71 @@ class ResolverGenerator {
         this.prefix = prefix
     }
 
-    /**
-     * 生成 resolver 代码
-     */
-    generate(): string {
+    generateGlobalTypes(): string {
         const timestamp = new Date().toISOString()
         const mainComponents = this.components.filter(c => !c.isSubComponent)
         const subComponents = this.components.filter(c => c.isSubComponent)
 
         return `// ============================================
-// 🤖 自动生成的 Resolver 配置
-// ============================================
+// 🤖 自动生成的全局类型声明
 // 生成时间: ${timestamp}
-// 主组件: ${mainComponents.length} 个
-// 子组件: ${subComponents.length} 个
-// 总计: ${this.components.length} 个
+// 组件数量: ${this.components.length}
 // ============================================
-// ⚠️  警告：请勿手动修改此文件！
-// 运行 'npm run generate-resolver' 重新生成
+
+import type { Component } from 'vue'
+
+declare module 'vue' {
+  export interface GlobalComponents {
+${this._generateGlobalComponentDeclarations(mainComponents, subComponents)}
+  }
+}
+
+// ===== 组件实例类型 =====
+${this._generateComponentInstanceTypes()}
+
+// ===== 组件 Props 类型 =====
+${this._generatePropsTypes()}
+
+// ===== 组件 Events 类型 =====
+${this._generateEventsTypes()}
+
+export {}
+`
+    }
+
+    generateComponentTypes(): string {
+        const timestamp = new Date().toISOString()
+
+        return `// ============================================
+// 🤖 自动生成的组件类型声明
+// 生成时间: ${timestamp}
+// ============================================
+
+import type { Component, ComponentPublicInstance } from 'vue'
+
+${this.components.map(comp => this._generateComponentType(comp)).join('\n\n')}
+
+// ===== 组件映射类型 =====
+export interface ZhuiPlusComponents {
+${this.components.map(comp => `  '${comp.tagName}': typeof ${comp.pascalName}`).join('\n')}
+}
+
+// ===== 全局类型扩展 =====
+declare module '@vue/runtime-core' {
+  export interface GlobalComponents extends ZhuiPlusComponents {}
+}
+`
+    }
+
+    generateResolverTypes(): string {
+        return `// ============================================
+// 🤖 Resolver 类型声明
 // ============================================
 
 import type { ComponentResolver } from 'unplugin-vue-components/types'
 
-// ===== 组件路径映射 =====
-// 键名格式: ${this.prefix} + 组件驼峰名
-// 值格式: zhui-plus/packages/components/相对路径/组件名
-const COMPONENT_MAP: Record<string, string> = {
-${this._generateMappings()}
-}
+declare const COMPONENT_MAP: Record<string, string>
 
-// ===== 类型定义 =====
 export interface ResolverOptions {
   /** 组件前缀，默认 '${this.prefix}' */
   prefix?: string
@@ -376,236 +385,162 @@ export interface ResolverOptions {
   exclude?: string[]
 }
 
-// ===== Resolver 实现 =====
-export function ZhuiPlusResolver(
-  options: ResolverOptions = {}
-): ComponentResolver[] {
-  const { 
-    prefix = '${this.prefix}', 
-    importStyle = true,
-    exclude = [] 
-  } = options
- // console.log('ZhuiPlusResolver====options', options)
-  return [
-    {
-      type: 'component',
-      resolve: (name: string) => {
-          // console.log('ZhuiPlusResolver====name1',name, name.startsWith(prefix))
-        // 检查前缀
-        if (!name.startsWith(prefix)) return
-        
-        // 获取组件名（去掉前缀）
-        const componentName = name.slice(prefix.length)
-        
-        // 检查是否在排除列表中
-        if (exclude.includes(componentName)) return
-        
-        // 查找组件路径
-        const from = COMPONENT_MAP[name]
-        if (!from) return
-        console.log('组件名称', componentName)
-        console.log('组件路径', from)
-        // 返回解析结果
-        return {
-          name: componentName,
-          from
-        }
-      }
-    }
-  ]
-}
+export declare function ZhuiPlusResolver(
+  options?: ResolverOptions
+): ComponentResolver[]
 
-// ===== 导出映射表 =====
 export { COMPONENT_MAP }
-
-// ===== 组件信息（用于文档和调试） =====
-export const COMPONENT_INFO = {
-  /** 所有组件列表 */
-  all: [
-${this.components.map(c => `    '${c.mapKey}'`).join(',\n')}
-  ],
-  /** 主组件列表 */
-  main: [
-${mainComponents.map(c => `    { name: '${c.mapKey}', path: '${c.mapValue}' }`).join(',\n')}
-  ],
-  /** 子组件列表 */
-  sub: [
-${subComponents.map(c => `    { name: '${c.mapKey}', path: '${c.mapValue}', parent: '${c.parentName}' }`).join(',\n')}
-  ]
-} as const
-
-// ===== 组件树结构 =====
-export const COMPONENT_TREE = {
-${this._generateComponentTree()}
-} as const
 `
     }
 
-    /**
-     * 生成类型声明文件
-     */
-    generateTypes(): string {
-        const timestamp = new Date().toISOString()
+    private _generateGlobalComponentDeclarations(
+        mainComponents: ComponentInfo[],
+        subComponents: ComponentInfo[]
+    ): string {
+        const declarations: string[] = []
 
-        const typeDeclarations = this.components
-            .map(comp => {
-                const comment = comp.isSubComponent
-                    ? `  /** ${comp.pascalName} 子组件 (父组件: ${comp.parentName}) */`
-                    : `  /** ${comp.pascalName} 组件 */`
+        mainComponents.forEach(comp => {
+            const propsType = comp.props && comp.props.length > 0 ? comp.pascalName + 'Props' : '{}'
+            const eventsType = comp.events && comp.events.length > 0 ? comp.pascalName + 'Events' : '{}'
 
-                return `${comment}\n  ${comp.mapKey}: typeof import('zhui-plus')['${comp.pascalName}']`
-            })
-            .join('\n')
+            declarations.push(`    /** ${comp.pascalName} 组件 */`)
+            declarations.push(`    ${comp.tagName}: new (...args: any[]) => InstanceType<typeof ${comp.pascalName}>`)
+        })
 
-        return `// ============================================
-// 🤖 自动生成的类型声明
-// ============================================
-// 生成时间: ${timestamp}
-// ⚠️  警告：请勿手动修改此文件！
-// ============================================
+        subComponents.forEach(comp => {
+            declarations.push(`    /** ${comp.pascalName} 子组件 (父组件: ${comp.parentName}) */`)
+            declarations.push(`    ${comp.tagName}: new (...args: any[]) => InstanceType<typeof ${comp.pascalName}>`)
+        })
 
-export {}
-
-declare module 'vue' {
-  export interface GlobalComponents {
-${typeDeclarations}
-  }
-}
-`
+        return declarations.join('\n')
     }
 
-    /**
-     * 生成组件映射
-     */
-    private _generateMappings(): string {
+    private _generateComponentInstanceTypes(): string {
+        return this.components.map(comp => {
+            return `export interface ${comp.pascalName}Instance {
+  $el: HTMLElement
+  $props: ${comp.pascalName}Props
+  $emit: ${comp.pascalName}Events
+}`
+        }).join('\n\n')
+    }
+
+    private _generatePropsTypes(): string {
         return this.components
+            .filter(comp => comp.props && comp.props.length > 0)
             .map(comp => {
-                const comment = comp.isSubComponent
-                    ? `  // 子组件 (父组件: ${comp.parentName})`
-                    : `  // 基础组件`
+                const props = comp.props!.map(p => {
+                    const optional = p.required ? '' : '?'
+                    const desc = p.description ? `  /** ${p.description} */\n` : ''
+                    const defaultVal = p.default ? `  /** @default ${p.default} */\n` : ''
+                    return `${desc}${defaultVal}  ${p.name}${optional}: ${this._convertType(p.type)}`
+                })
 
-                return `${comment}\n  '${comp.mapKey}': '${comp.mapValue}'`
+                return `export interface ${comp.pascalName}Props {
+${props.join('\n')}
+}`
             })
-            .join(',\n')
+            .join('\n\n')
     }
 
-    /**
-     * 生成组件树
-     */
-    private _generateComponentTree(): string {
-        const mainComponents = this.components.filter(c => !c.isSubComponent)
-
-        return mainComponents
+    private _generateEventsTypes(): string {
+        return this.components
+            .filter(comp => comp.events && comp.events.length > 0)
             .map(comp => {
-                const children = this.components.filter(c => c.parentName === comp.pascalName)
-                const childrenStr = children.length > 0
-                    ? `\n      children: [${children.map(c => `'${c.mapKey}'`).join(', ')}]`
-                    : ''
+                const events = comp.events!.map(e => {
+                    return `  (event: '${e.name}', ...args: any[]): void`
+                })
 
-                return `  '${comp.mapKey}': {\n    path: '${comp.mapValue}'${childrenStr}\n  }`
+                return `export interface ${comp.pascalName}Events {
+${events.join('\n')}
+}`
             })
-            .join(',\n')
+            .join('\n\n')
+    }
+
+    private _generateComponentType(comp: ComponentInfo): string {
+        const propsType = comp.props && comp.props.length > 0 ? comp.pascalName + 'Props' : '{}'
+        const eventsType = comp.events && comp.events.length > 0 ? comp.pascalName + 'Events' : '{}'
+
+        return `/** ${comp.pascalName} 组件 */
+export declare const ${comp.pascalName}: new () => {
+  $props: ${propsType}
+  $emit: ${eventsType}
+}`
+    }
+
+    private _convertType(type: string): string {
+        const typeMap: Record<string, string> = {
+            'String': 'string',
+            'Number': 'number',
+            'Boolean': 'boolean',
+            'Array': 'any[]',
+            'Object': 'Record<string, any>',
+            'Function': '(...args: any[]) => any',
+            'Date': 'Date',
+            'RegExp': 'RegExp'
+        }
+        return typeMap[type] || type.toLowerCase()
     }
 }
 
 // ============= 主函数 =============
-async function main(): Promise<void> {
+async function main() {
     try {
-        // 配置路径
         const packagesDir = resolve(__dirname, '../packages')
-        const outputDir = resolve(__dirname, '../packages/resolver')
+        const outputDir = resolve(__dirname, '../types')
 
-        console.log('🚀 组件 Resolver 自动生成器\n')
-        console.log('配置信息:')
-        console.log(`  前缀: Zh`)
-        console.log(`  路径格式: zhui-plus/packages/components/...`)
-        console.log('')
-
-        // 检查 packages 目录是否存在
-        if (!existsSync(packagesDir)) {
-            throw new Error(`packages 目录不存在: ${packagesDir}`)
-        }
-
-        // 创建扫描器
-        const scanner = new ComponentScanner({
-            packagesDir,
-            prefix: 'Zh',
-            maxDepth: 5
-        })
+        console.log('🚀 开始生成 TypeScript 类型文件...\n')
 
         // 扫描组件
+        const scanner = new ComponentScanner(packagesDir)
         const components = scanner.scan()
 
         if (components.length === 0) {
-            console.warn('\n⚠️  未找到任何组件')
-            console.log('\n支持的目录结构示例:')
-            console.log('  packages/components/button/src/button.vue')
-            console.log('  packages/components/form/src/form.vue')
-            console.log('  packages/components/form/src/form-item.vue')
-            console.log('  packages/components/data/table/src/table.vue')
-            console.log('  packages/components/data/table/src/table-column.vue')
+            console.warn('⚠️  未找到任何组件')
             return
         }
 
-        // 生成代码
-        const generator = new ResolverGenerator(components, 'Zh')
+        // 生成类型
+        const generator = new TypesGenerator(components, 'Zh')
 
         // 确保输出目录存在
         if (!existsSync(outputDir)) {
             mkdirSync(outputDir, { recursive: true })
-            console.log(`\n📁 创建输出目录: ${outputDir}`)
         }
 
-        // 生成 resolver
-        const resolverCode = generator.generate()
-        const resolverPath = join(outputDir, 'index.ts')
-        writeFileSync(resolverPath, resolverCode, 'utf-8')
-        console.log(`\n✅ Resolver 已生成: ${resolverPath}`)
+        // 1. 生成全局类型声明
+        const globalTypes = generator.generateGlobalTypes()
+        const globalTypesPath = resolve(__dirname, '../ZHUI/global.d.ts')
+        writeFileSync(globalTypesPath, globalTypes, 'utf-8')
+        console.log(`✅ 全局类型: ${globalTypesPath}`)
 
-        // 生成类型声明
-        const typesCode = generator.generateTypes()
-        const typesPath = resolve(__dirname, '../types/components.d.ts')
-        writeFileSync(typesPath, typesCode, 'utf-8')
-        console.log(`✅ 类型声明已生成: ${typesPath}`)
+        // 2. 生成组件类型声明
+        const componentTypes = generator.generateComponentTypes()
+        const componentTypesPath = join(outputDir, 'components.d.ts')
+        writeFileSync(componentTypesPath, componentTypes, 'utf-8')
+        console.log(`✅ 组件类型: ${componentTypesPath}`)
 
-        // 打印统计信息
-        const mainComponents = components.filter(c => !c.isSubComponent)
-        const subComponents = components.filter(c => c.isSubComponent)
+        // 3. 生成 Resolver 类型声明
+        const resolverTypes = generator.generateResolverTypes()
+        const resolverTypesPath = join(outputDir, 'resolver.d.ts')
+        writeFileSync(resolverTypesPath, resolverTypes, 'utf-8')
+        console.log(`✅ Resolver 类型: ${resolverTypesPath}`)
 
-        console.log('\n📊 统计信息:')
-        console.log(`  主组件: ${mainComponents.length} 个`)
-        console.log(`  子组件: ${subComponents.length} 个`)
+        // 打印统计
+        const mainCount = components.filter(c => !c.isSubComponent).length
+        const subCount = components.filter(c => c.isSubComponent).length
+
+        console.log(`\n📊 统计:`)
+        console.log(`  主组件: ${mainCount} 个`)
+        console.log(`  子组件: ${subCount} 个`)
         console.log(`  总计: ${components.length} 个`)
+        console.log(`\n✨ 类型文件生成完成！`)
 
-        // 打印组件树
-        console.log('\n📂 组件结构:')
-        mainComponents.forEach(comp => {
-            console.log(`  📦 ${comp.mapKey}`)
-            console.log(`     路径: ${comp.mapValue}`)
-
-            const children = subComponents.filter(c => c.parentName === comp.pascalName)
-            children.forEach(child => {
-                console.log(`    └─ ${child.mapKey}`)
-                console.log(`       路径: ${child.mapValue}`)
-            })
-        })
-
-        // 验证示例
-        console.log('\n🔍 验证示例:')
-        if (mainComponents.length > 0) {
-            const example = mainComponents[0]
-            console.log(`  COMPONENT_MAP['${example.mapKey}'] = '${example.mapValue}'`)
-        }
-
-        console.log('\n✨ 生成完成！')
     } catch (error) {
-        console.error('\n❌ 生成失败:', error)
+        console.error('❌ 生成失败:', error)
         throw error
     }
 }
 
-// ============= 执行 =============
-main().catch((error) => {
-    console.error('\n💥 脚本执行失败:', error)
-    process.exit(1)
-})
+main().catch(console.error)
