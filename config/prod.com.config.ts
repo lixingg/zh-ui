@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import baseConfig from './base.config' // 主要用于alias文件路径别名
 import copyPlugin from 'rollup-plugin-copy'
+import dts from 'vite-plugin-dts'
 import { fileURLToPath, URL } from "node:url";
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
@@ -36,7 +37,7 @@ export default defineConfig({
         copyPlugin({
           targets: [{ src: 'node_modules/element-plus/dist/locale/*', dest: 'dist/locale' },
             { src: 'node_modules/element-plus/es/locale/lang/*', dest: 'dist/lang' },
-            { src: 'node_modules/element-plus/global.d.ts', dest: 'types/' },
+            // { src: 'node_modules/element-plus/global.d.ts', dest: 'types/' },
             // { src: 'packages', dest: 'ZHUI/' }
           ],
         }),
@@ -66,6 +67,14 @@ export default defineConfig({
           // 组件库打包时，排除某些目录
           exclude: [/[\\/]node_modules[\\/]/, /[\\/]\.git[\\/]/],
         }),*/
+        // ✅ 生成类型声明
+        dts({
+          include: ['packages/**/*.ts', 'packages/**/*.vue'],
+          outDir: 'dist',
+          staticImport: true,
+          insertTypesEntry: true,
+          rollupTypes: true
+        })
       ],
       // 确保外部化处理那些你不想打包进库的依赖
       external: ['vue', 'tailwindcss'],
