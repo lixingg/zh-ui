@@ -15,7 +15,7 @@ export default defineConfig({
             '@': path.resolve(process.cwd(), './src'),
             views: path.resolve(process.cwd(), 'src/views'),
         },
-        extensions: ['.js', '.json', '.ts'],
+        extensions: ['.js', '.json', '.ts','.tsx'],
     },
     plugins: [
         vue({include: [/\.vue$/, /\.md$/]}),
