@@ -60,9 +60,9 @@ export async function loadCSSFromNodeModules(importFn: () => Promise<any>, id?: 
 export function getWSPlayerAssetPath(relativePath: string): string {
     // 方式一：通过 import.meta.url 动态拼接（推荐）
     try {
-        return new URL(`/node_modules/zhui-plus/dist/WSPlayer/${relativePath}`, import.meta.url).href
+        return new URL(`/node_modules/zhui-plus/dist/wsPlayer/${relativePath}`, import.meta.url).href
     } catch {
         // 方式二：回退到 public 路径
-        return `/node_modules/zhui-plus/dist/WSPlayer/${relativePath}`
+        return `/node_modules/zhui-plus/dist/wsPlayer/${relativePath}`
     }
 }
