@@ -69,8 +69,8 @@ export default defineConfig({
         }),*/
         // ✅ 生成类型声明
         dts({
-          include: ['packages/**/*.ts', 'packages/**/*.vue'],
-          outDir: 'dist',
+          include: ['packages/**/*.ts', 'packages/!**/!*.vue'],
+          outputDir: 'dist',
           staticImport: true,
           insertTypesEntry: true,
           rollupTypes: true,
