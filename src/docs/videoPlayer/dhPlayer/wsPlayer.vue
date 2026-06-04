@@ -19,7 +19,7 @@ const liveConfig = reactive({
   windowType: 0,              // 实时预览
   showControl: true,
   useH265MSE: true,
-  wsBasePath: '/WSPlayer',
+  wsBasePath: '/wsPlayer',
   // wsBasePath 可自定义，默认为 '/static/WSPlayer/'
 })
 

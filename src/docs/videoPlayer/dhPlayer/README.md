@@ -10,6 +10,10 @@ import wsPlayer from './wsPlayer.vue';
 <wsPlayer></wsPlayer>
 </show-code>
 
+<show-code showPath="videoPlayer/dhPlayer/wsPlayer">
+<wsPlayer></wsPlayer>
+</show-code>
+
 
 > **Tip**<br>
 >- 直播流建议设置 live 为 true，以优化 Hls.js 的同步参数并隐藏无效进度条。

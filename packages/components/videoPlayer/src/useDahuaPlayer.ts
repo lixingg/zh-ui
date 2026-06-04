@@ -13,7 +13,7 @@ export function useDahuaPlayer(config: PlayerConfig, emit: (event: string, ...ar
      * 动态加载 WSPlayer 所需资源（按顺序）
      */
     async function loadWSResources(): Promise<void> {
-        const base = config.wsBasePath || window.location.origin || '/static/WSPlayer/'
+        const base = config.wsBasePath || window.location.origin || '/static/wsPlayer/'
         // 1. jQuery
         await loadScript(`${base}/jquery-3.6.0.min.js`, 'ws-jquery')
         // 2. 解码库
