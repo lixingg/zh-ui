@@ -15,7 +15,7 @@ import { ElMessage } from 'element-plus'
 const livePlayer = ref()
 const liveConfig = reactive({
   mode: 'WSPlayer',
-  containerId: 'live-preview-1',
+  // containerId: 'live-preview-1',
   windowType: 0,              // 实时预览
   showControl: true,
   useH265MSE: true,

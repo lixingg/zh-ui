@@ -35,6 +35,7 @@ const props = withDefaults(defineProps<DahuaPlayerProps>(), {
   customClass: '',
   showLoading: true,
   showErrorMask: true,
+  containerId:`dh-player-${Math.random().toString(36).substr(2, 9)}`
 })
 
 const emit = defineEmits<DahuaPlayerEmits>()
