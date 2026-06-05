@@ -71,7 +71,6 @@ export default defineConfig({
         dts({
           include: ['packages/**/*.tsx','packages/**/*.ts', 'packages/**/*.vue'],
           outDir: 'dist',
-
           staticImport: true,
           insertTypesEntry: true,
           rollupTypes: false,

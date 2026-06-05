@@ -14,7 +14,7 @@ ZHUI/
 dist-ssr
 *.local
 
-# Editor directories and files
+# editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea

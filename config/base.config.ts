@@ -25,6 +25,6 @@ export default defineConfig({
                 // add anchor links to your H[x] tags
                 md.use(require('markdown-it-anchor'))
             }
-        })
+        }),
     ],
 })

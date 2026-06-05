@@ -1,13 +1,12 @@
 import {App} from 'vue'
 import ElementPlus from 'element-plus'
+import  'echarts-gl'
+import 'echarts-liquidfill'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 export * from '@element-plus/icons-vue'
 export { default as dayjs } from 'dayjs'
-export * as echarts from 'echarts/core'
-// 如果你需要 echarts-gl 的类型（例如 GeoComponent 等），也可以导出
-export * from 'echarts-gl'
-// export * as echarts from 'echarts'
-// export * as echartsGl from 'echarts-gl'
+// @ts-ignore
+export * as echarts  from 'echarts'
 
 // @ts-ignore
 export * from 'element-plus'
@@ -38,7 +37,7 @@ export * from './searchForm'
 export * from './provider'
 export * from './videoPlayer'
 export * from '../utils/hooks'
-
+export * from "./editor"
 
 import button from './button'
 import icon from './icon'
@@ -66,6 +65,7 @@ import form from "./form"
 import searchForm from "./searchForm"
 import provider from "./provider"
 import videoPlayer from "./videoPlayer"
+import editor from "./editor"
 
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
@@ -96,7 +96,8 @@ const components = [
     form,
     searchForm,
     provider,
-    videoPlayer
+    videoPlayer,
+    editor
 ]
 
 const install = (app: App, options?: any) => {

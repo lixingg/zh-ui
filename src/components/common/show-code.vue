@@ -22,18 +22,25 @@ onMounted(async () => {
     if (props.showPath?.endsWith('.vue') ||
         props.showPath?.endsWith('.tsx') ||
         props.showPath?.endsWith('.jsx')) {
-      const data: any = await import(/* @vite-ignore */ `../../docs/${props.showPath}?raw`)
-      sourceCode.value = data.default
-    }else{
-      const data: any = await import(/* @vite-ignore */ `../../docs/${props.showPath}.vue?raw`)
-      sourceCode.value = data.default
+      try {
+        const data: any = await import(/* @vite-ignore */ `../../docs/${props.showPath}?raw`)
+        sourceCode.value = data.default
+      } catch (e) {
+      }
+
+    } else {
+      try {
+        const data: any = await import(/* @vite-ignore */ `../../docs/${props.showPath}.vue?raw`)
+        sourceCode.value = data.default
+      } catch (e) {
+      }
     }
   } else {
     if (props.showPath?.endsWith('.vue') ||
         props.showPath?.endsWith('.tsx') ||
         props.showPath?.endsWith('.jsx')) {
       sourceCode.value = await fetch(`/docs/${props.showPath}`).then((res) => res.text())
-    }else{
+    } else {
       sourceCode.value = await fetch(`/docs/${props.showPath}.vue`).then((res) => res.text())
     }
   }

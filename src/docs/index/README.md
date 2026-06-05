@@ -10,7 +10,7 @@
 请前往echarts官网查看用法[echarts官网](https://echarts.apache.org/zh/index.html)
 
 
-以下是使用的技术栈 **vue3, typescript, vite, vite-plugin-md, tailwindcss, scss**
+以下是使用的技术栈 **vue3, typescript, vite, echarts, hlsjs, vite-plugin-md, tailwindcss, scss**
 
 ## 已经实现组件
 
