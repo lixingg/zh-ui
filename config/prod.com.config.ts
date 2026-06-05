@@ -71,13 +71,14 @@ export default defineConfig({
         dts({
           include: ['packages/**/*.tsx','packages/**/*.ts', 'packages/**/*.vue'],
           outDir: 'dist',
+
           staticImport: true,
           insertTypesEntry: true,
-          rollupTypes: true,
+          rollupTypes: false,
         }),
       ],
       // 确保外部化处理那些你不想打包进库的依赖
-      external: ['vue', 'tailwindcss'],
+      external: ['vue', 'tailwindcss','element-plus', 'dayjs', 'echarts', 'echarts-gl'],
       output: {
         // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
         globals: {

@@ -2,6 +2,10 @@ import {App} from 'vue'
 import ElementPlus from 'element-plus'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 export * from '@element-plus/icons-vue'
+export { default as dayjs } from 'dayjs'
+export * as echarts from 'echarts/core'
+// 如果你需要 echarts-gl 的类型（例如 GeoComponent 等），也可以导出
+export * from 'echarts-gl'
 // export * as echarts from 'echarts'
 // export * as echartsGl from 'echarts-gl'
 
