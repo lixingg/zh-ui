@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-// import vue from '@vitejs/plugin-vue'
+import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import baseConfig from './base.config' // 主要用于alias文件路径别名
 import copyPlugin from 'rollup-plugin-copy'
@@ -69,8 +69,8 @@ export default defineConfig({
         }),*/
         // ✅ 生成类型声明
         dts({
-          include: ['packages/**/*.ts', 'packages/!**/!*.vue'],
-          outputDir: 'dist',
+          include: ['packages/**/*.tsx','packages/**/*.ts', 'packages/**/*.vue'],
+          outDir: 'dist',
           staticImport: true,
           insertTypesEntry: true,
           rollupTypes: true,
