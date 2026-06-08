@@ -2,20 +2,24 @@
   <div class="zh-editor-container" :style="containerStyle">
     <Editor
         ref="editorRef"
+        output-format="html"
         :api-key="apiKey"
         :init="mergedInit"
-        :tinymceScriptSrc="tinymceScriptSrc"
         :model-value="modelValue"
         @update:model-value="onInput"
+        :tinymce-script-src="tinymceScriptSrc"
         @init="onEditorInit"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onBeforeUnmount } from 'vue'
+import {ref, computed, watch, onBeforeUnmount} from 'vue'
+
 import Editor from '@tinymce/tinymce-vue'
-import type { Editor as TinyMCEEditor } from 'tinymce'
+import type {Editor as TinyMCEEditor} from 'zh-tinymce'
+import langUrl from "zh-tinymce/langs/zh-hans.js?url"
+
 /* ========== Props 定义 ========== */
 interface UploadCallback {
   (file: File, progress?: (percent: number) => void): Promise<string> | any
@@ -37,12 +41,12 @@ interface Props {
   onVideoUpload?: UploadCallback | any
   // 更多自定义配置（与 TinyMCE init 完全合并）
   customInit?: Record<string, any>
-  tinymceScriptSrc?: string    // 自定义 TinyMCE 脚本地址
+  tinymceScriptSrc?: string | null   // 自定义 TinyMCE 脚本地址
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: '',
-  height: '100%',
+  height: 'auto',
   width: '100%',
   disabled: false,
   placeholder: '',
@@ -59,7 +63,7 @@ const props = withDefaults(defineProps<Props>(), {
   ],
   apiKey: 'qoas9g4yril4tvqnj224o60x0d5w04lt3a5vbx5fnysk35vg',                     // 留空使用自托管
   language: 'zh_CN',
-  tinymceScriptSrc:'',
+  tinymceScriptSrc: null,
   customInit: () => ({})
 })
 
@@ -104,6 +108,7 @@ const mergedInit = computed(() => {
     width: '70%',
     height: '600px',
     language: 'zh-Hans',
+    language_url: langUrl,
     statusbar: false,
     quickbars_insert_toolbar: '',
     plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap emoticons',
@@ -119,8 +124,7 @@ const mergedInit = computed(() => {
     autosave_retention: '2m',
     image_advtab: true,
     // link_list: [],
-    image_list: [
-    ],
+    image_list: [],
     image_class_list: [
       'img'
     ],
@@ -140,10 +144,11 @@ const mergedInit = computed(() => {
       if (meta.filetype === 'media') {
         input.setAttribute('accept', 'video/*');
       }
-      input.addEventListener('change', async (e:any) => {
+      input.addEventListener('change', async (e: any) => {
         const file = e.target.files[0];
-        let res = await props.onImageUpload(file, (p) => {})
-        callback(res, { title: file.name });
+        let res = await props.onImageUpload(file, (p) => {
+        })
+        callback(res, {title: file.name});
       });
       input.click();
     },
@@ -157,7 +162,7 @@ const mergedInit = computed(() => {
     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
   }
   // 合并用户完全自定义的 init 配置（最高优先级）
-  return { ...EditorConfig, ...props.customInit }
+  return {...EditorConfig, ...props.customInit}
 })
 
 /* ========== 事件处理 ========== */
@@ -204,12 +209,14 @@ defineExpose({
   flex-direction: column;
   width: 100%;
 }
+
 .zh-editor-container :deep(.tox-tinymce) {
 
   width: 100% !important;
   height: 100% !important;
 }
-.zh-editor-container :deep(.tox .tox-promotion){
+
+.zh-editor-container :deep(.tox .tox-promotion) {
   display: none !important;
 }
 </style>

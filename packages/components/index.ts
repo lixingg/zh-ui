@@ -2,11 +2,14 @@ import {App} from 'vue'
 import ElementPlus from 'element-plus'
 import  'echarts-gl'
 import 'echarts-liquidfill'
+import * as echarts from 'echarts';
+export { echarts };
+
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 export * from '@element-plus/icons-vue'
 export { default as dayjs } from 'dayjs'
 // @ts-ignore
-export * as echarts  from 'echarts'
+// export { default as echarts } from 'echarts';
 
 // @ts-ignore
 export * from 'element-plus'

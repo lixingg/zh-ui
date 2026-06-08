@@ -1,6 +1,6 @@
 {
   "name": "zhui-plus",
-  "version": "1.0.80",
+  "version": "1.0.91",
   "description": "打造属于自己的个性化ui组件库",
   "main": "dist/zhui-plus.es.js",
   "types": "dist/components/index.d.ts",
@@ -36,7 +36,8 @@
     "vue": "^3.5.22",
     "vue-pdf-embed": "^2.1.4",
     "vue-router": "^4.0.12",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "zh-tinymce": "^8.6.0"
   },
   "peerDependenciesMeta": {
     "vue": {

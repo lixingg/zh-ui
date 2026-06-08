@@ -1,6 +1,6 @@
 // ============================================
 // 🤖 自动生成的全局类型声明
-// 生成时间: 2026-06-05T08:07:43.186Z
+// 生成时间: 2026-06-08T08:49:29.662Z
 // ============================================
 
 import type { Component, ComponentPublicInstance } from 'vue'
@@ -34,6 +34,7 @@ declare module '@vue/runtime-core' {
  ZhFooter: typeof import('../dist/components/index.d.ts')['ZhFooter']
  ZhHeader: typeof import('../dist/components/index.d.ts')['ZhHeader']
  ZhMain: typeof import('../dist/components/index.d.ts')['ZhMain']
+ ZhCeditor: typeof import('../dist/components/index.d.ts')['ZhCeditor']
  ZhEditor: typeof import('../dist/components/index.d.ts')['ZhEditor']
  ZhFileviewer: typeof import('../dist/components/index.d.ts')['ZhFileviewer']
  Circleloading: typeof import('../dist/components/index.d.ts')['Circleloading']

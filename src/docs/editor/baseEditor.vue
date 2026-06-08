@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="baseEditor">
     <div class="editor-wrapper">
       <zh-editor
           v-model="content"
@@ -9,7 +9,6 @@
           :on-file-upload="handleFileUpload"
           :on-video-upload="handleVideoUpload"
           @init="handleEditorInit"
-          :tinymceScriptSrc="tinymceScriptSrc"
       />
     </div>
     <el-divider />
@@ -22,7 +21,7 @@
 import { ref } from 'vue'
 
 const content = ref('<p>欢迎使用富文本编辑器</p>')
-const tinymceScriptSrc = '/tinymce/tinymce.js'
+// const tinymceScriptSrc = '/tinymce/tinymce.js'
 // 图片上传示例（返回图片URL）
 async function handleImageUpload(file: File, progress?: (p: number) => void): Promise<string> {
   progress?.(0)
@@ -56,7 +55,7 @@ function handleEditorInit(editor: any) {
 </script>
 
 <style lang="scss" scoped>
-.app{
+.baseEditor{
   width: 100%;
 }
 /* 必须给父容器一个确定的高度，让编辑器自适应填满 */

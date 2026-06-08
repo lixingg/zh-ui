@@ -7763,11 +7763,6 @@ throat@^5.0.0:
   resolved "https://registry.npmmirror.com/throat/-/throat-5.0.0.tgz#c5199235803aad18754a667d659b5e72ce16764b"
   integrity sha512-fcwX4mndzpLQKBS1DVYhGAcYaYt7vsHNIvQV+WXMvnow5cgjPphq5CaayLaGsjRdSCKZFNGt7/GYAuXaNOiYCA==
 
-tinymce@^8.6.0:
-  version "8.6.0"
-  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-8.6.0.tgz#08318b06b858738f66fa4a2882490fb7fc025104"
-  integrity sha512-qODYoNL4cPIzNFpkEEQDm3DWI78I/nQXIPwUMHRN+q/LyT9Wzt7xis2Nfhk88kV6sibp6MJXPSaUDVNe02ZB/w==
-
 tmp@^0.2.1:
   version "0.2.7"
   resolved "https://registry.npmmirror.com/tmp/-/tmp-0.2.7.tgz#26f4db11d1601ce8012dcb8a798ece1c06a99059"
@@ -8600,6 +8595,11 @@ zarrita@^0.7.1:
   dependencies:
     "@zarrita/storage" "^0.2.0"
     numcodecs "^0.3.2"
+
+zh-tinymce@^8.6.0:
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/zh-tinymce/-/zh-tinymce-8.6.0.tgz#62abe4ec318c180efb342333b2542a1fe1ab4a77"
+  integrity sha512-a2deRlM4wXJvxVwIkzRLj7PhIA2nohVeJ9nnExR29ATARO4rLMusMMWgM10I/Pk676stciR4LrUCUi/DTLKjAw==
 
 zrender@5.6.1:
   version "5.6.1"
