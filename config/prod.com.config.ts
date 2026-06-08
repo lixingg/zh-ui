@@ -37,6 +37,7 @@ export default defineConfig({
         copyPlugin({
           targets: [{ src: 'node_modules/element-plus/dist/locale/*', dest: 'dist/locale' },
             { src: 'node_modules/element-plus/es/locale/lang/*', dest: 'dist/lang' },
+            // { src: 'node_modules/zh-tinymce/*', dest: 'dist/assets/zh-tinymce' },
             // { src: 'node_modules/element-plus/global.d.ts', dest: 'types/' },
             // { src: 'packages', dest: 'ZHUI/' }
           ],

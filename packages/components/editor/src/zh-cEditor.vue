@@ -10,16 +10,36 @@ import type { Editor } from 'zh-tinymce'
 
 // 核心及常用插件（部分通过 import 打包，其余依赖 public 目录下的文件）
 import 'zh-tinymce/tinymce'
-import 'zh-tinymce/themes/silver'
-import 'zh-tinymce/icons/default'
-import 'zh-tinymce/plugins/link'
-import 'zh-tinymce/plugins/image'
-import 'zh-tinymce/plugins/media'
-import 'zh-tinymce/plugins/code'
-import 'zh-tinymce/plugins/fullscreen'
 import 'zh-tinymce/plugins/preview'
+import 'zh-tinymce/plugins/importcss'
+import 'zh-tinymce/plugins/searchreplace'
+import 'zh-tinymce/plugins/autolink'
+import 'zh-tinymce/plugins/autosave'
+import 'zh-tinymce/plugins/save'
+import 'zh-tinymce/plugins/directionality'
+import 'zh-tinymce/plugins/code'
+import 'zh-tinymce/plugins/visualblocks'
+import 'zh-tinymce/plugins/visualchars'
+import 'zh-tinymce/plugins/fullscreen'
+import 'zh-tinymce/plugins/image'
+import 'zh-tinymce/plugins/link'
+import 'zh-tinymce/plugins/media'
+import 'zh-tinymce/plugins/codesample'
 import 'zh-tinymce/plugins/table'
-
+import 'zh-tinymce/plugins/charmap'
+import 'zh-tinymce/plugins/pagebreak'
+import 'zh-tinymce/plugins/nonbreaking'
+import 'zh-tinymce/plugins/anchor'
+import 'zh-tinymce/plugins/insertdatetime'
+import 'zh-tinymce/plugins/advlist'
+import 'zh-tinymce/plugins/lists'
+import 'zh-tinymce/plugins/wordcount'
+import 'zh-tinymce/plugins/help'
+import 'zh-tinymce/plugins/emoticons'
+import 'zh-tinymce/plugins/quickbars'
+import 'zh-tinymce/skins/ui/oxide/skin.min.css';
+import 'zh-tinymce/skins/ui/oxide/content.min.css';
+import 'zh-tinymce/skins/content/default/content.min.css';
 export interface UploadCallback {
   (file: File, progress?: (percent: number) => void): Promise<string>
 }
@@ -69,6 +89,10 @@ const emit = defineEmits<{
   'init': [editor: Editor]
 }>()
 
+// const skinUrl = new URL('zh-tinymce/skins/ui/oxide', import.meta.url).href
+// const contentCss = new URL('zh-tinymce/skins/content/default/content.css', import.meta.url).href
+// const langUrl = new URL(/* @vite-ignore */`zh-tinymce/langs/zh-Hans.js`, import.meta.url).href
+// console.log('skinUrl',skinUrl)
 const containerRef = ref<HTMLDivElement | null>(null)
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
 let editorInstance: Editor | null = null
@@ -130,14 +154,14 @@ function createFilePickerCallback() {
 function getInitConfig(): Record<string, any> {
   const base: Record<string, any> = {
     target: textareaRef.value,
-    base_url: '/zh-tinymce',
+    base_url: 'zh-tinymce',
     license_key: props.licenseKey,
 
     // 语言与皮肤
     language: props.language,
-    language_url: `zh-tinymce/langs/${props.language}.js`,
-    skin_url: 'zh-tinymce/skins/ui/oxide',
-    content_css: 'zh-tinymce/skins/content/default/content.css',
+    // language_url: langUrl,
+    // skin_url: skinUrl,
+    // content_css: contentCss,
     // 尺寸与外观
     height: props.height,
     width: props.width,
