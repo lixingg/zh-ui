@@ -18,22 +18,30 @@ const sourceCode = ref<string>()
 onMounted(async () => {
   const isDev = import.meta.env.MODE === 'development'
   if (isDev) {
+    const docModules = import.meta.glob('../../docs/**/*', {
+      as: 'raw',
+      eager: true // 若文件较多可改为 false，但需要 await 取出
+    })
+    const key = `../../docs/${props.showPath}`
     /* @vite-ignore */
-    if (props.showPath?.endsWith('.vue') ||
-        props.showPath?.endsWith('.tsx') ||
-        props.showPath?.endsWith('.jsx')) {
-      try {
-        const data: any = await import(/* @vite-ignore */ `../../docs/${props.showPath}?raw`)
+    if (key?.endsWith('.vue') ||
+        key?.endsWith('.tsx') ||
+        key?.endsWith('.jsx')) {
+      sourceCode.value =docModules[key]
+/*      try {
+        const data: any = await import(/!* @vite-ignore *!/ `../../docs/${props.showPath}?raw`)
         sourceCode.value = data.default
       } catch (e) {
-      }
+      }*/
 
     } else {
-      try {
-        const data: any = await import(/* @vite-ignore */ `../../docs/${props.showPath}.vue?raw`)
+   /*   try {
+        const data: any = await import(/!* @vite-ignore *!/ `../../docs/${props.showPath}.vue?raw`)
         sourceCode.value = data.default
       } catch (e) {
-      }
+      }*/
+        sourceCode.value =docModules[key+'.vue']
+
     }
   } else {
     if (props.showPath?.endsWith('.vue') ||
