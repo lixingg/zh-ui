@@ -314,4 +314,7 @@ defineExpose({
   transition: opacity 0.15s;
   z-index: 1;
 }
+:deep(.tox .tox-editor-header){
+  display: block;
+}
 </style>

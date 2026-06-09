@@ -10,7 +10,7 @@ import baseCEditor from './baseCEditor.vue';
 基于tinymce-vue开发的组件
 
 > 需下载tinymce依赖，用于将 TinyMCE 静态资源复制到 public 目录,注意这里需要汉化包需要将汉化包也复制到public目录下
-> 的tinymce包中，并在配置项中引入配置路径
+> 的tinymce包中，并在配置项中引入配置路径（不推荐 需要使用apiKey 还要拷包配置）
 
 ```bash
 npm install tinymce
@@ -22,7 +22,7 @@ npm install tinymce
 
 基于原生tinymce开发的组件
 
-> 无需下载依赖，开箱即用
+> 无需下载依赖，开箱即用（推荐 无需任何apikey，无需拷贝任何静态资源）
 
 <show-code showPath="editor/baseCEditor">
 <baseCEditor></baseCEditor>
@@ -30,21 +30,21 @@ npm install tinymce
 
 ## Editor 属性
 
-| 属性            | 说明                                      | 类型                                                               | 默认值       |
-|---------------|-----------------------------------------|------------------------------------------------------------------|-----------|
-| modelValue    | 编辑器的内容 (HTML)，支持 v-model                | `string`                                                         | ''        |
-| height        | 编辑器高度，支持数字(px)或CSS单位字符串                 | `string` \| `number`                                             | '100%'    |
-| width         | 编辑器宽度，支持数字(px)或CSS单位字符串                 | `string` \| `number`                                             | '100%'    |
-| disabled      | 是否禁用编辑（只读模式）                            | `boolean`                                                        | `false`   |
-| placeholder   | 占位文本                                    | `string`                                                         | ''        |
-| plugins       | 启用的插件列表，传入字符串（空格分隔）或数组                  | `string` \| `string[]`                                           | 见下方默认插件列表 |
-| toolbar       | 工具栏按钮，传入字符串（空格或\|分隔）或数组                 | `string` \| `string[]`                                           | 见下方默认工具栏  |
-| apiKey        | TinyMCE 云服务 API Key，留空则使用自托管资源          | `string`                                                         | ''        |
-| language      | 界面语言，默认中文                               | `string`                                                         | `zh_CN`   |
-| onImageUpload | 图片上传回调，返回图片URL                          | (file: File, progress?: (p: number) => void) => Promise\<string> | `--`      |
-| onFileUpload  | 文件（非图片附件）上传回调                           | `(file: File) => Promise<string>`                                | `--`      |
-| onVideoUpload | 视频上传回调                                  | `(file: File) => Promise<string>`                                | `--`      |
-| customInit    | 完全自定义的 TinyMCE 初始化配置，会与默认配置合并（自定义优先级最高） | `Record<string, any>`                                            | `{}`      |
+| 属性            | 说明                                             | 类型                                                               | 默认值       |
+|---------------|------------------------------------------------|------------------------------------------------------------------|-----------|
+| modelValue    | 编辑器的内容 (HTML)，支持 v-model                       | `string`                                                         | ''        |
+| height        | 编辑器高度，支持数字(px)或CSS单位字符串                        | `string` \| `number`                                             | '100%'    |
+| width         | 编辑器宽度，支持数字(px)或CSS单位字符串                        | `string` \| `number`                                             | '100%'    |
+| disabled      | 是否禁用编辑（只读模式）                                   | `boolean`                                                        | `false`   |
+| placeholder   | 占位文本                                           | `string`                                                         | ''        |
+| plugins       | 启用的插件列表，传入字符串（空格分隔）或数组                         | `string` \| `string[]`                                           | 见下方默认插件列表 |
+| toolbar       | 工具栏按钮，传入字符串（空格或\|分隔）或数组                        | `string` \| `string[]`                                           | 见下方默认工具栏  |
+| apiKey        | TinyMCE 云服务 API Key，留空则使用自托管资源（仅zh-editor组件使用） | `string`                                                         | ''        |
+| language      | 界面语言，默认中文                                      | `string`                                                         | `zh_CN`   |
+| onImageUpload | 图片上传回调，返回图片URL                                 | (file: File, progress?: (p: number) => void) => Promise\<string> | `--`      |
+| onFileUpload  | 文件（非图片附件）上传回调                                  | `(file: File) => Promise<string>`                                | `--`      |
+| onVideoUpload | 视频上传回调                                         | `(file: File) => Promise<string>`                                | `--`      |
+| customInit    | 完全自定义的 TinyMCE 初始化配置，会与默认配置合并（自定义优先级最高）        | `Record<string, any>`                                            | `{}`      |
 
 ## 默认 plugins：
 
