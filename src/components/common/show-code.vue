@@ -24,7 +24,6 @@ onMounted(async () => {
         props.showPath?.endsWith('.jsx')) {
       try {
         const data: any = await import(/* @vite-ignore */ `../../docs/${props.showPath}?raw`)
-        console.log('zh-tinymce-data',data)
         sourceCode.value = data.default
       } catch (e) {
       }

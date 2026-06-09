@@ -8596,10 +8596,10 @@ zarrita@^0.7.1:
     "@zarrita/storage" "^0.2.0"
     numcodecs "^0.3.2"
 
-zh-tinymce@^8.6.5:
-  version "8.6.5"
-  resolved "https://registry.yarnpkg.com/zh-tinymce/-/zh-tinymce-8.6.5.tgz#3e74a599771161f10a8e04be04cb1beb44e70f5c"
-  integrity sha512-skxBQ//mjFxd3dIOmUe52MrFZSrjlJJy1qz5XK1nnuY3bi4uB8CLBD/G5SUbIyB2ckyqLeiqxNmwu9K6b/0ZhQ==
+zh-tinymce@^8.6.6:
+  version "8.6.6"
+  resolved "https://registry.yarnpkg.com/zh-tinymce/-/zh-tinymce-8.6.6.tgz#44e6d36f3f06b6772c75d08311c01e98eb06f347"
+  integrity sha512-ih13FBXRXkAvHw1YBuFIZxnFdjMaAkXk3Ojj5al9kVjQA0KqTQV46Uy07f0yegNXlAbdPWxceN+ci1GSra76YA==
 
 zrender@5.6.1:
   version "5.6.1"

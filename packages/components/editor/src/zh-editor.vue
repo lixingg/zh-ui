@@ -18,7 +18,6 @@ import {ref, computed, watch, onBeforeUnmount} from 'vue'
 
 import Editor from '@tinymce/tinymce-vue'
 import type {Editor as TinyMCEEditor} from 'zh-tinymce'
-import 'zh-tinymce/plugins/help/js/i18n/keynav/zh-Hans.js'
 
 /* ========== Props 定义 ========== */
 interface UploadCallback {
@@ -107,7 +106,7 @@ const mergedInit = computed(() => {
   const EditorConfig = {
     width: '70%',
     height: '600px',
-    language: 'zh-Hans',
+    language: 'zh_CN',
     statusbar: false,
     quickbars_insert_toolbar: '',
     plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap emoticons',

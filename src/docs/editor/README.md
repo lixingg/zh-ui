@@ -9,11 +9,21 @@ import baseCEditor from './baseCEditor.vue';
 
 基于tinymce-vue开发的组件
 
+> 需下载tinymce依赖，用于将 TinyMCE 静态资源复制到 public 目录,注意这里需要汉化包需要将汉化包也复制到public目录下
+> 的tinymce包中，并在配置项中引入配置路径
+
+```bash
+npm install tinymce
+```
+
 <show-code showPath="editor/baseEditor">
 <baseEditor></baseEditor>
 </show-code>
 
 基于原生tinymce开发的组件
+
+> 无需下载依赖，开箱即用
+
 <show-code showPath="editor/baseCEditor">
 <baseCEditor></baseCEditor>
 </show-code>
