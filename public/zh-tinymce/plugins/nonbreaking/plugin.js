@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const isSimpleType = (type) => (value) => typeof value === type;
@@ -59,7 +59,7 @@
         });
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.util.VK');
+    var global = tinymce1.util.Tools.resolve('tinymce1.util.VK');
 
     const setup = (editor) => {
         const spaces = getKeyboardSpaces(editor);
@@ -106,7 +106,7 @@
     /**
      * This class contains all core logic for the nonbreaking plugin.
      *
-     * @class tinymce.nonbreaking.Plugin
+     * @class tinymce1.nonbreaking.Plugin
      * @private
      */
     var Plugin = () => {

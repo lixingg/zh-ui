@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.uk',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.uk',
 '<h1>Початок роботи з навігацією за допомогою клавіатури</h1>\n' +
   '\n' +
   '<dl>\n' +

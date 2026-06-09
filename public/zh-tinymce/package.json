@@ -1,6 +1,6 @@
 {
 	"name": "zh-tinymce",
-	"version": "8.6.0",
+	"version": "8.6.5",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/tinymce/tinymce.git",

@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$4 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$4 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const hasProto = (v, constructor, predicate) => {
@@ -37,11 +37,11 @@
     const isString = isType('string');
     const isUndefined = eq(undefined);
 
-    var global$3 = tinymce.util.Tools.resolve('tinymce.util.Delay');
+    var global$3 = tinymce1.util.Tools.resolve('tinymce1.util.Delay');
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.util.LocalStorage');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.util.LocalStorage');
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.util.Tools');
 
     const fireRestoreDraft = (editor) => editor.dispatch('RestoreDraft');
     const fireStoreDraft = (editor) => editor.dispatch('StoreDraft');
@@ -169,7 +169,7 @@
         isEmpty: (html) => isEmpty(editor, html)
     });
 
-    var global = tinymce.util.Tools.resolve('tinymce.EditorManager');
+    var global = tinymce1.util.Tools.resolve('tinymce1.EditorManager');
 
     const setup = (editor) => {
         editor.editorManager.on('BeforeUnload', (e) => {
@@ -222,7 +222,7 @@
     /**
      * This class contains all core logic for the autosave plugin.
      *
-     * @class tinymce.autosave.Plugin
+     * @class tinymce1.autosave.Plugin
      * @private
      */
     var Plugin = () => {

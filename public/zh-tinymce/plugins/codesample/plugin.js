@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const isNullable = (a) => a === null || a === undefined;
@@ -282,7 +282,7 @@
     /** removes all leading and trailing spaces */
     const trim = blank(/^\s+|\s+$/g);
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.dom.DOMUtils');
 
     const prismjs = function(global, module, exports) {
     // preserve the global if it has already been loaded
@@ -3544,7 +3544,7 @@
         });
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global = tinymce1.util.Tools.resolve('tinymce1.util.Tools');
 
     const setup = (editor) => {
         editor.on('PreProcess', (e) => {

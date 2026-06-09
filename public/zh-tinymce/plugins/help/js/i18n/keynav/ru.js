@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.ru',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.ru',
 '<h1>Начните управление с помощью клавиатуры</h1>\n' +
   '\n' +
   '<dl>\n' +

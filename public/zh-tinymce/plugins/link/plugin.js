@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$5 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$5 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const hasProto = (v, constructor, predicate) => {
@@ -578,11 +578,11 @@
     const hasFilesUploadHandler = (editor) => isNonNullable(editor.options.get('files_upload_handler'));
     const hasDocumentsFileTypes = (editor) => isNonNullable(editor.options.get('documents_file_types'));
 
-    var global$4 = tinymce.util.Tools.resolve('tinymce.util.URI');
+    var global$4 = tinymce1.util.Tools.resolve('tinymce1.util.URI');
 
-    var global$3 = tinymce.util.Tools.resolve('tinymce.dom.TreeWalker');
+    var global$3 = tinymce1.util.Tools.resolve('tinymce1.dom.TreeWalker');
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.util.Tools');
 
     const isAnchor = (elm) => isNonNullable(elm) && elm.nodeName.toLowerCase() === 'a';
     const isLink = (elm) => isAnchor(elm) && !!getHref(elm);
@@ -974,7 +974,7 @@
         getDelta
     };
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.util.Delay');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.util.Delay');
 
     // Delay confirm since onSubmit will move focus
     const delayedConfirm = (editor, message, callback) => {
@@ -1419,7 +1419,7 @@
         });
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.util.VK');
+    var global = tinymce1.util.Tools.resolve('tinymce1.util.VK');
 
     const appendClickRemove = (link, evt) => {
         document.body.appendChild(link);

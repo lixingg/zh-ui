@@ -1,4 +1,4 @@
-tinymce.IconManager.add('default', {
+tinymce1.IconManager.add('default', {
   icons: {
     'accessibility-check': '<svg width="24" height="24"><path d="M12 2a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2c0-1.1.9-2 2-2Zm8 7h-5v12c0 .6-.4 1-1 1a1 1 0 0 1-1-1v-5c0-.6-.4-1-1-1a1 1 0 0 0-1 1v5c0 .6-.4 1-1 1a1 1 0 0 1-1-1V9H4a1 1 0 1 1 0-2h16c.6 0 1 .4 1 1s-.4 1-1 1Z" fill-rule="nonzero"/></svg>',
     'accordion-toggle': '<svg width="24" height="24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 15c0-.6.4-1 1-1h6c.6 0 1 .4 1 1s-.4 1-1 1h-6a1 1 0 0 1-1-1Z"/><path opacity=".2" fill-rule="evenodd" clip-rule="evenodd" d="M4 15c0-.6.4-1 1-1h6c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 0 1-1-1Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12 19c0-.6.4-1 1-1h6c.6 0 1 .4 1 1s-.4 1-1 1h-6a1 1 0 0 1-1-1Z"/><path opacity=".2" fill-rule="evenodd" clip-rule="evenodd" d="M4 19c0-.6.4-1 1-1h6c.6 0 1 .4 1 1s-.4 1-1 1H5a1 1 0 0 1-1-1Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3 7.3a1 1 0 0 1 1.4 0L16 9.6l2.3-2.3a1 1 0 1 1 1.4 1.4L16 12.4l-3.7-3.7a1 1 0 0 1 0-1.4ZM4.3 11.7a1 1 0 0 1 0-1.4L6.6 8 4.3 5.7a1 1 0 0 1 1.4-1.4L9.4 8l-3.7 3.7a1 1 0 0 1-1.4 0Z"/></svg>',

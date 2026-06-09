@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.ar',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.ar',
 '<h1>بدء التنقل بواسطة لوحة المفاتيح</h1>\n' +
   '\n' +
   '<dl>\n' +

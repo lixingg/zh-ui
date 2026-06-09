@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.zh_TW',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.zh_TW',
 '<h1>開始鍵盤瀏覽</h1>\n' +
   '\n' +
   '<dl>\n' +

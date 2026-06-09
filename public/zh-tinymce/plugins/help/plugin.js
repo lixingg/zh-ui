@@ -410,7 +410,7 @@
         return r;
     };
 
-    var global$4 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$4 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     const get = (customTabs) => {
         const addTab = (spec) => {
@@ -454,12 +454,12 @@
         });
     };
 
-    var global$3 = tinymce.util.Tools.resolve('tinymce.Resource');
+    var global$3 = tinymce1.util.Tools.resolve('tinymce1.Resource');
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.util.I18n');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.util.I18n');
 
-    const pLoadHtmlByLangCode = (baseUrl, langCode) => global$3.load(`tinymce.html-i18n.help-keynav.${langCode}`, `${baseUrl}/js/i18n/keynav/${langCode}.js`);
-    const pLoadI18nHtml = (baseUrl) => 
+    const pLoadHtmlByLangCode = (baseUrl, langCode) => global$3.load(`tinymce1.html-i18n.help-keynav.${langCode}`, `${baseUrl}/js/i18n/keynav/${langCode}.js`);
+    const pLoadI18nHtml = (baseUrl) =>
     // TINY-9928: Load language file for the current language, or English if the file is not available
     pLoadHtmlByLangCode(baseUrl, global$2.getCode()).catch(() => pLoadHtmlByLangCode(baseUrl, 'en'));
     const initI18nLoad = (editor, baseUrl) => {
@@ -482,7 +482,7 @@
         };
     };
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.Env');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.Env');
 
     // Converts shortcut format to Mac/PC variants
     const convertText = (source) => {
@@ -667,7 +667,7 @@
         }, (x) => {
             // We know this plugin, so use our stored details.
             const name = x.type === "premium" /* PluginUrls.PluginType.Premium */ ? `${x.name}*` : x.name;
-            const html = makeLink({ name, url: `https://www.tiny.cloud/docs/tinymce/${tinymce.majorVersion}/${x.slug}/` });
+            const html = makeLink({ name, url: `https://www.tiny.cloud/docs/tinymce/${tinymce1.majorVersion}/${x.slug}/` });
             return { name, html };
         });
         const getPluginKeys = (editor) => {
@@ -713,7 +713,7 @@
         };
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.EditorManager');
+    var global = tinymce1.util.Tools.resolve('tinymce1.EditorManager');
 
     const tab = () => {
         const getVersion = (major, minor) => major.indexOf('@') === 0 ? 'X.X.X' : major + '.' + minor;

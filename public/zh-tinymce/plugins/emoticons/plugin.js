@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const isSimpleType = (type) => (value) => typeof value === type;
@@ -451,9 +451,9 @@
         editor.insertContent(ch);
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.Resource');
+    var global = tinymce1.util.Tools.resolve('tinymce1.Resource');
 
-    const DEFAULT_ID = 'tinymce.plugins.emoticons';
+    const DEFAULT_ID = 'tinymce1.plugins.emoticons';
     const option = (name) => (editor) => editor.options.get(name);
     const register$2 = (editor, pluginUrl) => {
         const registerOption = editor.options.register;
@@ -499,7 +499,7 @@
     const translateCategory = (categories, name) => has(categories, name) ? categories[name] : name;
     const getUserDefinedEmoji = (editor) => {
         const userDefinedEmoticons = getAppendedEmoji(editor);
-        return map(userDefinedEmoticons, (value) => 
+        return map(userDefinedEmoticons, (value) =>
         // Set some sane defaults for the custom emoji entry
         ({ keywords: [], category: 'user', ...value }));
     };
@@ -553,7 +553,7 @@
             return categories.get().bind((cats) => Optional.from(cats[category])).getOr([]);
         };
         const listAll = () => all.get().getOr([]);
-        const listCategories = () => 
+        const listCategories = () =>
         // TODO: Category key order should be adjusted to match the standard
         [ALL_CATEGORY].concat(keys(categories.get().getOr({})));
         const waitForLoad = () => {
@@ -780,7 +780,7 @@
     /**
      * This class contains all core logic for the emoticons plugin.
      *
-     * @class tinymce.emoticons.Plugin
+     * @class tinymce1.emoticons.Plugin
      * @private
      */
     var Plugin = () => {

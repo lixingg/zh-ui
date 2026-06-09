@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.sk',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.sk',
 '<h1>Začíname s navigáciou pomocou klávesnice</h1>\n' +
   '\n' +
   '<dl>\n' +

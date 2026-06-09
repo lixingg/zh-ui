@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$3 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$3 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const hasProto = (v, constructor, predicate) => {
@@ -702,7 +702,7 @@
             } // unfortunately we can't throw this on startup :(
         }
     };
-    const bypassSelector = (dom) => 
+    const bypassSelector = (dom) =>
     // Only elements, documents and shadow roots support querySelector
     // shadow root element type is DOCUMENT_FRAGMENT
     dom.nodeType !== ELEMENT && dom.nodeType !== DOCUMENT && dom.nodeType !== DOCUMENT_FRAGMENT ||
@@ -1014,7 +1014,7 @@
             );
           }
         };
-      
+
         var getWindowWidth = (element) => {
           var dom = element.dom;
           if (dom.window === dom) {
@@ -1175,7 +1175,7 @@
         return result;
     };
 
-    const children$1 = (scope, selector) => 
+    const children$1 = (scope, selector) =>
     // It may surprise you to learn this is exactly what JQuery does
     // TODO: Avoid all the wrapping and unwrapping
     children$2(scope, (e) => is$1(e, selector));
@@ -1953,7 +1953,7 @@
     // Private method ... keep warehouse in snooker, please.
     const getWarehouse = Warehouse.fromTable;
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.util.Tools');
 
     const getTDTHOverallStyle = (dom, elm, name) => {
         const cells = dom.select('td,th', elm);
@@ -2003,7 +2003,7 @@
         editor.dispatch('TableModified', { ...data, table });
     };
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.Env');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.Env');
 
     const defaultTableToolbar = 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol';
     const defaultCellBorderWidths = range(5, (i) => {
@@ -3424,7 +3424,7 @@
         };
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.FakeClipboard');
+    var global = tinymce1.util.Tools.resolve('tinymce1.FakeClipboard');
 
     /*
      NOTE: This file is duplicated in the following locations:

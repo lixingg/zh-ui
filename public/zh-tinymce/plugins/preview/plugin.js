@@ -411,7 +411,7 @@
         };
     };
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     const DeviceType = (os, browser, userAgent, mediaMatch) => {
         const isiPad = os.isiOS() && /ipad/i.test(userAgent) === true;
@@ -750,9 +750,9 @@
         return `<script>(${fn.toString()})(${isMacOSOrIOS})</script>`;
     };
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.dom.ScriptLoader');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.dom.ScriptLoader');
 
-    var global = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global = tinymce1.util.Tools.resolve('tinymce1.util.Tools');
 
     const option = (name) => (editor) => editor.options.get(name);
     const getContentStyle = option('content_style');
@@ -859,7 +859,7 @@
 
     var Plugin = () => {
         global$2.add('preview', (editor) => {
-            const getContentCssResources = () => map(editor.contentCSS, (key) => Optional.from(tinymce.Resource.get(key))
+            const getContentCssResources = () => map(editor.contentCSS, (key) => Optional.from(tinymce1.Resource.get(key))
                 .filter(isString)
                 .map((content) => ({ type: 'bundled', content }))
                 .getOr({ type: 'link', url: editor.documentBaseURI.toAbsolute(key) }));

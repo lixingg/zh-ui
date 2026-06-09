@@ -19,9 +19,9 @@
         };
     };
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
-    var global = tinymce.util.Tools.resolve('tinymce.Env');
+    var global = tinymce1.util.Tools.resolve('tinymce1.Env');
 
     const fireResizeEditor = (editor) => editor.dispatch('ResizeEditor');
 
@@ -45,7 +45,7 @@
     /**
      * This class contains all core logic for the autoresize plugin.
      *
-     * @class tinymce.autoresize.Plugin
+     * @class tinymce1.autoresize.Plugin
      * @private
      */
     const isFullscreen = (editor) => editor.plugins.fullscreen && editor.plugins.fullscreen.isFullscreen();
@@ -188,7 +188,7 @@
     /**
      * This class contains all core logic for the autoresize plugin.
      *
-     * @class tinymce.autoresize.Plugin
+     * @class tinymce1.autoresize.Plugin
      * @private
      */
     var Plugin = () => {

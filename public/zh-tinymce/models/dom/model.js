@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.ModelManager');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.ModelManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const hasProto = (v, constructor, predicate) => {
@@ -1199,7 +1199,7 @@
         if (rng.collapsed) {
             // Let's check if it's RTL ... if it is, then reversing the direction will not be collapsed
             const reversed = ranges.rtl().filter((rev) => rev.collapsed === false);
-            return reversed.map((rev) => 
+            return reversed.map((rev) =>
             // We need to use "reversed" here, because the original only has one point (collapsed)
             adt$6.rtl(SugarElement.fromDom(rev.endContainer), rev.endOffset, SugarElement.fromDom(rev.startContainer), rev.startOffset)).getOrThunk(() => fromRange(win, adt$6.ltr, rng));
         }
@@ -1263,7 +1263,7 @@
             } // unfortunately we can't throw this on startup :(
         }
     };
-    const bypassSelector = (dom) => 
+    const bypassSelector = (dom) =>
     // Only elements, documents and shadow roots support querySelector
     // shadow root element type is DOCUMENT_FRAGMENT
     dom.nodeType !== ELEMENT && dom.nodeType !== DOCUMENT && dom.nodeType !== DOCUMENT_FRAGMENT ||
@@ -1708,7 +1708,7 @@
     const isShadowRoot = (dos) => isDocumentFragment(dos) && isNonNullable(dos.dom.host);
     const getRootNode = (e) => SugarElement.fromDom(e.dom.getRootNode());
     /** Where content needs to go. ShadowRoot or document body */
-    const getContentContainer = (dos) => 
+    const getContentContainer = (dos) =>
     // Can't use SugarBody.body without causing a circular module reference (since SugarBody.inBody uses SugarShadowDom)
     isShadowRoot(dos) ? dos : SugarElement.fromDom(documentOrOwner(dos).dom.body);
     /** If this element is in a ShadowRoot, return it. */
@@ -2111,7 +2111,7 @@
             );
           }
         };
-      
+
         var getWindowWidth = (element) => {
           var dom = element.dom;
           if (dom.window === dom) {
@@ -2457,11 +2457,11 @@
     // jQuery does siblings of firstChild. IE9+ supports scope.dom.children (similar to Traverse.children but elements only).
     // Traverse should also do this (but probably not by default).
     //
-    const ancestors$3 = (scope, selector, isRoot) => 
+    const ancestors$3 = (scope, selector, isRoot) =>
     // It may surprise you to learn this is exactly what JQuery does
     // TODO: Avoid all this wrapping and unwrapping
     ancestors$4(scope, (e) => is$1(e, selector), isRoot);
-    const children = (scope, selector) => 
+    const children = (scope, selector) =>
     // It may surprise you to learn this is exactly what JQuery does
     // TODO: Avoid all the wrapping and unwrapping
     children$1(scope, (e) => is$1(e, selector));
@@ -2482,7 +2482,7 @@
     const ancestor = (scope, predicate, isRoot) => ancestor$2(scope, predicate, isRoot).isSome();
 
     const getEnd = (element) => name(element) === 'img' ? 1 : getOption(element).fold(() => children$2(element).length, (v) => v.length);
-    const isTextNodeWithCursorPosition = (el) => getOption(el).filter((text) => 
+    const isTextNodeWithCursorPosition = (el) => getOption(el).filter((text) =>
     // For the purposes of finding cursor positions only allow text nodes with content,
     // but trim removes &nbsp; and that's allowed
     text.trim().length !== 0 || text.indexOf(nbsp) > -1).isSome();
@@ -2709,7 +2709,7 @@
         const rng = rngGetter(win, element);
         doSetNativeRange(win, rng);
     };
-    const getExact = (win) => 
+    const getExact = (win) =>
     // We want to retrieve the selection as it is.
     getNativeSelection(win)
         .filter((sel) => sel.rangeCount > 0)
@@ -3454,7 +3454,7 @@
     const getRawHeight$1 = (element) => getRaw(element, 'height');
     // Get a percentage size for a percentage parent table
     const getPercentageWidth = (cell) => getPercentSize(cell, get$7, getInner);
-    const getPixelWidth$1 = (cell) => 
+    const getPixelWidth$1 = (cell) =>
     // For col elements use the computed width as col elements aren't affected by borders, padding, etc...
     isCol$2(cell) ? Math.round(get$7(cell)) : getRuntime(cell);
     const getHeight = (cell) => {
@@ -4234,7 +4234,7 @@
             }
         });
         // can't use :empty selector as that will not include TRs made up of whitespace
-        const emptyRows = filter$2(firstLayer(replica, 'tr'), (row) => 
+        const emptyRows = filter$2(firstLayer(replica, 'tr'), (row) =>
         // there is no sugar method for this, and Traverse.children() does too much processing
         row.dom.childElementCount === 0);
         each$2(emptyRows, remove$5);
@@ -5552,7 +5552,7 @@
         /*
           When we paste from a table without colgroups to a table that has them, we need to ensure we are inserting them at
           the correct row index (the `col`s are treated as cells in the Structs.RowCells array).
-      
+
           To do this, we get the number of `col`s in the destination table and add that to the startAddress row.
         */
         const adjustedRowAddress = extractGridDetails(grid).cols.length + currentStartAddress.row;
@@ -8379,7 +8379,7 @@
         }
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.FakeClipboard');
+    var global = tinymce1.util.Tools.resolve('tinymce1.FakeClipboard');
 
     /*
      NOTE: This file is duplicated in the following locations:
@@ -8505,7 +8505,7 @@
             const targets = forMenu(getCellsFromSelection(editor), table, startCell);
             return copyCols(table, targets);
         });
-        const pasteOnSelection = (execute, getRows) => 
+        const pasteOnSelection = (execute, getRows) =>
         // If we have FakeClipboard rows to paste
         getRows().each((rows) => {
             const clonedRows = map$1(rows, (row) => deep(row));
@@ -8564,9 +8564,9 @@
             insertTable(editor, args.rows, args.columns, args.options);
         });
         // Apply cell style using command (background color, border color, border style and border width)
-        // tinyMCE.activeEditor.execCommand('mceTableApplyCellStyle', false, { backgroundColor: 'red', borderColor: 'blue' })
+        // tinymce1.activeEditor.execCommand('mceTableApplyCellStyle', false, { backgroundColor: 'red', borderColor: 'blue' })
         // Remove cell style using command (an empty string indicates to remove the style)
-        // tinyMCE.activeEditor.execCommand('mceTableApplyCellStyle', false, { backgroundColor: '' })
+        // tinymce1.activeEditor.execCommand('mceTableApplyCellStyle', false, { backgroundColor: '' })
         editor.addCommand('mceTableApplyCellStyle', (_ui, args) => {
             const getFormatName = (style) => 'tablecell' + style.toLowerCase().replace('-', '');
             if (!isObject(args)) {
@@ -8752,13 +8752,13 @@
             editor.serializer.addTempAttr(ephemera.lastSelected);
         });
         const clearSelectedCells = (container) => annotations.clear(SugarElement.fromDom(container));
-        const getSelectedCells = () => fold(cellSelection.get(), 
+        const getSelectedCells = () => fold(cellSelection.get(),
         // No fake selected cells
-        constant([]), 
+        constant([]),
         // This path is taken whenever there is fake cell selection even for just a single selected cell
         (cells) => {
             return map$1(cells, (cell) => cell.dom);
-        }, 
+        },
         // For this path, the start of the selection whether collapsed or ranged is within a table cell
         (cell) => [cell.dom]);
         return {

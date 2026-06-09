@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.ca',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.ca',
 '<h1>Inici de la navegació amb el teclat</h1>\n' +
   '\n' +
   '<dl>\n' +

@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     const applyListFormat = (editor, listName, styleValue) => {
         const cmd = listName === 'UL' ? 'InsertUnorderedList' : 'InsertOrderedList';
@@ -337,7 +337,7 @@
         return r;
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global = tinymce1.util.Tools.resolve('tinymce1.util.Tools');
 
     const isCustomList = (list) => /\btox\-/.test(list.className);
     const isChildOfBody = (editor, elm) => {

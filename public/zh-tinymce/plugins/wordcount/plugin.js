@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const eq = (t) => (a) => t === a;
@@ -420,7 +420,7 @@
 
     const getWords = getWords$1;
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.dom.TreeWalker');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.dom.TreeWalker');
 
     const getText = (node, schema) => {
         const blockElements = schema.getBlockElements();
@@ -524,7 +524,7 @@
         editor.addCommand('mceWordCount', () => open(editor, api));
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.util.Delay');
+    var global = tinymce1.util.Tools.resolve('tinymce1.util.Delay');
 
     const fireWordCountUpdate = (editor, api) => {
         editor.dispatch('wordCountUpdate', {

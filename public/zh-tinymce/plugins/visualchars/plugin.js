@@ -398,7 +398,7 @@
         };
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     const get$2 = (toggleState) => {
         const isEnabled = () => {
@@ -740,7 +740,7 @@
             - Autofocus enabled, or editor is manually focused on init
             - The first piece of text in the editor must be a nbsp
             - Integrator has manually set the selection before init
-      
+
           Another improvement would be to ensure DOM elements aren't destroyed/recreated,
           but rather wrapped/unwrapped when applying styling for visualchars so that selection
           is not lost.

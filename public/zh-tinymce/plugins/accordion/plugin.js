@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$4 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$4 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const hasProto = (v, constructor, predicate) => {
@@ -474,7 +474,7 @@
             } // unfortunately we can't throw this on startup :(
         }
     };
-    const bypassSelector = (dom) => 
+    const bypassSelector = (dom) =>
     // Only elements, documents and shadow roots support querySelector
     // shadow root element type is DOCUMENT_FRAGMENT
     dom.nodeType !== ELEMENT && dom.nodeType !== DOCUMENT && dom.nodeType !== DOCUMENT_FRAGMENT ||
@@ -1014,7 +1014,7 @@
     const accordionBodyWrapperTag = 'div';
     const accordionReadonlyCompensationAttribute = 'data-mce-accordion-open';
 
-    var global$3 = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global$3 = tinymce1.util.Tools.resolve('tinymce1.util.Tools');
 
     const isSummary = (node) => node?.nodeName === 'SUMMARY';
     const isDetails = (node) => node?.nodeName === 'DETAILS';
@@ -1148,7 +1148,7 @@
         editor.addCommand('RemoveAccordion', () => removeAccordion(editor));
     };
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.html.Node');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.html.Node');
 
     const normalizeOpenAttribute = (node) => {
         if (hasAttribute(node, 'open')) {
@@ -1286,7 +1286,7 @@
         });
     };
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.util.VK');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.util.VK');
 
     const setupEnterKeyInSummary = (editor) => {
         editor.on('keydown', (event) => {
@@ -1307,7 +1307,7 @@
         });
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.Env');
+    var global = tinymce1.util.Tools.resolve('tinymce1.Env');
 
     const setup = (editor) => {
         // TINY-10177: On Safari, clicking on the expand arrow of the `details` element sets the selection before the `summary`,

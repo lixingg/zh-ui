@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const hasProto = (v, constructor, predicate) => {
@@ -568,7 +568,7 @@
 
     const children$1 = (scope, predicate) => filter(children$2(scope), predicate);
 
-    const children = (scope, selector) => 
+    const children = (scope, selector) =>
     // It may surprise you to learn this is exactly what JQuery does
     // TODO: Avoid all the wrapping and unwrapping
     children$1(scope, (e) => is(e, selector));

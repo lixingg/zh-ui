@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.el',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.el',
 '<h1>Έναρξη πλοήγησης μέσω πληκτρολογίου</h1>\n' +
   '\n' +
   '<dl>\n' +

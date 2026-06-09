@@ -1650,7 +1650,7 @@
      * Normally you don't want to sniff specific browser versions but sometimes you have
      * to when it's impossible to feature detect. So use this with care.
      *
-     * @class tinymce.Env
+     * @class tinymce1.Env
      * @static
      */
     const userAgent = window.navigator.userAgent;
@@ -1683,7 +1683,7 @@
         canHaveCSP: !browser$3.isIE(),
         windowsPhone,
         /**
-         * @include ../../../../../tools/docs/tinymce.Env.js
+         * @include ../../../../../tools/docs/tinymce1.Env.js
          */
         browser: {
             current: browser$3.current,
@@ -1722,7 +1722,7 @@
      * This class contains various utility functions. These are also exposed
      * directly on the tinymce namespace.
      *
-     * @class tinymce.util.Tools
+     * @class tinymce1.util.Tools
      */
     /**
      * Removes whitespace from the beginning and end of a string.
@@ -1829,7 +1829,7 @@
      * @return {Object} Last object in path or null if it couldn't be resolved.
      * @example
      * // Resolve a path into an object reference
-     * const obj = tinymce.resolve('a.b.c.d');
+     * const obj = tinymce1.resolve('a.b.c.d');
      */
     const resolve$2 = (n, o = window) => {
         const path = n.split('.');
@@ -1849,7 +1849,7 @@
      * @param {String} d Delimiter to split by.
      * @example
      * // Split a string into an array with a,b,c
-     * const arr = tinymce.explode('a, b,   c');
+     * const arr = tinymce1.explode('a, b,   c');
      */
     const explode$3 = (s, d) => {
         if (isArray$1(s)) {
@@ -1900,12 +1900,12 @@
          * @param {Object} s Optional scope to execute the callback in.
          * @example
          * // Iterate an array
-         * tinymce.each([ 1,2,3 ], (v, i) => {
+         * tinymce1.each([ 1,2,3 ], (v, i) => {
          *   console.debug("Value: " + v + ", Index: " + i);
          * });
          *
          * // Iterate an object
-         * tinymce.each({ a: 1, b: 2, c: 3 }, (v, k) => {
+         * tinymce1.each({ a: 1, b: 2, c: 3 }, (v, k) => {
          *   console.debug("Value: " + v + ", Key: " + k);
          * });
          */
@@ -1930,7 +1930,7 @@
          * @return {Array} New array with values imported and filtered based in input.
          * @example
          * // Filter out some items, this will return an array with 4 and 5
-         * const items = tinymce.grep([ 1,2,3,4,5 ], (v) => v > 3);
+         * const items = tinymce1.grep([ 1,2,3,4,5 ], (v) => v > 3);
          */
         grep: filter$3,
         /**
@@ -2054,7 +2054,7 @@
         if (rng.collapsed) {
             // Let's check if it's RTL ... if it is, then reversing the direction will not be collapsed
             const reversed = ranges.rtl().filter((rev) => rev.collapsed === false);
-            return reversed.map((rev) => 
+            return reversed.map((rev) =>
             // We need to use "reversed" here, because the original only has one point (collapsed)
             adt$3.rtl(SugarElement.fromDom(rev.endContainer), rev.endOffset, SugarElement.fromDom(rev.startContainer), rev.startOffset)).getOrThunk(() => fromRange(win, adt$3.ltr, rng));
         }
@@ -2100,7 +2100,7 @@
             } // unfortunately we can't throw this on startup :(
         }
     };
-    const bypassSelector = (dom) => 
+    const bypassSelector = (dom) =>
     // Only elements, documents and shadow roots support querySelector
     // shadow root element type is DOCUMENT_FRAGMENT
     dom.nodeType !== ELEMENT && dom.nodeType !== DOCUMENT && dom.nodeType !== DOCUMENT_FRAGMENT ||
@@ -2237,7 +2237,7 @@
     /** Where style tags need to go. ShadowRoot or document head */
     const getStyleContainer = (dos) => isShadowRoot(dos) ? dos : getHead(documentOrOwner(dos));
     /** Where content needs to go. ShadowRoot or document body */
-    const getContentContainer = (dos) => 
+    const getContentContainer = (dos) =>
     // Can't use SugarBody.body without causing a circular module reference (since SugarBody.inBody uses SugarShadowDom)
     isShadowRoot(dos) ? dos : SugarElement.fromDom(documentOrOwner(dos).dom.body);
     /** If this element is in a ShadowRoot, return it. */
@@ -2654,7 +2654,7 @@
             );
           }
         };
-      
+
         var getWindowWidth = (element) => {
           var dom = element.dom;
           if (dom.window === dom) {
@@ -3017,7 +3017,7 @@
     // jQuery does siblings of firstChild. IE9+ supports scope.dom.children (similar to Traverse.children but elements only).
     // Traverse should also do this (but probably not by default).
     //
-    const ancestors = (scope, selector, isRoot) => 
+    const ancestors = (scope, selector, isRoot) =>
     // It may surprise you to learn this is exactly what JQuery does
     // TODO: Avoid all this wrapping and unwrapping
     ancestors$1(scope, (e) => is$2(e, selector), isRoot);
@@ -3055,7 +3055,7 @@
         return current.orThunk(() => stop(scope) ? Optional.none() : ancestor(scope, transform, stop));
     };
 
-    const isTextNodeWithCursorPosition = (el) => getOption(el).filter((text) => 
+    const isTextNodeWithCursorPosition = (el) => getOption(el).filter((text) =>
     // For the purposes of finding cursor positions only allow text nodes with content,
     // but trim removes &nbsp; and that's allowed
     text.trim().length !== 0 || text.indexOf(nbsp) > -1).isSome();
@@ -3234,7 +3234,7 @@
             const width = html.clientWidth;
             const height = html.clientHeight;
             return bounds(scroll.left, scroll.top, width, height);
-        }, (visualViewport) => 
+        }, (visualViewport) =>
         // iOS doesn't update the pageTop/pageLeft when element.scrollIntoView() is called, so we need to fallback to the
         // scroll position which will always be less than the page top/left values when page top/left are accurate/correct.
         bounds(Math.max(visualViewport.pageLeft, scroll.left), Math.max(visualViewport.pageTop, scroll.top), visualViewport.width, visualViewport.height));
@@ -3243,9 +3243,9 @@
     /**
      * TreeWalker class enables you to walk the DOM in a linear manner.
      *
-     * @class tinymce.dom.TreeWalker
+     * @class tinymce1.dom.TreeWalker
      * @example
-     * const walker = new tinymce.dom.TreeWalker(startNode);
+     * const walker = new tinymce1.dom.TreeWalker(startNode);
      *
      * do {
      *   console.log(walker.current());
@@ -4034,7 +4034,7 @@
     /**
      * Entity encoder class.
      *
-     * @class tinymce.html.Entities
+     * @class tinymce1.html.Entities
      * @static
      * @version 3.4
      */
@@ -4728,14 +4728,14 @@
     /**
      * Schema validator class.
      *
-     * @class tinymce.html.Schema
+     * @class tinymce1.html.Schema
      * @version 3.4
      * @example
-     * if (tinymce.activeEditor.schema.isValidChild('p', 'span')) {
+     * if (tinymce1.activeEditor.schema.isValidChild('p', 'span')) {
      *   alert('span is valid child of p.');
      * }
      *
-     * if (tinymce.activeEditor.schema.getElementRule('p')) {
+     * if (tinymce1.activeEditor.schema.getElementRule('p')) {
      *   alert('P is a valid element.');
      * }
      */
@@ -5416,10 +5416,10 @@
     /**
      * This class is used to parse CSS styles. It also compresses styles to reduce the output size.
      *
-     * @class tinymce.html.Styles
+     * @class tinymce1.html.Styles
      * @version 3.4
      * @example
-     * const Styles = tinymce.html.Styles({
+     * const Styles = tinymce1.html.Styles({
      *   url_converter: (url) => {
      *     return url;
      *   }
@@ -5428,7 +5428,7 @@
      * styles = Styles.parse('border: 1px solid red');
      * styles.color = 'red';
      *
-     * console.log(tinymce.html.Styles().serialize(styles));
+     * console.log(tinymce1.html.Styles().serialize(styles));
      */
     const Styles = (settings = {}, schema) => {
         /* jshint maxlen:255 */
@@ -5792,7 +5792,7 @@
     /**
      * This class wraps the browsers native event logic with more convenient methods.
      *
-     * @class tinymce.dom.EventUtils
+     * @class tinymce1.dom.EventUtils
      */
     const eventExpandoPrefix = 'mce-data-';
     const mouseEventRe = /^(?:mouse|contextmenu)|click/;
@@ -6150,13 +6150,13 @@
     /**
      * Utility class for various DOM manipulation and retrieval functions.
      *
-     * @class tinymce.dom.DOMUtils
+     * @class tinymce1.dom.DOMUtils
      * @example
      * // Add a class to an element by id in the page
-     * tinymce.DOM.addClass('someid', 'someclass');
+     * tinymce1.DOM.addClass('someid', 'someclass');
      *
      * // Add a class to an element by id inside the editor
-     * tinymce.activeEditor.dom.addClass('someid', 'someclass');
+     * tinymce1.activeEditor.dom.addClass('someid', 'someclass');
      */
     // Shorten names
     const each$a = Tools.each;
@@ -7024,10 +7024,10 @@
              * @return {Array} Array with all matched elements.
              * @example
              * // Adds a class to all paragraphs in the currently active editor
-             * tinymce.activeEditor.dom.addClass(tinymce.activeEditor.dom.select('p'), 'someclass');
+             * tinymce1.activeEditor.dom.addClass(tinymce1.activeEditor.dom.select('p'), 'someclass');
              *
              * // Adds a class to all spans that have the test class in the currently active editor
-             * tinymce.activeEditor.dom.addClass(tinymce.activeEditor.dom.select('span.test'), 'someclass')
+             * tinymce1.activeEditor.dom.addClass(tinymce1.activeEditor.dom.select('span.test'), 'someclass')
              */
             select,
             /**
@@ -7052,7 +7052,7 @@
              * were passed in.
              * @example
              * // Adds a new paragraph to the end of the active editor
-             * tinymce.activeEditor.dom.add(tinymce.activeEditor.getBody(), 'p', { title: 'my title' }, 'Some content');
+             * tinymce1.activeEditor.dom.add(tinymce1.activeEditor.getBody(), 'p', { title: 'my title' }, 'Some content');
              */
             add,
             /**
@@ -7065,8 +7065,8 @@
              * @return {Element} HTML DOM node element that got created.
              * @example
              * // Adds an element where the caret/selection is in the active editor
-             * var el = tinymce.activeEditor.dom.create('div', { id: 'test', 'class': 'myclass' }, 'some content');
-             * tinymce.activeEditor.selection.setNode(el);
+             * var el = tinymce1.activeEditor.dom.create('div', { id: 'test', 'class': 'myclass' }, 'some content');
+             * tinymce1.activeEditor.selection.setNode(el);
              */
             create,
             /**
@@ -7079,7 +7079,7 @@
              * @return {String} String with new HTML element, for example: <a href="#">test</a>.
              * @example
              * // Creates a html chunk and inserts it at the current selection/caret location
-             * tinymce.activeEditor.insertContent(tinymce.activeEditor.dom.createHTML('a', { href: 'test.html' }, 'some line'));
+             * tinymce1.activeEditor.insertContent(tinymce1.activeEditor.dom.createHTML('a', { href: 'test.html' }, 'some line'));
              */
             createHTML,
             /**
@@ -7101,10 +7101,10 @@
              * were passed in.
              * @example
              * // Removes all paragraphs in the active editor
-             * tinymce.activeEditor.dom.remove(tinymce.activeEditor.dom.select('p'));
+             * tinymce1.activeEditor.dom.remove(tinymce1.activeEditor.dom.select('p'));
              *
              * // Removes an element by id in the document
-             * tinymce.DOM.remove('mydiv');
+             * tinymce1.DOM.remove('mydiv');
              */
             remove,
             /**
@@ -7117,10 +7117,10 @@
              * @param {String} value Value to set on the style.
              * @example
              * // Sets a style value on all paragraphs in the currently active editor
-             * tinymce.activeEditor.dom.setStyle(tinymce.activeEditor.dom.select('p'), 'background-color', 'red');
+             * tinymce1.activeEditor.dom.setStyle(tinymce1.activeEditor.dom.select('p'), 'background-color', 'red');
              *
              * // Sets a style value to an element by id in the current document
-             * tinymce.DOM.setStyle('mydiv', 'background-color', 'red');
+             * tinymce1.DOM.setStyle('mydiv', 'background-color', 'red');
              */
             setStyle,
             /**
@@ -7141,10 +7141,10 @@
              * @param {Object} styles Name/Value collection of style items to add to the element(s).
              * @example
              * // Sets styles on all paragraphs in the currently active editor
-             * tinymce.activeEditor.dom.setStyles(tinymce.activeEditor.dom.select('p'), { 'background-color': 'red', 'color': 'green' });
+             * tinymce1.activeEditor.dom.setStyles(tinymce1.activeEditor.dom.select('p'), { 'background-color': 'red', 'color': 'green' });
              *
              * // Sets styles to an element by id in the current document
-             * tinymce.DOM.setStyles('mydiv', { 'background-color': 'red', 'color': 'green' });
+             * tinymce1.DOM.setStyles('mydiv', { 'background-color': 'red', 'color': 'green' });
              */
             setStyles,
             /**
@@ -7164,10 +7164,10 @@
              * the attribute instead.
              * @example
              * // Sets class attribute on all paragraphs in the active editor
-             * tinymce.activeEditor.dom.setAttrib(tinymce.activeEditor.dom.select('p'), 'class', 'myclass');
+             * tinymce1.activeEditor.dom.setAttrib(tinymce1.activeEditor.dom.select('p'), 'class', 'myclass');
              *
              * // Sets class attribute on a specific element in the current page
-             * tinymce.dom.setAttrib('mydiv', 'class', 'myclass');
+             * tinymce1.dom.setAttrib('mydiv', 'class', 'myclass');
              */
             setAttrib,
             /**
@@ -7178,10 +7178,10 @@
              * @param {Object} attrs Name/Value collection of attribute items to add to the element(s).
              * @example
              * // Sets class and title attributes on all paragraphs in the active editor
-             * tinymce.activeEditor.dom.setAttribs(tinymce.activeEditor.dom.select('p'), { 'class': 'myclass', title: 'some title' });
+             * tinymce1.activeEditor.dom.setAttribs(tinymce1.activeEditor.dom.select('p'), { 'class': 'myclass', title: 'some title' });
              *
              * // Sets class and title attributes on a specific element in the current page
-             * tinymce.DOM.setAttribs('mydiv', { 'class': 'myclass', title: 'some title' });
+             * tinymce1.DOM.setAttribs('mydiv', { 'class': 'myclass', title: 'some title' });
              */
             setAttribs,
             /**
@@ -7236,16 +7236,16 @@
              * @param {String} url URL to CSS file to load.
              * @example
              * // Loads a CSS file dynamically into the current document
-             * tinymce.DOM.loadCSS('somepath/some.css');
+             * tinymce1.DOM.loadCSS('somepath/some.css');
              *
              * // Loads a CSS file into the currently active editor instance
-             * tinymce.activeEditor.dom.loadCSS('somepath/some.css');
+             * tinymce1.activeEditor.dom.loadCSS('somepath/some.css');
              *
              * // Loads a CSS file into an editor instance by id
-             * tinymce.get('someid').dom.loadCSS('somepath/some.css');
+             * tinymce1.get('someid').dom.loadCSS('somepath/some.css');
              *
              * // Loads multiple CSS files into the current document
-             * tinymce.DOM.loadCSS('somepath/some.css,somepath/someother.css');
+             * tinymce1.DOM.loadCSS('somepath/some.css,somepath/someother.css');
              */
             loadCSS,
             /**
@@ -7257,10 +7257,10 @@
              * @return {String/Array} String with new class value or array with new class values for all elements.
              * @example
              * // Adds a class to all paragraphs in the active editor
-             * tinymce.activeEditor.dom.addClass(tinymce.activeEditor.dom.select('p'), 'myclass');
+             * tinymce1.activeEditor.dom.addClass(tinymce1.activeEditor.dom.select('p'), 'myclass');
              *
              * // Adds a class to a specific element in the current page
-             * tinymce.DOM.addClass('mydiv', 'myclass');
+             * tinymce1.DOM.addClass('mydiv', 'myclass');
              */
             addClass,
             /**
@@ -7273,10 +7273,10 @@
              * were passed in.
              * @example
              * // Removes a class from all paragraphs in the active editor
-             * tinymce.activeEditor.dom.removeClass(tinymce.activeEditor.dom.select('p'), 'myclass');
+             * tinymce1.activeEditor.dom.removeClass(tinymce1.activeEditor.dom.select('p'), 'myclass');
              *
              * // Removes a class from a specific element in the current page
-             * tinymce.DOM.removeClass('mydiv', 'myclass');
+             * tinymce1.DOM.removeClass('mydiv', 'myclass');
              */
             removeClass,
             /**
@@ -7311,7 +7311,7 @@
              * @param {String/Element/Array} elm ID of DOM element or DOM element or array with elements or IDs to hide.
              * @example
              * // Hides an element by id in the document
-             * tinymce.DOM.hide('myid');
+             * tinymce1.DOM.hide('myid');
              */
             hide,
             /**
@@ -7340,10 +7340,10 @@
              * @param {String} html HTML content to set as inner HTML of the element.
              * @example
              * // Sets the inner HTML of all paragraphs in the active editor
-             * tinymce.activeEditor.dom.setHTML(tinymce.activeEditor.dom.select('p'), 'some inner html');
+             * tinymce1.activeEditor.dom.setHTML(tinymce1.activeEditor.dom.select('p'), 'some inner html');
              *
              * // Sets the inner HTML of an element by id in the document
-             * tinymce.DOM.setHTML('mydiv', 'some inner html');
+             * tinymce1.DOM.setHTML('mydiv', 'some inner html');
              */
             setHTML,
             /**
@@ -7353,8 +7353,8 @@
              * @param {String/Element} elm Element ID or element object to get outer HTML from.
              * @return {String} Outer HTML string.
              * @example
-             * tinymce.DOM.getOuterHTML(editorElement);
-             * tinymce.activeEditor.getOuterHTML(tinymce.activeEditor.getBody());
+             * tinymce1.DOM.getOuterHTML(editorElement);
+             * tinymce1.activeEditor.getOuterHTML(tinymce1.activeEditor.getBody());
              */
             getOuterHTML,
             /**
@@ -7365,10 +7365,10 @@
              * @param {Object} html HTML code to set as outer value for the element.
              * @example
              * // Sets the outer HTML of all paragraphs in the active editor
-             * tinymce.activeEditor.dom.setOuterHTML(tinymce.activeEditor.dom.select('p'), '<div>some html</div>');
+             * tinymce1.activeEditor.dom.setOuterHTML(tinymce1.activeEditor.dom.select('p'), '<div>some html</div>');
              *
              * // Sets the outer HTML of an element by id in the document
-             * tinymce.DOM.setOuterHTML('mydiv', '<div>some html</div>');
+             * tinymce1.DOM.setOuterHTML('mydiv', '<div>some html</div>');
              */
             setOuterHTML,
             /**
@@ -7451,7 +7451,7 @@
              * @param {Object} elements Optional name/value object with elements that are automatically treated as non-empty elements.
              * @return {Boolean} true/false if the node is empty or not.
              * @example
-             * tinymce.DOM.isEmpty(node, { img: true });
+             * tinymce1.DOM.isEmpty(node, { img: true });
              */
             isEmpty,
             /**
@@ -7461,7 +7461,7 @@
              * @method createRng
              * @return {DOMRange} DOM Range object.
              * @example
-             * const rng = tinymce.DOM.createRng();
+             * const rng = tinymce1.DOM.createRng();
              * alert(rng.startContainer + "," + rng.startOffset);
              */
             createRng,
@@ -9657,7 +9657,7 @@
         consolidateArr
     };
 
-    const requiredAccess = (path, obj, key, bundle) => 
+    const requiredAccess = (path, obj, key, bundle) =>
     // In required mode, if it is undefined, it is an error.
     get$b(obj, key).fold(() => missingRequired(path, key, obj), bundle);
     const fallbackAccess = (obj, key, fallback, bundle) => {
@@ -12361,7 +12361,7 @@
         // Expand to first wrappable block element or any block element
         if (!node) {
             const scopeRoot = dom.getParent(container, 'LI,TD,TH,SUMMARY') ?? root;
-            node = dom.getParent(isText$b(container) ? container.parentNode : container, 
+            node = dom.getParent(isText$b(container) ? container.parentNode : container,
             // Fixes #6183 where it would expand to editable parent element in inline mode
             (node) => node !== root && isTextBlock$1(dom.schema, node), scopeRoot);
         }
@@ -13038,7 +13038,7 @@
     /**
      * Utility class for working with delayed actions like setTimeout.
      *
-     * @class tinymce.util.Delay
+     * @class tinymce1.util.Delay
      */
     const wrappedSetTimeout = (callback, time) => {
         if (!isNumber(time)) {
@@ -13561,7 +13561,7 @@
               if (selectedHandle[2] < 0 && selectedElmGhost.clientWidth <= width) {
                 dom.setStyle(selectedElmGhost, 'left', selectedElmX + (startW - width));
               }
-        
+
               // Update ghost Y position if needed
               if (selectedHandle[3] < 0 && selectedElmGhost.clientHeight <= height) {
                 dom.setStyle(selectedElmGhost, 'top', selectedElmY + (startH - height));
@@ -15146,7 +15146,7 @@
                 let value;
                 /* if (indent && indentBefore[name] && html.length > 0) {
                   value = html[html.length - 1];
-          
+
                   if (value.length > 0 && value !== '\n')
                     html.push('\n');
                 }*/
@@ -16212,7 +16212,7 @@
     };
     const getParentCell = (rootElm, elm) => find$2(parentsAndSelf(elm, rootElm), isTableCell$2);
     const getParentCaption = (rootElm, elm) => find$2(parentsAndSelf(elm, rootElm), isTag('caption'));
-    const deleteBetweenCells = (editor, rootElm, forward, fromCell, from) => 
+    const deleteBetweenCells = (editor, rootElm, forward, fromCell, from) =>
     // TODO: TINY-8865 - This may not be safe to cast as Node below and alternative solutions need to be looked into
     navigate(forward, editor.getBody(), from)
         .bind((to) => getParentCell(rootElm, SugarElement.fromDom(to.getNode()))
@@ -16225,7 +16225,7 @@
         from.isEqual(first) && to.isEqual(last) :
         from.isEqual(last) && to.isEqual(first))).getOr(true);
     const emptyCaretCaption = (editor, elm) => emptyElement(editor, elm);
-    const validateCaretCaption = (rootElm, fromCaption, to) => 
+    const validateCaretCaption = (rootElm, fromCaption, to) =>
     // TODO: TINY-8865 - This may not be safe to cast as Node below and alternative solutions need to be looked into
     getParentCaption(rootElm, SugarElement.fromDom(to.getNode()))
         .fold(() => Optional.some(noop), (toCaption) => someIf(!eq(toCaption, fromCaption), noop));
@@ -17631,7 +17631,7 @@
         }
         if (!selection.isCollapsed() || !isInlineFormat(format) || getCellsFromEditor(ed).length) {
             // Remove formatting on the selection
-            preserveSelection(ed, () => runOnRanges(ed, removeRngStyle), 
+            preserveSelection(ed, () => runOnRanges(ed, removeRngStyle),
             // Before trying to move the start of the selection, check if start element still has formatting then we are at: "<b>text|</b>text"
             // and need to move the start into the next text node
             (startNode) => isInlineFormat(format) && match$2(ed, name, vars, startNode));
@@ -20079,7 +20079,7 @@
 
     /**
      * This class handles parsing, modification and serialization of URI/URL strings.
-     * @class tinymce.util.URI
+     * @class tinymce1.util.URI
      */
     const each$6 = Tools.each, trim = Tools.trim;
     const queryParts = [
@@ -20292,7 +20292,7 @@
          * @return {String} Relative URI from the point specified in the current URI instance.
          * @example
          * // Converts an absolute URL to an relative URL url will be somedir/somefile.htm
-         * const url = new tinymce.util.URI('http://www.site.com/dir/').toRelative('http://www.site.com/dir/somedir/somefile.htm');
+         * const url = new tinymce1.util.URI('http://www.site.com/dir/').toRelative('http://www.site.com/dir/somedir/somefile.htm');
          */
         toRelative(uri) {
             if (uri === './') {
@@ -20329,7 +20329,7 @@
          * @return {String} Absolute URI from the point specified in the current URI instance.
          * @example
          * // Converts an relative URL to an absolute URL url will be http://www.site.com/dir/somedir/somefile.htm
-         * const url = new tinymce.util.URI('http://www.site.com/dir/').toAbsolute('somedir/somefile.htm');
+         * const url = new tinymce1.util.URI('http://www.site.com/dir/').toAbsolute('somedir/somefile.htm');
          */
         toAbsolute(uri, noHost) {
             const absoluteUri = new URI(uri, { base_uri: this });
@@ -20341,7 +20341,7 @@
          * won't match, if the port specifications differ.
          *
          * @method isSameOrigin
-         * @param {tinymce.util.URI} uri Uri instance to compare.
+         * @param {tinymce1.util.URI} uri Uri instance to compare.
          * @returns {Boolean} True if the origins are the same.
          */
         isSameOrigin(uri) {
@@ -23196,7 +23196,7 @@
         undoManager.clear();
         undoManager.add();
     };
-    const hasUndo$1 = (editor, undoManager, index) => 
+    const hasUndo$1 = (editor, undoManager, index) =>
     // Has undo levels or typing and content isn't the same as the initial level
     index.get() > 0 || (undoManager.typing && undoManager.data[0] && !isEq$1(editor.readonly, createFromEditor(editor), undoManager.data[0]));
     const hasRedo$1 = (undoManager, index) => index.get() < undoManager.data.length - 1 && !undoManager.typing;
@@ -23398,7 +23398,7 @@
         };
     };
     const isRtc = (editor) => has$2(editor.plugins, 'rtc');
-    const getRtcSetup = (editor) => get$b(editor.plugins, 'rtc').bind((rtcPlugin) => 
+    const getRtcSetup = (editor) => get$b(editor.plugins, 'rtc').bind((rtcPlugin) =>
     // This might not exist if the stub plugin is loaded on cloud
     Optional.from(rtcPlugin.setup));
     const setup$z = (editor) => {
@@ -23415,7 +23415,7 @@
             }));
         });
     };
-    const getRtcInstanceWithFallback = (editor) => 
+    const getRtcInstanceWithFallback = (editor) =>
     // Calls to editor.getContent/editor.setContent should still work even if the rtcInstance is not yet available
     editor.rtcInstance ? editor.rtcInstance : makePlainAdaptor(editor);
     const getRtcInstanceWithError = (editor) => {
@@ -25488,7 +25488,7 @@
 
     const isContentCssSkinName = (url) => /^[a-z0-9\-]+$/i.test(url);
     const toContentSkinResourceName = (name) => 'content/' + name + '/content.css';
-    const isBundledCssSkinName = (name) => tinymce.Resource.has(toContentSkinResourceName(name));
+    const isBundledCssSkinName = (name) => tinymce1.Resource.has(toContentSkinResourceName(name));
     const getContentCssUrls = (editor) => {
         return transformToUrls(editor, getContentCss(editor));
     };
@@ -25638,7 +25638,7 @@
     /**
      * Generates unique ids.
      *
-     * @class tinymce.util.Uuid
+     * @class tinymce1.util.Uuid
      * @private
      */
     let count = 0;
@@ -25875,7 +25875,7 @@
     /**
      * This class handles uploading images to a back-end server.
      *
-     * @class tinymce.util.ImageUploader
+     * @class tinymce1.util.ImageUploader
      */
     const ImageUploader = (editor) => {
         const uploadStatus = UploadStatus();
@@ -27180,7 +27180,7 @@
             return false;
         }
     };
-    const isTypingKeyboardEvent = (e) => 
+    const isTypingKeyboardEvent = (e) =>
     // 229 === Unidentified, so since we don't know what it is treat it as a non typing event on keyup but as a typing event on keydown
     // Android will generally always send a 229 keycode since it uses an IME to input text
     isKeyboardEvent(e) && !(isDeleteEvent(e) || e.type === 'keyup' && e.keyCode === 229);
@@ -28639,7 +28639,7 @@
     };
     const backspaceDelete$a = (editor, _forward) => editor.selection.isCollapsed() ? Optional.none() : deleteRange$3(editor);
 
-    const showCaret = (direction, editor, node, before, scrollIntoView) => 
+    const showCaret = (direction, editor, node, before, scrollIntoView) =>
     // TODO: Figure out a better way to handle this dependency
     Optional.from(editor._selectionOverrides.showCaret(direction, node, before, scrollIntoView));
     const getNodeRange = (node) => {
@@ -34195,7 +34195,7 @@
         editor.on('copy', copy(editor));
     };
 
-    const getCaretRangeFromEvent = (editor, e) => 
+    const getCaretRangeFromEvent = (editor, e) =>
     // TODO: TINY-7075 Remove the "?? 0" here when agar passes valid client coords
     RangeUtils.getCaretRangeFromPoint(e.clientX ?? 0, e.clientY ?? 0, editor.getDoc());
     const isPlainTextFileUrl = (content) => {
@@ -35640,9 +35640,9 @@
                     rng.setStart(nextSpot.container, nextSpot.offset);
                     rng.setEnd(spot.container, spot.offset);
                     return rng;
-                }).filter((rng) => 
+                }).filter((rng) =>
                 // Ensure the range content matches the start
-                rng.toString() === startPattern).orThunk(() => 
+                rng.toString() === startPattern).orThunk(() =>
                 // No match found, so continue searching
                 findPatternStartFromSpot(dom, pattern, block, point(spot.container, 0)));
             }
@@ -36625,42 +36625,42 @@
         function touchClickEvent() {
           editor.on('touchstart', function(e) {
             var elm, time, startTouch, changedTouches;
-      
+
             elm = e.target;
             time = new Date().getTime();
             changedTouches = e.changedTouches;
-      
+
             if (!changedTouches || changedTouches.length > 1) {
               return;
             }
-      
+
             startTouch = changedTouches[0];
-      
+
             editor.once('touchend', function(e) {
               var endTouch = e.changedTouches[0], args;
-      
+
               if (new Date().getTime() - time > 500) {
                 return;
               }
-      
+
               if (Math.abs(startTouch.clientX - endTouch.clientX) > 5) {
                 return;
               }
-      
+
               if (Math.abs(startTouch.clientY - endTouch.clientY) > 5) {
                 return;
               }
-      
+
               args = {
                 target: elm
               };
-      
+
               each('pageX pageY clientX clientY screenX screenY'.split(' '), function(key) {
                 args[key] = endTouch[key];
               });
-      
+
               args = editor.dispatch('click', args);
-      
+
               if (!args.isDefaultPrevented()) {
                 // iOS WebKit can't place the caret properly once
                 // you bind touch events so we need to do this manually
@@ -37074,9 +37074,9 @@
     };
     const getStyleSheetLoader$1 = (editor) => editor.inline ? editor.ui.styleSheetLoader : editor.dom.styleSheetLoader;
     const makeStylesheetLoadingPromises = (editor, css, framedFonts) => {
-        const { pass: bundledCss, fail: normalCss } = partition$2(css, (key) => tinymce.Resource.has(key));
+        const { pass: bundledCss, fail: normalCss } = partition$2(css, (key) => tinymce1.Resource.has(key));
         const bundledPromises = bundledCss.map((key) => {
-            const css = tinymce.Resource.get(key);
+            const css = tinymce1.Resource.get(key);
             if (isString(css)) {
                 return Promise.resolve(getStyleSheetLoader$1(editor).loadRawCss(key, css));
             }
@@ -38040,13 +38040,13 @@
         const sectionResult = extractSections(['mobile'], deepMerge(deviceOverrideOptions, options));
         const extendedOptions = Tools.extend(
         // Default options
-        defaultOptions, 
+        defaultOptions,
         // tinymce.overrideOptions options
-        defaultOverrideOptions, 
+        defaultOverrideOptions,
         // User options
-        sectionResult.options(), 
+        sectionResult.options(),
         // Sections
-        isOnMobile(isMobileDevice, sectionResult) ? getSection(sectionResult, 'mobile') : {}, 
+        isOnMobile(isMobileDevice, sectionResult) ? getSection(sectionResult, 'mobile') : {},
         // Forced options
         {
             external_plugins: getExternalPlugins(defaultOverrideOptions, sectionResult.options())
@@ -38242,7 +38242,7 @@
         const isRoot = (elm) => eq(SugarElement.fromDom(rootElm), elm);
         return closest$1(SugarElement.fromDom(elm), (elm) => getProperty(elm), isRoot);
     };
-    const normalizeFontFamily = (fontFamily) => 
+    const normalizeFontFamily = (fontFamily) =>
     // 'Font name', Font -> Font name,Font
     fontFamily.replace(/[\'\"\\]/g, '').replace(/,\s+/g, ',');
     const getComputedFontProp = (propName, elm) => Optional.from(DOMUtils.DOM.getStyle(elm, propName, true));
@@ -38723,7 +38723,7 @@
      * This class lets you add/remove and dispatch events by name on the specified scope. This makes
      * it easy to add event listener logic to any class.
      *
-     * @class tinymce.util.EventDispatcher
+     * @class tinymce1.util.EventDispatcher
      * @example
      * const eventDispatcher = new EventDispatcher();
      *
@@ -38957,7 +38957,7 @@
     /**
      * This mixin adds event binding logic to classes. Adapts the EventDispatcher class.
      *
-     * @mixin tinymce.util.Observable
+     * @mixin tinymce1.util.Observable
      */
     const getEventDispatcher = (obj) => {
         if (!obj._eventDispatcher) {
@@ -39087,7 +39087,7 @@
      * This mixin contains the event logic for the tinymce.Editor class.
      *
      * @mixin tinymce.EditorObservable
-     * @extends tinymce.util.Observable
+     * @extends tinymce1.util.Observable
      * @private
      */
     const DOM$2 = DOMUtils.DOM;
@@ -40046,7 +40046,7 @@
          * URI object to document configured for the TinyMCE instance.
          *
          * @property documentBaseURI
-         * @type tinymce.util.URI
+         * @type tinymce1.util.URI
          * @example
          * // Get relative URL from the location of document_base_url
          * tinymce.activeEditor.documentBaseURI.toRelative('/somedir/somefile.htm');
@@ -40059,7 +40059,7 @@
          * URI object to current document that holds the TinyMCE editor instance.
          *
          * @property baseURI
-         * @type tinymce.util.URI
+         * @type tinymce1.util.URI
          * @example
          * // Get relative URL from the location of the API
          * tinymce.activeEditor.baseURI.toRelative('/somedir/somefile.htm');
@@ -41008,7 +41008,7 @@
                 }
             }
             // If tinymce is defined and has a base use that or use the old tinyMCEPreInit
-            const preInit = window.tinymce || window.tinyMCEPreInit;
+            const preInit = window.tinymce1 || window.tinymcePreInit;
             if (preInit) {
                 baseURL = preInit.base || preInit.baseURL;
                 suffix = preInit.suffix;
@@ -41062,7 +41062,7 @@
              * Absolute baseURI for the installation path of TinyMCE.
              *
              * @property baseURI
-             * @type tinymce.util.URI
+             * @type tinymce1.util.URI
              */
             self.baseURI = new URI(self.baseURL);
             /**
@@ -41698,7 +41698,7 @@
         const resources = {};
         const load = (id, url) => {
             const loadErrMsg = `Script at URL "${url}" failed to load`;
-            const runErrMsg = `Script at URL "${url}" did not call \`tinymce.Resource.add('${id}', data)\` within 1 second`;
+            const runErrMsg = `Script at URL "${url}" did not call \`tinymce1.Resource.add('${id}', data)\` within 1 second`;
             if (tasks[id] !== undefined) {
                 return tasks[id];
             }
@@ -41773,13 +41773,13 @@
     })();
 
     /**
-     * @class tinymce.util.LocalStorage
+     * @class tinymce1.util.LocalStorage
      * @static
      * @version 4.0
      * @private
      * @example
-     * tinymce.util.LocalStorage.setItem('key', 'value');
-     * const value = tinymce.util.LocalStorage.getItem('key');
+     * tinymce1.util.LocalStorage.setItem('key', 'value');
+     * const value = tinymce1.util.LocalStorage.getItem('key');
      */
     let localStorage;
     // Browsers with certain strict security settings will explode when trying to access localStorage
@@ -41895,8 +41895,8 @@
         }
     };
     const exportToWindowGlobal = (tinymce) => {
-        window.tinymce = tinymce;
-        window.tinyMCE = tinymce;
+        window.tinymce1 = tinymce;
+        window.tinyMCE1 = tinymce;
     };
     exportToWindowGlobal(tinymce$1);
     exportToModuleLoaders(tinymce$1);

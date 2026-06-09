@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.nb_NO',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.nb_NO',
 '<h1>Starte tastaturnavigering</h1>\n' +
   '\n' +
   '<dl>\n' +

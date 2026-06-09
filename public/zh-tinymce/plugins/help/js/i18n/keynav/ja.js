@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.ja',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.ja',
 '<h1>キーボード ナビゲーションの開始</h1>\n' +
   '\n' +
   '<dl>\n' +

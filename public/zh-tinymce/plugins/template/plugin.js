@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$3 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$3 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     const hasProto = (v, constructor, predicate) => {
       var _a;
@@ -62,7 +62,7 @@
 
     const escape = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.util.Tools');
 
     const option = name => editor => editor.options.get(name);
     const register$2 = editor => {
@@ -271,7 +271,7 @@
     };
     const has = (obj, key) => hasOwnProperty.call(obj, key);
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.html.Serializer');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.html.Serializer');
 
     const entitiesAttr = {
       '"': '&quot;',
@@ -347,7 +347,7 @@
       editor.addVisual();
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.Env');
+    var global = tinymce1.util.Tools.resolve('tinymce1.Env');
 
     const getPreviewContent = (editor, html) => {
       var _a;

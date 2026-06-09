@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.hi',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.hi',
 '<h1>कीबोर्ड नेविगेशन शुरू करें</h1>\n' +
   '\n' +
   '<dl>\n' +

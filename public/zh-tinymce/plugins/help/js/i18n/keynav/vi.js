@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.vi',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.vi',
 '<h1>Bắt đầu điều hướng bàn phím</h1>\n' +
   '\n' +
   '<dl>\n' +

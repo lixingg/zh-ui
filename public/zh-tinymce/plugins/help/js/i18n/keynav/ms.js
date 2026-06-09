@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.ms',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.ms',
 '<h1>Mulakan navigasi papan kekunci</h1>\n' +
   '\n' +
   '<dl>\n' +

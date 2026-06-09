@@ -1,12 +1,12 @@
 <template>
-  <div ref="containerRef" class="t-editor-container" :style="containerStyle">
-    <textarea ref="textareaRef" class="t-editor-textarea"></textarea>
+  <div ref="containerRef" class="zh-ceditor-container" :style="containerStyle">
+    <textarea ref="textareaRef" class="zh-ceditor-textarea"></textarea>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
-import type { Editor } from 'zh-tinymce'
+import {ref, computed, watch, onMounted, onBeforeUnmount, nextTick} from 'vue'
+import type {Editor} from 'zh-tinymce'
 
 // 核心及常用插件（部分通过 import 打包，其余依赖 public 目录下的文件）
 import 'zh-tinymce/tinymce'
@@ -40,6 +40,19 @@ import 'zh-tinymce/plugins/quickbars'
 import 'zh-tinymce/skins/ui/oxide/skin.min.css';
 import 'zh-tinymce/skins/ui/oxide/content.min.css';
 import 'zh-tinymce/skins/content/default/content.min.css';
+import 'zh-tinymce/plugins/help/js/i18n/keynav/zh-Hans.js'
+import 'zh-tinymce/themes/silver/theme.min.js'
+import 'zh-tinymce/models/dom'
+import 'zh-tinymce/icons/default'
+import 'zh-tinymce/langs/en.js'
+import 'zh-tinymce/langs/zh_CN.js'
+import 'zh-tinymce/plugins/emoticons/js/emojis'
+
+// 导入皮肤 CSS 文本（Vite raw import）
+import skinCss from 'zh-tinymce/skins/ui/oxide/skin.css?raw'
+// 导入内容区默认样式
+import contentCssText from 'zh-tinymce/skins/content/default/content.css?raw'
+
 export interface UploadCallback {
   (file: File, progress?: (percent: number) => void): Promise<string>
 }
@@ -67,7 +80,7 @@ const props = withDefaults(defineProps<Props>(), {
   width: '100%',
   disabled: false,
   placeholder: '',
-  plugins: () =>  [
+  plugins: () => [
     'preview importcss searchreplace autolink autosave save directionality',
     'code visualblocks visualchars fullscreen image link media codesample table',
     'charmap pagebreak nonbreaking anchor insertdatetime advlist lists',
@@ -154,7 +167,7 @@ function createFilePickerCallback() {
 function getInitConfig(): Record<string, any> {
   const base: Record<string, any> = {
     target: textareaRef.value,
-    base_url: 'zh-tinymce',
+    // base_url: 'zh-tinymce',
     license_key: props.licenseKey,
 
     // 语言与皮肤
@@ -162,6 +175,9 @@ function getInitConfig(): Record<string, any> {
     // language_url: langUrl,
     // skin_url: skinUrl,
     // content_css: contentCss,
+    skin: false,
+    content_css: false,
+    // content_style: contentCssText,
     // 尺寸与外观
     height: props.height,
     width: props.width,
@@ -194,6 +210,14 @@ function getInitConfig(): Record<string, any> {
     `,
 
     setup: (editor: Editor) => {
+      // 注入皮肤样式（全局唯一）
+      const styleId = 'zh-editor-skin'
+      if (!document.getElementById(styleId)) {
+        const style = document.createElement('style')
+        style.id = styleId
+        style.textContent = skinCss
+        document.head.appendChild(style)
+      }
       editor.on('init', () => {
         if (props.modelValue) {
           editor.setContent(props.modelValue)
@@ -207,21 +231,23 @@ function getInitConfig(): Record<string, any> {
         if (!isInternalUpdate.value && props.modelValue !== content) {
           isInternalUpdate.value = true
           emit('update:modelValue', content)
-          nextTick(() => { isInternalUpdate.value = false })
+          nextTick(() => {
+            isInternalUpdate.value = false
+          })
         }
       })
     }
   }
 
-  return { ...base, ...props.customInit }
+  return {...base, ...props.customInit}
 }
 
 /* ========== 生命周期 ========== */
 onMounted(() => {
   if (!textareaRef.value) return
   const waitTiny = () => {
-    if ((window as any).tinymce) {
-      (window as any).tinymce.init(getInitConfig()).then(editors => {
+    if ((window as any).tinymce1) {
+      (window as any).tinymce1.init(getInitConfig()).then(editors => {
         editorInstance = editors[0]
       })
     } else {
@@ -256,14 +282,14 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-.t-editor-container {
+.zh-ceditor-container {
   display: flex;
   flex-direction: column;
   line-height: 0;
 }
 
 /* 隐藏原生 textarea，但不影响初始化尺寸计算 */
-.t-editor-textarea {
+.zh-ceditor-textarea {
   visibility: hidden;
   height: 0;
   margin: 0;
@@ -272,10 +298,11 @@ defineExpose({
 }
 
 /* 编辑器内部主体填满容器高度 */
-.t-editor-container :deep(.tox-tinymce) {
+.zh-ceditor-container :deep(.tox-tinymce) {
   flex: 1;
   height: 100% !important;
 }
+
 :deep(.tox .tox-edit-area::before) {
   border: 2px solid #fff;
   border-radius: 4px;

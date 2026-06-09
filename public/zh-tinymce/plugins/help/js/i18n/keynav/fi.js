@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.fi',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.fi',
 '<h1>Näppäimistönavigoinnin aloittaminen</h1>\n' +
   '\n' +
   '<dl>\n' +

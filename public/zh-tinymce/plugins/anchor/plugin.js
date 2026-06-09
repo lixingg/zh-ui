@@ -5,11 +5,11 @@
 (function () {
     'use strict';
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.dom.RangeUtils');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.dom.RangeUtils');
 
-    var global = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global = tinymce1.util.Tools.resolve('tinymce1.util.Tools');
 
     const option = (name) => (editor) => editor.options.get(name);
     const register$2 = (editor) => {
@@ -41,7 +41,7 @@
             });
         });
     };
-    const isValidId = (id) => 
+    const isValidId = (id) =>
     // Follows HTML4 rules: https://www.w3.org/TR/html401/types.html#type-id
     /^[A-Za-z][A-Za-z0-9\-:._]*$/.test(id);
     const getNamedAnchor = (editor) => editor.dom.getParent(editor.selection.getStart(), namedAnchorSelector);

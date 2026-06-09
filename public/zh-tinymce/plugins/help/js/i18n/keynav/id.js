@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.id',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.id',
 '<h1>Memulai navigasi keyboard</h1>\n' +
   '\n' +
   '<dl>\n' +

@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.fa',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.fa',
 '<h1>شروع پیمایش صفحه‌کلید</h1>\n' +
   '\n' +
   '<dl>\n' +

@@ -524,7 +524,7 @@
         };
     };
 
-    var global$3 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$3 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     const get$4 = (fullscreenState) => ({
         isFullscreen: () => fullscreenState.get() !== null
@@ -601,7 +601,7 @@
             } // unfortunately we can't throw this on startup :(
         }
     };
-    const bypassSelector = (dom) => 
+    const bypassSelector = (dom) =>
     // Only elements, documents and shadow roots support querySelector
     // shadow root element type is DOCUMENT_FRAGMENT
     dom.nodeType !== ELEMENT && dom.nodeType !== DOCUMENT && dom.nodeType !== DOCUMENT_FRAGMENT ||
@@ -1217,11 +1217,11 @@
     // jQuery does siblings of firstChild. IE9+ supports scope.dom.children (similar to Traverse.children but elements only).
     // Traverse should also do this (but probably not by default).
     //
-    const ancestors = (scope, selector, isRoot) => 
+    const ancestors = (scope, selector, isRoot) =>
     // It may surprise you to learn this is exactly what JQuery does
     // TODO: Avoid all this wrapping and unwrapping
     ancestors$1(scope, (e) => is(e, selector), isRoot);
-    const siblings = (scope, selector) => 
+    const siblings = (scope, selector) =>
     // It may surprise you to learn this is exactly what JQuery does
     // TODO: Avoid all the wrapping and unwrapping
     siblings$1(scope, (e) => is(e, selector));
@@ -1255,7 +1255,7 @@
             const width = html.clientWidth;
             const height = html.clientHeight;
             return bounds(scroll.left, scroll.top, width, height);
-        }, (visualViewport) => 
+        }, (visualViewport) =>
         // iOS doesn't update the pageTop/pageLeft when element.scrollIntoView() is called, so we need to fallback to the
         // scroll position which will always be less than the page top/left values when page top/left are accurate/correct.
         bounds(Math.max(visualViewport.pageLeft, scroll.left), Math.max(visualViewport.pageTop, scroll.top), visualViewport.width, visualViewport.height));
@@ -1270,9 +1270,9 @@
         unbind: noop
     }));
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.dom.DOMUtils');
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.Env');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.Env');
 
     const fireFullscreenStateChanged = (editor, state) => {
         editor.dispatch('FullscreenStateChanged', { state });
@@ -1544,7 +1544,7 @@
         });
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.util.VK');
+    var global = tinymce1.util.Tools.resolve('tinymce1.util.VK');
 
     const setup = (editor, fullscreenState) => {
         editor.on('init', () => {

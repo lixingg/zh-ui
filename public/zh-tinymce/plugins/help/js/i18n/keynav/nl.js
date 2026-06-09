@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.nl',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.nl',
 '<h1>Toetsenbordnavigatie starten</h1>\n' +
   '\n' +
   '<dl>\n' +

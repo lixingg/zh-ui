@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.eu',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.eu',
 '<h1>Hasi teklatuaren nabigazioa</h1>\n' +
   '\n' +
   '<dl>\n' +

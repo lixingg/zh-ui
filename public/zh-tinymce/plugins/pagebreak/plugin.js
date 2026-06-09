@@ -5,9 +5,9 @@
 (function () {
     'use strict';
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
-    var global = tinymce.util.Tools.resolve('tinymce.Env');
+    var global = tinymce1.util.Tools.resolve('tinymce1.Env');
 
     const option = (name) => (editor) => editor.options.get(name);
     const register$2 = (editor) => {

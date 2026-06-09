@@ -19,7 +19,7 @@
         };
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     const fireVisualBlocks = (editor, state) => {
         editor.dispatch('VisualBlocks', { state });

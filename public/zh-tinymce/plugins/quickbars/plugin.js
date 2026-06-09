@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const hasProto = (v, constructor, predicate) => {
@@ -348,7 +348,7 @@
         });
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.util.Delay');
+    var global = tinymce1.util.Tools.resolve('tinymce1.util.Delay');
 
     const pickFile = (editor) => new Promise((resolve) => {
         let resolved = false;

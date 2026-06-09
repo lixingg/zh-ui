@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     const get = (editor) => ({
         backspaceDelete: (isForward) => {

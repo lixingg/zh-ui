@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.kk',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.kk',
 '<h1>Пернетақта навигациясын бастау</h1>\n' +
   '\n' +
   '<dl>\n' +

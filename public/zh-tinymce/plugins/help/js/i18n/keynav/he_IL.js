@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.he_IL',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.he_IL',
 '<h1>התחל ניווט במקלדת</h1>\n' +
   '\n' +
   '<dl>\n' +

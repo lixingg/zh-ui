@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$6 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$6 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const hasProto = (v, constructor, predicate) => {
@@ -411,11 +411,11 @@
     const hasPoster = option('media_poster');
     const hasDimensions = option('media_dimensions');
 
-    var global$5 = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global$5 = tinymce1.util.Tools.resolve('tinymce1.util.Tools');
 
-    var global$4 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
+    var global$4 = tinymce1.util.Tools.resolve('tinymce1.dom.DOMUtils');
 
-    var global$3 = tinymce.util.Tools.resolve('tinymce.html.DomParser');
+    var global$3 = tinymce1.util.Tools.resolve('tinymce1.html.DomParser');
 
     const DOM$1 = global$4.DOM;
     const trimPx = (value) => value.replace(/px$/, '');
@@ -488,9 +488,9 @@
         return get$1(mimes, fileEnd).getOr('');
     };
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.html.Node');
+    var global$2 = tinymce1.util.Tools.resolve('tinymce1.html.Node');
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.html.Serializer');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.html.Serializer');
 
     const Parser = (schema, settings = {}) => global$3({
         forced_root_block: false,
@@ -1131,7 +1131,7 @@
         editor.addCommand('mceMedia', showDialog$1);
     };
 
-    var global = tinymce.util.Tools.resolve('tinymce.Env');
+    var global = tinymce1.util.Tools.resolve('tinymce1.Env');
 
     const isLiveEmbedNode = (node) => {
         const name = node.name;

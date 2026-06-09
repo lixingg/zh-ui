@@ -7,13 +7,11 @@ import baseCEditor from './baseCEditor.vue';
 
 ## 基础用法
 
-[//]: # (基于tinymce-vue开发的组件)
+基于tinymce-vue开发的组件
 
-[//]: # (<show-code showPath="editor/baseEditor">)
-
-[//]: # (<baseEditor></baseEditor>)
-
-[//]: # (</show-code>)
+<show-code showPath="editor/baseEditor">
+<baseEditor></baseEditor>
+</show-code>
 
 基于原生tinymce开发的组件
 <show-code showPath="editor/baseCEditor">

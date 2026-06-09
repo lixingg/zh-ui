@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.sv_SE',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.sv_SE',
 '<h1>Påbörja tangentbordsnavigering</h1>\n' +
   '\n' +
   '<dl>\n' +

@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$1 = tinymce1.util.Tools.resolve('tinymce1.PluginManager');
 
     /* eslint-disable @typescript-eslint/no-wrapper-object-types */
     const hasProto = (v, constructor, predicate) => {
@@ -127,7 +127,7 @@
       )
     )?
     */
-    const link = () => 
+    const link = () =>
     // eslint-disable-next-line max-len
     /(?:[A-Za-z][A-Za-z\d.+-]{0,14}:\/\/(?:[-.~*+=!&;:'%@?^${}(),\w]+@)?|www\.|[-;:&=+$,.\w]+@)[A-Za-z\d-]+(?:\.[A-Za-z\d-]+)*(?::\d+)?(?:\/(?:[-.~*+=!;:'%@$(),\/\w]*[-~*+=%@$()\/\w])?)?(?:\?(?:[-.~*+=!&;:'%@?^${}(),\/\w]+))?(?:#(?:[-.~*+=!&;:'%@?^${}(),\/\w]+))?/g;
 
@@ -152,7 +152,7 @@
     const getDefaultLinkProtocol = option('link_default_protocol');
     const allowUnsafeLinkTarget = option('allow_unsafe_link_target');
 
-    var global = tinymce.util.Tools.resolve('tinymce.dom.TextSeeker');
+    var global = tinymce1.util.Tools.resolve('tinymce1.dom.TextSeeker');
 
     const isTextNode = (node) => node.nodeType === 3;
     const isElement = (node) => node.nodeType === 1;

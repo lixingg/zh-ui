@@ -1,4 +1,4 @@
-tinymce.Resource.add('tinymce.html-i18n.help-keynav.sl_SI',
+tinymce1.Resource.add('tinymce1.html-i18n.help-keynav.sl_SI',
 '<h1>Začetek krmarjenja s tipkovnico</h1>\n' +
   '\n' +
   '<dl>\n' +
