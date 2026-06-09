@@ -17,7 +17,6 @@
     "@element-plus/icons-vue": "^2.3.1",
     "@tinymce/tinymce-vue": "^6.3.0",
     "docx-preview": "^0.3.7",
-    "tinymce": "^8.6.0",
     "echarts": "^5.4.3",
     "echarts-gl": "^2.0.9",
     "echarts-liquidfill": "^3.1.0",
