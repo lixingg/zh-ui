@@ -14,7 +14,7 @@ const asideKeys = [
   'chatComponents',
   'aiComponents',
   'videoPlayerComponents',
-
+  'threeShowComponents',
 ]
 </script>
 

@@ -10,7 +10,8 @@ import {directiveComponent} from "./directive.component";
 import {chatComponent} from "./chatShow.component";
 import {aiComponent} from "./aiShow.component";
 import {providerShowComponent} from "./providerShow.component";
-import {videoPlayerComponent} from "./videoPlayer.component"
+import {videoPlayerComponent} from "./videoPlayer.component";
+import {threeShowComponent} from "./threeShow.component";
 
 export interface routerType {
     title: string
@@ -69,6 +70,10 @@ export const routerDocsComponentConfig = {
     videoPlayerComponents: {
         title: '播放器',
         routerData: videoPlayerComponent
+    },
+    threeShowComponents:{
+        title: 'three动画',
+        routerData: threeShowComponent
     }
 
 } as routerConfigType

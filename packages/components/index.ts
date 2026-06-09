@@ -4,10 +4,12 @@ import  'echarts-gl'
 import 'echarts-liquidfill'
 import * as echarts from 'echarts';
 export { echarts };
-
+import * as THREE from 'three'
+export { THREE }
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 export * from '@element-plus/icons-vue'
 export { default as dayjs } from 'dayjs'
+
 // @ts-ignore
 // export { default as echarts } from 'echarts';
 
@@ -41,7 +43,7 @@ export * from './provider'
 export * from './videoPlayer'
 export * from '../utils/hooks'
 export * from "./editor"
-
+export * from './three'
 import button from './button'
 import icon from './icon'
 import layout from './layout'
@@ -69,6 +71,7 @@ import searchForm from "./searchForm"
 import provider from "./provider"
 import videoPlayer from "./videoPlayer"
 import editor from "./editor"
+import threes from "./three"
 
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
@@ -100,7 +103,8 @@ const components = [
     searchForm,
     provider,
     videoPlayer,
-    editor
+    editor,
+    threes
 ]
 
 const install = (app: App, options?: any) => {
