@@ -57,7 +57,7 @@ Message 可以接收一个字符串或一个 html 作为参数，它会被显示
 
 ## 单独引用
  ```javascript
- import { BlMessageFn } from 'ZHUI'
+ import { ZhMessageFn } from 'zhui-plus'
  ```
 
 此时调用方法为 `ElMessage(options)`。 我们也为每个 type 定义了各自的方法，如 `ElMessage.success(options)`

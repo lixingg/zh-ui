@@ -2,7 +2,7 @@
 import {nextTick, onMounted, ref} from 'vue'
 import Prism from 'prismjs'
 import '../../assets/style/prism.css'
-import {BlMessageFn} from '../../../packages/components'
+import {ZhMessageFn} from '../../../packages/components'
 
 const props = defineProps({
   linkCode: {
@@ -72,7 +72,7 @@ const copyCode = () => {
   input.setSelectionRange(0, 9999) // 如果select 没有选择到
   if (document.execCommand('copy')) {
     // console.log('报文已复制到剪切板')
-    BlMessageFn.success!({
+    ZhMessageFn.success!({
       message: '成功复制',
       duration: 2000
     })

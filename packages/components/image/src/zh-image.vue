@@ -51,9 +51,9 @@
   import pptIcon from "@/assets/images/ppt.png";
 
   const props = defineProps<{
-    url?: string;
-    src?: string;
-    modelValue?: string;
+    url?: string | string[];
+    src?: string | string[];
+    modelValue?: string | string[];
     showName?: boolean;
     remove?: boolean;
   }>();

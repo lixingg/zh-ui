@@ -1,5 +1,5 @@
 import { ComponentPublicInstance, createVNode, h, render, VNode } from 'vue'
-import BlMessage from './zh-message.vue'
+import ZhMessage from './zh-message.vue'
 import {
   Message,
   MessageFn,
@@ -16,7 +16,7 @@ container.id = boxId
 
 let timer: NodeJS.Timeout
 let num = 0
-const BlMessageFn: MessageFn & Partial<Message> = (props: MessageParams) => {
+const ZhMessageFn: MessageFn & Partial<Message> = (props: MessageParams) => {
   num++
   const containItem = document.createElement('div')
   let options: MessageOptionType = {
@@ -32,7 +32,7 @@ const BlMessageFn: MessageFn & Partial<Message> = (props: MessageParams) => {
   }
   // console.log('调用了', num)
   // 创建虚拟dom
-  const boxVNode = createVNode(BlMessage, options)
+  const boxVNode = createVNode(ZhMessage, options)
   // 将虚拟dom渲染到container上面
   // render(boxVNode, container)
   renderHelper(boxVNode, containItem, options)
@@ -76,7 +76,7 @@ const optionHelper = (props: MessageParamsTyped, type: string) => {
 }
 
 messageTypes.forEach((type) => {
-  BlMessageFn[type] = (message: MessageParamsTyped) => BlMessageFn(optionHelper(message, type))
+  ZhMessageFn[type] = (message: MessageParamsTyped) => ZhMessageFn(optionHelper(message, type))
 })
 
 // const BlMessageSuccess = (message: MessageOptionType | string) =>
@@ -86,4 +86,4 @@ messageTypes.forEach((type) => {
 // const BlMessageDanger = (message: MessageOptionType | string) =>
 //   BlMessageFn(optionHelper(message, 'danger'))
 
-export { BlMessageFn }
+export { ZhMessageFn }

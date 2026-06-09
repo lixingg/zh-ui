@@ -14,18 +14,14 @@ import App from './App.vue'
 // 引入组件
 import ZHUI from 'zhui-plus'
 import zhCn from 'zhui-plus/dist/lang/zh-cn'
-// 引入图标 没有下载需要npm下载
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 引入样式
 import 'zhui-plus/ZHUI/style.css'
 // 注册组件
 const app = createApp(App).use(ZHUI, {
     locale: zhCn,
+    useGlobalIcons:true // 是否全局注册图标
 })
-// 注册图标
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component)
-}
+
 app.mount('#app')
 
 ```

@@ -12,14 +12,17 @@ import ZHUI from '../packages/components'
 
 import router from './router'
 
-const app = createApp(App).use(router).use(ZHUI)
+const app = createApp(App).use(router).use(ZHUI,{
+  locale: zhCn,
+  useGlobalIcons:true
+})
 
 // 注册全局预览组件
 app.component('ShowCode', ShowCode)
 
-for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
-  app.component(key, component)
-}
+// for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
+//   app.component(key, component)
+// }
 app.use(ElementPlus, {
   locale: zhCn,
 })

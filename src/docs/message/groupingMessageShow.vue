@@ -3,10 +3,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { BlMessageFn } from '../../../packages/components'
+  import { ZhMessageFn } from '../../../packages/components'
 
   const open = () => {
-    BlMessageFn({
+    ZhMessageFn({
       message: 'this is a message.',
       grouping: true,
       type: 'success'

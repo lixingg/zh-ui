@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { BlMessageFn } from '../../../packages/components'
+  import { ZhMessageFn } from '../../../packages/components'
   const open = (str: string) => {
-    BlMessageFn('测试一下' + str)
+    ZhMessageFn('测试一下' + str)
   }
 </script>
 

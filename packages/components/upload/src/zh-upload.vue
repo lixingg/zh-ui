@@ -14,16 +14,16 @@
              :show-file-list="showListFile">
     <template v-if="!uploadFile.length || showListFile">
       <el-icon class="el-icon--upload">
-        <upload-filled />
+        <upload-filled/>
       </el-icon>
       <div class="el-upload__text">
         <slot name="uploadText">
-            <p style="font-size: 16px; color: rgba(0, 0, 0, 0.85)" v-if="upload_text">
-              {{ upload_text }}
-            </p>
-            <p v-else>
-              将文件拖到此处，或 <em>点击上传</em>
-            </p>
+          <p style="font-size: 16px; color: rgba(0, 0, 0, 0.85)" v-if="upload_text">
+            {{ upload_text }}
+          </p>
+          <p v-else>
+            将文件拖到此处，或 <em>点击上传</em>
+          </p>
         </slot>
         <slot name="accepts">
           <p style="color: rgba(0, 0, 0, 0.45)" v-if="showSuggestion">
@@ -35,13 +35,13 @@
       </div>
     </template>
     <template v-if="!showListFile">
-<!--      <img v-for="(item,index) in uploadFile"
-           :key="index"
-           :class="uploadFile.length===1 ?'pre-img' : 'pre-img1'"
-           object-fit="contain"
-           :src="item"
-           alt="" />-->
-      <zh-image v-model="uploadFile"  v-bind="{...$attrs}"/>
+      <!--      <img v-for="(item,index) in uploadFile"
+                 :key="index"
+                 :class="uploadFile.length===1 ?'pre-img' : 'pre-img1'"
+                 object-fit="contain"
+                 :src="item"
+                 alt="" />-->
+      <zh-image v-model="uploadFile" v-bind="{...$attrs}"/>
     </template>
     <template v-for="(_, name) in slots" #[name]="slotData">
       <slot :name="name" v-bind="slotData || {}"></slot>
@@ -60,27 +60,32 @@
              :show-file-list="showListFile">
     <template v-if="!uploadFile.length || showListFile">
       <el-icon class="avatar-uploader-icon" :style="$attrs.style">
-        <Plus />
+        <Plus/>
       </el-icon>
     </template>
     <template v-for="(_, name) in slots" #[name]="slotData">
       <slot :name="name" v-bind="slotData || {}"></slot>
     </template>
     <template v-if="!showListFile">
-      <zh-image v-model="uploadFile" v-bind="{...$attrs}" />
+      <zh-image v-model="uploadFile" v-bind="{...$attrs}"/>
     </template>
   </el-upload>
 
 </template>
 <script lang="ts" setup>
-import { ref, computed, useAttrs, useSlots } from "vue";
-import { Plus, UploadFilled } from "@element-plus/icons-vue";
-import { ElLoading, ElMessage } from "element-plus";
+import {ref, computed, useAttrs, useSlots} from "vue";
+import {Plus, UploadFilled} from "@element-plus/icons-vue";
+import {ElLoading, ElMessage} from "element-plus";
 import jsFileDownload from "js-file-download";
 import ZhImage from "../../image/src/zh-image.vue";
+
 interface DownFileOptions {
-  useXML: boolean, url: string, text?: string,fileName:'string'
+  useXML: boolean,
+  url: string,
+  text?: string,
+  fileName: 'string'
 }
+
 // 获取所有未声明的属性
 const attrs = useAttrs()
 // 获取所有插槽
@@ -95,26 +100,27 @@ const props = withDefaults(defineProps<{
   fileType?: string,//上传文件类型
   showListFile?: boolean,//是否显示列表
   showSuggestion?: boolean,//是否显示建议
-  downFileOptions:DownFileOptions | null,//下载文件配置
+  downFileOptions: DownFileOptions | null,//下载文件配置
   uploadFn: Function | null,//上传文件方法
   isCard?: boolean,//是否卡片
 }>(), {
   modelValue: "",
-  accept:()=> ([".jpg", ".png", ".jpeg"]) ,
+  accept: () => ([".jpg", ".png", ".jpeg"]),
   upload_text: "",
   limit: 1,
   maxSize: 10,
   fileType: "image",
   showListFile: false,
   showSuggestion: true,
-  downFileOptions:null,
+  downFileOptions: null,
   uploadFn: null,
   isCard: false
 });
 
 const accepts = computed(() => props.accept.join(","));
-const newDownFileOptions=computed(() => ({
-  useXML: false, url: '', text: '下载模板',fileName:'',...props.downFileOptions}));
+const newDownFileOptions = computed(() => ({
+  useXML: false, url: '', text: '下载模板', fileName: '', ...props.downFileOptions
+}));
 const uploadRef = ref(null);
 const file_list = ref<any>([]);
 const uploadFile = computed({
@@ -150,15 +156,15 @@ function authRemove(file, fileList) {
 }
 
 function downLoadFile() {
-  const loadingInstance = ElLoading.service({ fullscreen: true });
+  const loadingInstance = ElLoading.service({fullscreen: true});
   if (newDownFileOptions.value.useXML) {
     fetch(newDownFileOptions.value.url)
-      .then(response => response.blob())
-      .then((res) => {
-        loadingInstance.close();
-        jsFileDownload(res, `${newDownFileOptions.value.fileName}.xlsx`);
-        ElMessage.success("导出成功");
-      });
+        .then(response => response.blob())
+        .then((res) => {
+          loadingInstance.close();
+          jsFileDownload(res, `${newDownFileOptions.value.fileName}.xlsx`);
+          ElMessage.success("导出成功");
+        });
   } else {
     window.open(newDownFileOptions.value.url);
     setTimeout(() => {
@@ -170,7 +176,7 @@ function downLoadFile() {
 
 function authExceed(files) {
   file_list.value.shift();
-  authUpload({ raw: files[0] });
+  authUpload({raw: files[0]});
 }
 
 function checkFile(file) {
@@ -249,10 +255,18 @@ async function authUpload(file: any) {
 }
 
 .el-icon.avatar-uploader-icon {
+  padding: 15px;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
   font-size: 28px;
   color: #8c939d;
   width: 60px;
   height: 60px;
   text-align: center;
+
+  &:hover {
+    border-color: var(--el-color-primary);
+  }
 }
+
 </style>

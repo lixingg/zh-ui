@@ -10,33 +10,11 @@ import baseIcon from './baseIcon.vue';
 1. 如果你想像用例一样直接使用，你需要全局注册组件，才能够直接在项目里使用。
 2. 如若想查看所有可用的 SVG 图标请查阅 @element-plus/icons-vue 和 element-plus-icons 的源代码或当前页的 Icon Collection
 
-## 安装
 
-```shell
-# 选择一个你喜欢的包管理器
+## 注册图标
+1、按需导入您需要从` zhui-plus` 中导入所用图标。
 
-# NPM
-$ npm install @element-plus/icons-vue
-# Yarn
-$ yarn add @element-plus/icons-vue
-# pnpm
-$ pnpm install @element-plus/icons-vue
-```
-
-## 注册所有图标
-您需要从` @element-plus/icons-vue` 中导入所有图标并进行全局注册。
-
-```ts
-// main.ts
-
-// 如果您正在使用CDN引入，请删除下面一行。
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-
-const app = createApp(App)
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(key, component)
-}
-```
+2、全局导入安装时候配置 useGlobalIcons 设置为true 即可
 
 ## 基础用法
 

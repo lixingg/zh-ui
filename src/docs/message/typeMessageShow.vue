@@ -6,23 +6,23 @@
 </template>
 
 <script lang="ts" setup>
-  import { BlMessageFn } from '../../../packages/components'
+  import { ZhMessageFn } from '../../../packages/components'
   const open1 = () => {
-    BlMessageFn('this is a message.')
+    ZhMessageFn('this is a message.')
   }
   const open2 = () => {
-    BlMessageFn({
+    ZhMessageFn({
       message: 'Congrats, this is a success message.',
       type: 'success'
     })
   }
   const open3 = () => {
-    BlMessageFn({
+    ZhMessageFn({
       message: 'Warning, this is a warning message.',
       type: 'warning'
     })
   }
   const open4 = () => {
-    BlMessageFn.danger?.('Oops, this is a error message.')
+    ZhMessageFn.danger?.('Oops, this is a error message.')
   }
 </script>

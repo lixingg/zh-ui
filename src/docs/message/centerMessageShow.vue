@@ -3,10 +3,10 @@
 </template>
 
 <script lang="ts" setup>
-  import { BlMessageFn } from '../../../packages/components'
+  import { ZhMessageFn } from '../../../packages/components'
 
   const openCenter = () => {
-    BlMessageFn({
+    ZhMessageFn({
       showClose: true,
       message: 'Centered text',
       center: true

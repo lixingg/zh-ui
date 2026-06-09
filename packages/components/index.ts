@@ -104,9 +104,11 @@ const components = [
 ]
 
 const install = (app: App, options?: any) => {
-    /*    for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
-          app.component(key, component)
-        }*/
+    if(options?.useGlobalIcons){
+        for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
+            app.component(key, component)
+        }
+    }
     ElementPlus.install(app, options);
     components.map((item) => {
         item.install(app)
