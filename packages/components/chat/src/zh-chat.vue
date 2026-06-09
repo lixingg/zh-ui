@@ -347,7 +347,7 @@ const imagePreviewVisible = ref(false)
 const previewUrl = ref('')
 const videoPreviewVisible = ref(false)
 const previewVideoUrl = ref('')
-
+const isClose = ref(false)
 // 文件/媒体暂存
 const pendingFile = ref<File | null>(null)
 const pendingFileType = ref<MessageType>('file')
@@ -392,6 +392,7 @@ const downloadFile = (content: string, fileName: string | any) => {
 
 // ======================= WebSocket 连接 =======================
 const connectWebSocket = () => {
+  if(isClose.value) return;
   if (socket) {
     socket.close()
   }
@@ -436,7 +437,10 @@ const connectWebSocket = () => {
   socket.onclose = () => {
     console.log('WebSocket 断开, 尝试重连...')
     isOnline.value = false
-    setTimeout(connectWebSocket, 3000)
+    if (!isClose.value) {
+      setTimeout(connectWebSocket, 3000)
+    }
+
   }
 
   socket.onerror = (err) => {
@@ -641,7 +645,9 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   if (socket) {
+    isClose.value = true
     socket.close()
+    socket = null
   }
   audioElement.pause()
   audioElement.src = ''
