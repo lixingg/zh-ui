@@ -43,7 +43,7 @@
       .filter((item) => item.offsetTop > 0)
     const minElement = data.sort((a, b) => a.offsetTop - b.offsetTop)[0]
     // console.log(minElement)
-    return minElement.text
+    return minElement?.text || ''
   }
   const ScrollEvent = (els: HTMLElement[]) =>
     throttle(() => {

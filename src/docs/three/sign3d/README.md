@@ -1,14 +1,16 @@
 <script setup> 
-import torusKnot from './torusKnot.vue';
+import sign3d from './sign3d.vue';
 </script>
 
-# torusKnot 动画
+# sign3d 动画
 
 ## 基础用法
 
-<show-code showPath="three/torusKnot">
-<torusKnot></torusKnot>
+<show-code showPath="three/sign3d/sign3d">
+<sign3d></sign3d>
 </show-code>
+
+#
 
 ## torusKnot 属性
 
