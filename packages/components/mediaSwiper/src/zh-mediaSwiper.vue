@@ -46,9 +46,9 @@ const props = withDefaults(defineProps<{
   autoplay: false
 })
 const swiperIndex = ref(0);
-let swiper = ref(null);
-const videoList = ref([]);
-const imgList = ref([]);
+let swiper = ref<any>(null);
+const videoList = ref<any>([]);
+const imgList = ref<any>([]);
 
 function swipterChange(index: number) {
   swiperIndex.value = index;

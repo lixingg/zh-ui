@@ -19,8 +19,8 @@ import { getMacaronColor } from '../../../utils/utils'
 const props = defineProps({
   chartId: { type: String, required: true },
   data: { type: Array as () => { name: string; value: number }[], required: true },
-  radius: { type: Array as () => [string | number, string | number], default: () => ['45%', '70%'] },
-  center: { type: Array as () => [string | number, string | number], default: () => ['50%', '50%'] },
+  radius: { type: Array , default: () => ['45%', '70%'] },
+  center: { type: Array , default: () => ['50%', '50%'] },
   roseType: { type: [String, Boolean] as unknown as () => 'radius' | 'area' | false, default: false },
   showLabel: { type: Boolean, default: true },
   labelPosition: { type: String as () => 'inside' | 'outside', default: 'outside' },

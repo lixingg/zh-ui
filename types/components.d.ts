@@ -1,6 +1,6 @@
 // ============================================
 // 🤖 自动生成的全局类型声明
-// 生成时间: 2026-06-12T01:14:58.856Z
+// 生成时间: 2026-06-12T09:30:24.091Z
 // ============================================
 
 import type { Component, ComponentPublicInstance } from 'vue'
@@ -21,6 +21,7 @@ declare module '@vue/runtime-core' {
  ZhButton: typeof import('../dist/components/index.d.ts')['ZhButton']
  ZhBarchart: typeof import('../dist/components/index.d.ts')['ZhBarchart']
  ZhBasechart: typeof import('../dist/components/index.d.ts')['ZhBasechart']
+ ZhCirclechart: typeof import('../dist/components/index.d.ts')['ZhCirclechart']
  ZhLinebarchart: typeof import('../dist/components/index.d.ts')['ZhLinebarchart']
  ZhLinechart: typeof import('../dist/components/index.d.ts')['ZhLinechart']
  ZhMapchart: typeof import('../dist/components/index.d.ts')['ZhMapchart']
@@ -34,6 +35,34 @@ declare module '@vue/runtime-core' {
  ZhFooter: typeof import('../dist/components/index.d.ts')['ZhFooter']
  ZhHeader: typeof import('../dist/components/index.d.ts')['ZhHeader']
  ZhMain: typeof import('../dist/components/index.d.ts')['ZhMain']
+ Componentlibrary: typeof import('../dist/components/index.d.ts')['Componentlibrary']
+ Designcanvas: typeof import('../dist/components/index.d.ts')['Designcanvas']
+ Designertoolbar: typeof import('../dist/components/index.d.ts')['Designertoolbar']
+ Exportdialog: typeof import('../dist/components/index.d.ts')['Exportdialog']
+ Propertypanel: typeof import('../dist/components/index.d.ts')['Propertypanel']
+ Resizehandles: typeof import('../dist/components/index.d.ts')['Resizehandles']
+ Widgetrenderer: typeof import('../dist/components/index.d.ts')['Widgetrenderer']
+ ZhBigscreendesigner: typeof import('../dist/components/index.d.ts')['ZhBigscreendesigner']
+ Baidumapcontent: typeof import('../dist/components/index.d.ts')['Baidumapcontent']
+ Barchartcontent: typeof import('../dist/components/index.d.ts')['Barchartcontent']
+ Bordercontent: typeof import('../dist/components/index.d.ts')['Bordercontent']
+ Buttoncontent: typeof import('../dist/components/index.d.ts')['Buttoncontent']
+ Gaodemapcontent: typeof import('../dist/components/index.d.ts')['Gaodemapcontent']
+ Imagecontent: typeof import('../dist/components/index.d.ts')['Imagecontent']
+ Inputcontent: typeof import('../dist/components/index.d.ts')['Inputcontent']
+ Layoutcontent: typeof import('../dist/components/index.d.ts')['Layoutcontent']
+ Linechartcontent: typeof import('../dist/components/index.d.ts')['Linechartcontent']
+ Piechartcontent: typeof import('../dist/components/index.d.ts')['Piechartcontent']
+ Placeholdercontent: typeof import('../dist/components/index.d.ts')['Placeholdercontent']
+ Ringchartcontent: typeof import('../dist/components/index.d.ts')['Ringchartcontent']
+ Scatterchartcontent: typeof import('../dist/components/index.d.ts')['Scatterchartcontent']
+ Selectcontent: typeof import('../dist/components/index.d.ts')['Selectcontent']
+ Tablecontent: typeof import('../dist/components/index.d.ts')['Tablecontent']
+ Tencentmapcontent: typeof import('../dist/components/index.d.ts')['Tencentmapcontent']
+ Textcontent: typeof import('../dist/components/index.d.ts')['Textcontent']
+ Textinputcontent: typeof import('../dist/components/index.d.ts')['Textinputcontent']
+ Timepickercontent: typeof import('../dist/components/index.d.ts')['Timepickercontent']
+ Videocontent: typeof import('../dist/components/index.d.ts')['Videocontent']
  ZhCeditor: typeof import('../dist/components/index.d.ts')['ZhCeditor']
  ZhEditor: typeof import('../dist/components/index.d.ts')['ZhEditor']
  ZhFileviewer: typeof import('../dist/components/index.d.ts')['ZhFileviewer']
@@ -54,6 +83,7 @@ declare module '@vue/runtime-core' {
  ZhOmap: typeof import('../dist/components/index.d.ts')['ZhOmap']
  ZhSmap: typeof import('../dist/components/index.d.ts')['ZhSmap']
  ZhTmap: typeof import('../dist/components/index.d.ts')['ZhTmap']
+ ZhMediaswiper: typeof import('../dist/components/index.d.ts')['ZhMediaswiper']
  MessageIcon: typeof import('../dist/components/index.d.ts')['MessageIcon']
  ZhMessage: typeof import('../dist/components/index.d.ts')['ZhMessage']
  ZhNoData: typeof import('../dist/components/index.d.ts')['ZhNoData']
