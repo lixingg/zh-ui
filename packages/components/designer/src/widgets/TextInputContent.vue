@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useDesignerStore } from '@/stores/designer';
+import { useDesignerStore } from '../../../../../src/stores/designer';
 
 const props = defineProps<{ widget: any; scale: number }>();
 const store = useDesignerStore();
