@@ -21,7 +21,7 @@
           :is-selected="widget.id === store.selectedId"
           :scale="scale"
           @select="store.selectedId = widget.id"
-          @update-style="(style) => store.updateWidget(widget.id, { style })"
+          @update-style="(style:any) => store.updateWidget(widget.id, { style })"
           @delete="store.deleteSelected"
       />
     </div>

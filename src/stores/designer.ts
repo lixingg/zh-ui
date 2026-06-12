@@ -60,7 +60,7 @@ export const useDesignerStore = defineStore('designer', () => {
         selectedId.value = null;
     }
 
-    function updateWidget(id: string, patch: Partial<Widget>) {
+    function updateWidget(id: string, patch: { style?: Partial<Widget['style']>; props?: Partial<Widget['props']> }) {
         const widget = widgets.value.find((w) => w.id === id);
         if (!widget) return;
         saveHistory();
