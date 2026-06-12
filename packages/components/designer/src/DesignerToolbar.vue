@@ -10,17 +10,33 @@
     <div class="toolbar-right">
       <el-button type="primary" @click="saveTemplate">保存模板</el-button>
       <el-button @click="loadTemplate">加载模板</el-button>
-      <el-button type="success" @click="store.openExportDialog()">导出 .vue</el-button>
+      <el-button type="success" @click="store.openExportDialog()">导出模板</el-button>
+      <!-- 全屏按钮 -->
+      <el-button @click="toggleFullscreen" circle size="small">
+        <el-icon>
+          <component :is="isFullscreenValue ? FullScreen : FullScreen" />
+        </el-icon>
+      </el-button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { inject, computed } from 'vue';
+import type { Ref } from 'vue';
 import { useDesignerStore } from '../../../../src/stores/designer';
 import { ElMessage } from 'element-plus';
+import { FullScreen } from '@element-plus/icons-vue';
 
 const store = useDesignerStore();
 
+// 注入全屏方法和状态
+const toggleFullscreen = inject<() => void>('toggleFullscreen', () => {});
+const isFullscreen = inject<Ref<boolean>>('isFullscreen', { value: false } as Ref<boolean>);
+
+const isFullscreenValue = computed(() => isFullscreen.value);
+
+// 保存/加载模板方法（不变）
 function saveTemplate() {
   const data = store.widgets.map((w) => w.toJSON());
   localStorage.setItem('bigscreen-template', JSON.stringify(data));
@@ -43,7 +59,7 @@ function loadTemplate() {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .toolbar {
   height: 48px;
   background: #1a1a2e;
@@ -53,8 +69,21 @@ function loadTemplate() {
   padding: 0 16px;
   flex-shrink: 0;
 }
-.toolbar-left .logo { font-weight: 700; color: #fff; }
-.toolbar-left .logo span { color: #4a90d9; }
-.toolbar-center, .toolbar-right { display: flex; gap: 8px; align-items: center; }
-.toolbar-center { flex: 1; justify-content: center; }
+.toolbar-left .logo {
+  font-weight: 700;
+  color: #fff;
+}
+.toolbar-left .logo span {
+  color: #4a90d9;
+}
+.toolbar-center,
+.toolbar-right {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.toolbar-center {
+  flex: 1;
+  justify-content: center;
+}
 </style>

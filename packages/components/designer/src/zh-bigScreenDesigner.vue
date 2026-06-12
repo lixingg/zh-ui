@@ -1,5 +1,5 @@
 <template>
-  <div class="big-screen-designer">
+  <div class="big-screen-designer" ref="designerRef">
     <DesignerToolbar />
     <div class="designer-body">
       <ComponentLibrary />
@@ -11,9 +11,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
-//
+import { ref, provide, onMounted, onUnmounted } from 'vue';
 import { useDesignerStore } from '../../../../src/stores/designer';
+import { ElMessage } from 'element-plus';
 import DesignerToolbar from './DesignerToolbar.vue';
 import ComponentLibrary from './ComponentLibrary.vue';
 import DesignCanvas from './DesignCanvas.vue';
@@ -21,9 +21,11 @@ import PropertyPanel from './PropertyPanel.vue';
 import ExportDialog from './ExportDialog.vue';
 
 const store = useDesignerStore();
+const designerRef = ref<HTMLElement | null>(null);
+const isFullscreen = ref(false);
 
+// ---- Delete 键删除 ----
 function onKeyDown(e: KeyboardEvent) {
-  // 如果焦点位于可编辑元素，不执行删除操作
   const target = e.target as HTMLElement;
   const tag = target?.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
@@ -34,11 +36,38 @@ function onKeyDown(e: KeyboardEvent) {
   }
 }
 
-onMounted(() => document.addEventListener('keydown', onKeyDown));
-onUnmounted(() => document.removeEventListener('keydown', onKeyDown));
+// ---- 全屏控制 ----
+function toggleFullscreen() {
+  if (!designerRef.value) return;
+  if (!document.fullscreenElement) {
+    designerRef.value.requestFullscreen().catch(() => {
+      ElMessage.warning('无法进入全屏模式');
+    });
+  } else {
+    document.exitFullscreen?.();
+  }
+}
+
+function onFullscreenChange() {
+  isFullscreen.value = !!document.fullscreenElement;
+}
+
+// 通过 provide 将方法和状态传递给子组件
+provide('toggleFullscreen', toggleFullscreen);
+provide('isFullscreen', isFullscreen);
+
+onMounted(() => {
+  document.addEventListener('keydown', onKeyDown);
+  document.addEventListener('fullscreenchange', onFullscreenChange);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', onKeyDown);
+  document.removeEventListener('fullscreenchange', onFullscreenChange);
+});
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .big-screen-designer {
   height: 100vh;
   display: flex;
