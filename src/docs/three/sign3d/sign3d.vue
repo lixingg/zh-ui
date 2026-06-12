@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import {onBeforeUnmount, onMounted, ref} from 'vue'
 
-const userList = ref([
+const userList = ref<any>([
   { avatar: 'https://randomuser.me/api/portraits/men/1.jpg', name: '张伟', phone: '138xxxx0001', company: '某科技公司' },
   { avatar: 'https://randomuser.me/api/portraits/women/2.jpg', name: '李娜', extra: '签到成功' },
   // 更多用户...
@@ -35,7 +35,7 @@ const onCountdownEnd = () => {
 }
 
 function getPhotoList(){
-  const list =[]
+  const list:any =[]
   for(let i=0;i<100;i++){
     list.push({
       id:i,
@@ -47,7 +47,7 @@ function getPhotoList(){
   }
   userList.value=list
 }
-let timer =null
+let timer:any =null
 onMounted(()=>{
   getPhotoList()
   let i = 101

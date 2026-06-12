@@ -1,11 +1,11 @@
 <template>
   <div class="sign-3d-container" ref="container">
     <!-- 倒计时 -->
-    <div v-if="showCountdown" class="countdown-overlay">
+    <div v-if="mergedConfig.showCountdown" class="countdown-overlay">
       <span class="countdown-number">{{ countdownDisplay }}</span>
     </div>
     <!-- 文字/Logo 叠加 -->
-    <div v-if="mergedConfig.textLogo && showTextLogo" class="text-logo-overlay">
+    <div v-if="mergedConfig.textLogo && mergedConfig.showTextLogo" class="text-logo-overlay">
       <img v-if="mergedConfig.textLogo.type === 'image'" :src="mergedConfig.textLogo.content" alt="logo" />
       <span v-else>{{ mergedConfig.textLogo.content }}</span>
     </div>
@@ -76,13 +76,13 @@ const spriteUserMap = new WeakMap<THREE.Sprite, UserItem>()
 let spriteList: THREE.Sprite[] = []
 let userSprites: THREE.Sprite[] = []
 
-const flyState = reactive({
+const flyState = reactive<any>({
   active: false,
   user: null as UserItem | null,
   sprite: null as THREE.Sprite | null,
   originPos: new THREE.Vector3(),
 })
-let autoShowTimer: number | null = null, autoShowIndex = 0
+let autoShowTimer: number | any = null, autoShowIndex = 0
 
 let mouseDownPos = new THREE.Vector2(), mouseDownTime = 0
 const CLICK_MAX_DIST = 5, CLICK_MAX_TIME = 300
