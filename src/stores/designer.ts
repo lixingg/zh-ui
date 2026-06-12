@@ -1,120 +1,113 @@
-import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
-import { Widget } from '../../packages/components/designer/src/models/Widget';
+// src/stores/designer.ts
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+
+// ==================== 类型定义 ====================
+
+/** 单个画布元素的类型 */
+export interface DesignerElement {
+    id: string
+    type: 'rect' | 'circle' | 'text' | 'image' // 可按需扩展
+    x: number
+    y: number
+    width: number
+    height: number
+    /** 元素的额外属性（如文本内容、颜色等） */
+    props: Record<string, any>
+}
+
+/** 整个设计器的状态类型 */
+export interface DesignerState {
+    elements: DesignerElement[]
+    selectedId: string | null
+    canvasWidth: number
+    canvasHeight: number
+    zoom: number
+}
+
+// ==================== Store 定义 ====================
 
 export const useDesignerStore = defineStore('designer', () => {
-    // ==================== 画布尺寸 ====================
-    const canvasWidth = ref(1920);
-    const canvasHeight = ref(1080);
+    // -------------------- 状态（ref 自动推导类型） --------------------
+    const elements = ref<DesignerElement[]>([])
+    const selectedId = ref<string | null>(null)
+    const canvasWidth = ref<number>(1200)
+    const canvasHeight = ref<number>(800)
+    const zoom = ref<number>(1)
 
-    // ==================== 组件列表与选中 ====================
-    const widgets = ref<Widget[]>([]);
-    const selectedId = ref<string | null>(null);
+    // -------------------- 计算属性（显式声明返回类型） --------------------
+    /** 当前选中的元素对象 */
+    const selectedElement = computed<DesignerElement | null>(() => {
+        if (!selectedId.value) return null
+        return elements.value.find((el) => el.id === selectedId.value) ?? null
+    })
 
-    const selectedWidget = computed(() =>
-        widgets.value.find((w) => w.id === selectedId.value) || null
-    );
+    /** 画布上元素的 id 列表（用于快速查找） */
+    const elementIds = computed<string[]>(() =>
+        elements.value.map((el) => el.id)
+    )
 
-    // ==================== 历史记录（撤销/重做） ====================
-    const history = ref<Widget[][]>([]);
-    const historyIndex = ref(-1);
-
-    function saveHistory() {
-        const snapshot = widgets.value.map((w) => w.clone());
-        history.value = history.value.slice(0, historyIndex.value + 1);
-        history.value.push(snapshot);
-        historyIndex.value++;
+    // -------------------- 方法（参数和返回值都有类型） --------------------
+    /** 添加一个元素 */
+    function addElement(element: DesignerElement): void {
+        elements.value.push(element)
     }
 
-    // ==================== 导出弹窗 ====================
-    const showExportDialog = ref(false);
-
-    function openExportDialog() {
-        showExportDialog.value = true;
-    }
-    function closeExportDialog() {
-        showExportDialog.value = false;
-    }
-
-    // ==================== 组件操作 ====================
-    function addWidget(widget: Widget) {
-        saveHistory();
-        widgets.value.push(widget);
-        selectedId.value = widget.id;
-    }
-
-    function deleteSelected() {
-        if (!selectedId.value) return;
-        saveHistory();
-        widgets.value = widgets.value.filter((w) => w.id !== selectedId.value);
-        selectedId.value = null;
-    }
-
-    function updateWidget(id: string, patch: Partial<Widget | any>) {
-        const widget = widgets.value.find((w) => w.id === id);
-        if (!widget) return;
-        saveHistory();
-        if (patch.style) Object.assign(widget.style, patch.style);
-        if (patch.props) Object.assign(widget.props, patch.props);
-    }
-
-    function updateSelectedStyle(style: Partial<Widget['style']>) {
-        if (!selectedId.value) return;
-        updateWidget(selectedId.value, { style });
-    }
-
-    function updateSelectedProps(props: Partial<Widget['props']>) {
-        if (!selectedId.value) return;
-        updateWidget(selectedId.value, { props });
-    }
-
-    function undo() {
-        if (historyIndex.value <= 0) return;
-        historyIndex.value--;
-        widgets.value = history.value[historyIndex.value].map((w) => w.clone());
-        if (!widgets.value.find((w) => w.id === selectedId.value)) {
-            selectedId.value = null;
+    /** 根据 id 删除元素 */
+    function removeElement(id: string): void {
+        elements.value = elements.value.filter((el) => el.id !== id)
+        if (selectedId.value === id) {
+            selectedId.value = null
         }
     }
 
-    function redo() {
-        if (historyIndex.value >= history.value.length - 1) return;
-        historyIndex.value++;
-        widgets.value = history.value[historyIndex.value].map((w) => w.clone());
+    /** 更新元素的属性（部分更新） */
+    function updateElement(
+        id: string,
+        patch: Partial<Omit<DesignerElement, 'id'>>
+    ): void {
+        const target = elements.value.find((el) => el.id === id)
+        if (target) {
+            Object.assign(target, patch)
+        }
     }
 
-    function loadFromJSON(jsonArray: any[]) {
-        saveHistory();
-        widgets.value = jsonArray.map((item) => Widget.fromJSON(item));
-        selectedId.value = null;
+    /** 设置当前选中的元素 id */
+    function setSelected(id: string | null): void {
+        selectedId.value = id
     }
 
-    function reset() {
-        saveHistory();
-        widgets.value = [];
-        selectedId.value = null;
+    /** 清空画布 */
+    function clearCanvas(): void {
+        elements.value = []
+        selectedId.value = null
     }
 
-    // 初始化历史记录
-    saveHistory();
+    /** 设置画布缩放 */
+    function setZoom(scale: number): void {
+        if (scale > 0) zoom.value = scale
+    }
 
+    // -------------------- 返回（所有内容都会自动推断类型） --------------------
     return {
+        // 状态
+        elements,
+        selectedId,
         canvasWidth,
         canvasHeight,
-        widgets,
-        selectedId,
-        selectedWidget,
-        showExportDialog,
-        openExportDialog,
-        closeExportDialog,
-        addWidget,
-        deleteSelected,
-        updateWidget,
-        updateSelectedStyle,
-        updateSelectedProps,
-        undo,
-        redo,
-        loadFromJSON,
-        reset,
-    };
-});
+        zoom,
+        // 计算属性
+        selectedElement,
+        elementIds,
+        // 方法
+        addElement,
+        removeElement,
+        updateElement,
+        setSelected,
+        clearCanvas,
+        setZoom,
+    }
+})
+
+// 导出 store 的类型（方便在组件中 import { useDesignerStore } 后得到推导）
+export type DesignCanvasStore = ReturnType<typeof useDesignerStore>

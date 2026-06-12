@@ -104,7 +104,7 @@ import { useDesignerStore } from '../../../../src/stores/designer';
 import { storeToRefs } from 'pinia';
 import { ElMessageBox } from 'element-plus';
 
-const store = useDesignerStore();
+const store:any = useDesignerStore();
 const { selectedWidget } = storeToRefs(store);
 
 const localStyle = reactive({ left: 0, top: 0, width: 100, height: 100, opacity: 1 });
