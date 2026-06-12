@@ -12,6 +12,7 @@ import {aiComponent} from "./aiShow.component";
 import {providerShowComponent} from "./providerShow.component";
 import {videoPlayerComponent} from "./videoPlayer.component";
 import {threeShowComponent} from "./threeShow.component";
+import {lowCodeComponent} from "./lowCode.component";
 
 export interface routerType {
     title: string
@@ -74,6 +75,10 @@ export const routerDocsComponentConfig = {
     threeShowComponents:{
         title: 'three动画',
         routerData: threeShowComponent
+    },
+    lowCodeComponents:{
+        title: '低代码',
+        routerData: lowCodeComponent
     }
 
 } as routerConfigType

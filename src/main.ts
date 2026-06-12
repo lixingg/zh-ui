@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import ShowCode from './components/common/show-code.vue'
 import App from './App.vue'
 import './assets/style/index.scss'
@@ -11,12 +12,13 @@ import 'element-plus/dist/index.css'
 import ZHUI from '../packages/components'
 
 import router from './router'
-
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 const app = createApp(App).use(router).use(ZHUI,{
   locale: zhCn,
   useGlobalIcons:true
 })
-
+app.use(pinia)
 // 注册全局预览组件
 app.component('ShowCode', ShowCode)
 

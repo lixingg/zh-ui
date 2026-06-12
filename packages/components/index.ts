@@ -44,6 +44,8 @@ export * from './videoPlayer'
 export * from '../utils/hooks'
 export * from "./editor"
 export * from './three'
+export * from './designer'
+
 import button from './button'
 import icon from './icon'
 import layout from './layout'
@@ -72,6 +74,7 @@ import provider from "./provider"
 import videoPlayer from "./videoPlayer"
 import editor from "./editor"
 import threes from "./three"
+import designer from "./designer"
 
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
@@ -104,7 +107,8 @@ const components = [
     provider,
     videoPlayer,
     editor,
-    threes
+    threes,
+    designer
 ]
 
 const install = (app: App, options?: any) => {

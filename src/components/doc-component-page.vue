@@ -15,6 +15,7 @@ const asideKeys = [
   'aiComponents',
   'videoPlayerComponents',
   'threeShowComponents',
+  'lowCodeComponents',
 ]
 </script>
 
