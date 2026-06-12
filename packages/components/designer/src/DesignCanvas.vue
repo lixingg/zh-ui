@@ -78,7 +78,7 @@ function deselectAll(event: MouseEvent) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .canvas-container {
   flex: 1;
   background: #12131f;

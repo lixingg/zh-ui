@@ -138,7 +138,7 @@ function addMockField() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .prop-panel { width: 280px; background: #252538; padding: 16px; overflow-y: auto; flex-shrink: 0; }
 .panel-title { font-weight: 600; margin-bottom: 12px; color: #ccc; }
 .empty { color: #888; text-align: center; margin-top: 40px; }

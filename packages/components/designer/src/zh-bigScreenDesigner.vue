@@ -38,7 +38,7 @@ onMounted(() => document.addEventListener('keydown', onKeyDown));
 onUnmounted(() => document.removeEventListener('keydown', onKeyDown));
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .big-screen-designer {
   height: 100vh;
   display: flex;

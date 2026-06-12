@@ -43,7 +43,7 @@ function loadTemplate() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .toolbar {
   height: 48px;
   background: #1a1a2e;

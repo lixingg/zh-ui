@@ -6,7 +6,7 @@
 defineProps<{ widget: any }>();
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .placeholder {
   color: #aaa;
   display: flex;

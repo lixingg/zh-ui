@@ -21,7 +21,7 @@ const borderStyle = computed<any>(() => ({
 }));
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .border-text {
   position: absolute;
   top: -12px;

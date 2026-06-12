@@ -9,7 +9,7 @@
 defineProps<{ widget: any; scale: number }>();
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .chart-placeholder {
   width: 100%;
   height: 100%;

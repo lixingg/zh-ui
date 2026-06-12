@@ -14,7 +14,7 @@
 defineProps<{ widget: any; scale: number }>();
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .layout-placeholder {
   width: 100%;
   height: 100%;

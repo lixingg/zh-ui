@@ -9,7 +9,7 @@
 defineProps<{ widget: any; scale: number }>();
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /* 与 LineChart 共用样式，可抽取公共，此处保留独立 */
 .chart-placeholder {
   width: 100%;

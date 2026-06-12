@@ -20,7 +20,7 @@ const columns = computed(() => props.widget.props?.columns || ['列1', '列2']);
 const tableData = computed(() => props.widget.props?.rows || []);
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .table-wrapper {
   background: #fff;
   color: #333;

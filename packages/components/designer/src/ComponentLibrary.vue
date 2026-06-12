@@ -173,7 +173,7 @@ function onDragStart(event: DragEvent, comp: ComponentMeta) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .component-library {
   width: 240px;
   background: #252538;

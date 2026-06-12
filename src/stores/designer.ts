@@ -13,19 +13,14 @@ export interface DesignerElement {
     props: Record<string, any>
 }
 
-/** 单个控件（widget）的完整类型 */
 export interface Widget {
     id: string
     type: string
     label: string
     icon?: string
-    /** 控件自身的样式（例如工具栏里展示的样子） */
     style: Record<string, any>
-    /** 控件携带的属性，拖拽创建时会合并到元素的 props 中 */
     props: Record<string, any>
-    /** 深拷贝当前控件，生成一个新实例 */
     clone(): Widget
-    /** 序列化为普通对象（避免循环引用） */
     toJSON(): Record<string, any>
 }
 
@@ -52,7 +47,7 @@ export const useDesignerStore = defineStore('designer', () => {
     // ---------- 导出对话框状态 ----------
     const showExportDialog = ref<boolean>(false)
 
-    // ---------- 组件库（带完整 Widget 对象）----------
+    // ---------- 组件库 ----------
     const widgets = ref<Widget[]>([
         {
             id: 'widget-rect',
@@ -65,13 +60,7 @@ export const useDesignerStore = defineStore('designer', () => {
                 return { ...this, clone: this.clone, toJSON: this.toJSON }
             },
             toJSON() {
-                return {
-                    id: this.id,
-                    type: this.type,
-                    label: this.label,
-                    style: this.style,
-                    props: this.props,
-                }
+                return { id: this.id, type: this.type, label: this.label, style: this.style, props: this.props }
             },
         },
         {
@@ -85,13 +74,7 @@ export const useDesignerStore = defineStore('designer', () => {
                 return { ...this, clone: this.clone, toJSON: this.toJSON }
             },
             toJSON() {
-                return {
-                    id: this.id,
-                    type: this.type,
-                    label: this.label,
-                    style: this.style,
-                    props: this.props,
-                }
+                return { id: this.id, type: this.type, label: this.label, style: this.style, props: this.props }
             },
         },
         {
@@ -105,13 +88,7 @@ export const useDesignerStore = defineStore('designer', () => {
                 return { ...this, clone: this.clone, toJSON: this.toJSON }
             },
             toJSON() {
-                return {
-                    id: this.id,
-                    type: this.type,
-                    label: this.label,
-                    style: this.style,
-                    props: this.props,
-                }
+                return { id: this.id, type: this.type, label: this.label, style: this.style, props: this.props }
             },
         },
         {
@@ -125,14 +102,39 @@ export const useDesignerStore = defineStore('designer', () => {
                 return { ...this, clone: this.clone, toJSON: this.toJSON }
             },
             toJSON() {
-                return {
-                    id: this.id,
-                    type: this.type,
-                    label: this.label,
-                    style: this.style,
-                    props: this.props,
-                }
+                return { id: this.id, type: this.type, label: this.label, style: this.style, props: this.props }
             },
+        },
+    ])
+
+    // ---------- 测试数据（mockData）----------
+    const mockData = ref<DesignerElement[]>([
+        {
+            id: 'mock-1',
+            type: 'rect',
+            x: 100,
+            y: 100,
+            width: 200,
+            height: 150,
+            props: { fill: '#42b883' },
+        },
+        {
+            id: 'mock-2',
+            type: 'circle',
+            x: 400,
+            y: 200,
+            width: 120,
+            height: 120,
+            props: { fill: '#35495e' },
+        },
+        {
+            id: 'mock-3',
+            type: 'text',
+            x: 200,
+            y: 400,
+            width: 300,
+            height: 50,
+            props: { content: 'Hello Designer', fontSize: 24 },
         },
     ])
 
@@ -145,9 +147,7 @@ export const useDesignerStore = defineStore('designer', () => {
     const elementIds = computed<string[]>(() => elements.value.map(el => el.id))
 
     const canUndo = computed<boolean>(() => historyIndex.value > 0)
-    const canRedo = computed<boolean>(
-        () => historyIndex.value < history.value.length - 1
-    )
+    const canRedo = computed<boolean>(() => historyIndex.value < history.value.length - 1)
 
     const exportData = computed(() => ({
         elements: elements.value,
@@ -241,11 +241,20 @@ export const useDesignerStore = defineStore('designer', () => {
         showExportDialog.value = false
     }
 
-    // ---------- 组件库相关 ----------
+    // ---------- 组件库辅助 ----------
     function getWidgetDefaults(type: string): Partial<DesignerElement> | undefined {
         const widget = widgets.value.find(w => w.type === type)
         if (!widget?.props) return undefined
         return { props: { ...widget.props } }
+    }
+
+    // ---------- 测试数据加载 ----------
+    function loadMockData(): void {
+        elements.value = JSON.parse(JSON.stringify(mockData.value))
+        // 重置历史（清空旧记录并保存当前状态）
+        history.value = []
+        historyIndex.value = -1
+        pushHistory()
     }
 
     // ---------- 初始化 ----------
@@ -253,6 +262,7 @@ export const useDesignerStore = defineStore('designer', () => {
 
     // ---------- 暴露 ----------
     return {
+        // 状态
         elements,
         selectedId,
         canvasWidth,
@@ -262,11 +272,14 @@ export const useDesignerStore = defineStore('designer', () => {
         historyIndex,
         showExportDialog,
         widgets,
+        mockData,
+        // 计算属性
         selectedElement,
         elementIds,
         canUndo,
         canRedo,
         exportData,
+        // 方法
         addElement,
         removeElement,
         updateElement,
@@ -278,6 +291,7 @@ export const useDesignerStore = defineStore('designer', () => {
         openExportDialog,
         closeExportDialog,
         getWidgetDefaults,
+        loadMockData,
     }
 })
 

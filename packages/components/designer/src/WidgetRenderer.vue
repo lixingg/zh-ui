@@ -132,7 +132,7 @@ function onResizeStart(cb: (delta: any) => void) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .widget-box {
   border: 1px solid transparent;
   overflow: hidden;

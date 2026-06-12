@@ -63,7 +63,7 @@ function startResize(event: MouseEvent, direction: string) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .resize-handles {
   position: absolute;
   inset: 0;

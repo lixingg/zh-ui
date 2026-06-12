@@ -29,7 +29,7 @@ const textStyle = computed<any>(() => ({
 }));
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .text-content {
   width: 100%;
   height: 100%;
