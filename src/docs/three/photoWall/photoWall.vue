@@ -66,7 +66,7 @@ function onAutoHide(p: Photo, i: number) {
 }
 
 function getPhotoList() {
-  const list = []
+  const list:any= []
   for (let i = 0; i < 100; i++) {
     list.push({
       id: i,
