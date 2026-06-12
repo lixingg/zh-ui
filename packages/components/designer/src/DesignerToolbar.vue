@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { useDesignerStore } from '@/stores/designer';
+import { useDesignerStore } from '../../../../src/stores/designer';
 import { ElMessage } from 'element-plus';
 
 const store = useDesignerStore();

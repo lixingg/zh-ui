@@ -23,7 +23,7 @@ declare type IntervalHandle = ReturnType<typeof setInterval>;
 declare type Recordable<T = any> = Record<string, T>;
 declare type Nullable<T> = T | null;
 declare type NonNullable<T> = T extends null | undefined ? never : T;
-
+declare module 'designer'
 // declare module '*.md' {
 //   export default String
 // }

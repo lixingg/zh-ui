@@ -131,7 +131,7 @@ interface ComponentMeta {
   defaultStyle?: Partial<{ left: number; top: number; width: number; height: number }>;
 }
 
-const basicComponents: ComponentMeta[] = [
+const basicComponents: ComponentMeta[] | any = [
   { type: 'text', label: '文本', icon: markRaw(Document), defaultProps: { text: '文本', dataBinding: false, bindingKey: '' }, defaultStyle: { width: 200, height: 50 } },
   { type: 'button', label: '按钮', icon: markRaw(Operation), defaultProps: { text: '按钮', dataBinding: false, bindingKey: '' }, defaultStyle: { width: 120, height: 40 } },
   { type: 'text-input', label: '文本框', icon: markRaw(Edit), defaultProps: { placeholder: '请输入', dataBinding: false, bindingKey: '' }, defaultStyle: { width: 200, height: 50 } },
@@ -142,7 +142,7 @@ const basicComponents: ComponentMeta[] = [
   { type: 'video', label: '视频', icon: markRaw(VideoCamera), defaultProps: { src: '', dataBinding: false, bindingKey: '' }, defaultStyle: { width: 300, height: 200 } },
 ];
 
-const chartComponents: ComponentMeta[] = [
+const chartComponents: ComponentMeta[] | any = [
   { type: 'line-chart', label: '折线图', icon: markRaw(Histogram), defaultProps: { title: '折线图' }, defaultStyle: { width: 300, height: 200 } },
   { type: 'pie-chart', label: '饼图', icon: markRaw(PieChart), defaultProps: { title: '饼图' }, defaultStyle: { width: 300, height: 200 } },
   { type: 'bar-chart', label: '柱状图', icon: markRaw(TrendCharts), defaultProps: { title: '柱状图' }, defaultStyle: { width: 300, height: 200 } },
@@ -150,17 +150,17 @@ const chartComponents: ComponentMeta[] = [
   { type: 'scatter-chart', label: '散点图', icon: markRaw(PictureFilled), defaultProps: { title: '散点图' }, defaultStyle: { width: 300, height: 200 } },
 ];
 
-const mapComponents: ComponentMeta[] = [
+const mapComponents: ComponentMeta[] | any= [
   { type: 'gaode-map', label: '高德地图', icon: markRaw(MapLocation), defaultProps: {}, defaultStyle: { width: 300, height: 200 } },
   { type: 'baidu-map', label: '百度地图', icon: markRaw(Location), defaultProps: {}, defaultStyle: { width: 300, height: 200 } },
   { type: 'tencent-map', label: '腾讯地图', icon: markRaw(MapLocation), defaultProps: {}, defaultStyle: { width: 300, height: 200 } },
 ];
 
-const tableComponents: ComponentMeta[] = [
+const tableComponents: ComponentMeta[] | any= [
   { type: 'table', label: '表格', icon: markRaw(Grid), defaultProps: { columns: ['列1', '列2'], rows: [] }, defaultStyle: { width: 300, height: 200 } },
 ];
 
-const layoutComponents: ComponentMeta[] = [
+const layoutComponents: ComponentMeta[] | any= [
   { type: 'border', label: '边框', icon: markRaw(Box), defaultProps: { borderColor: '#4a90d9', borderWidth: 2, borderStyle: 'solid', title: '边框' }, defaultStyle: { width: 200, height: 150 } },
   { type: 'layout', label: '布局排版器', icon: markRaw(Select), defaultProps: {}, defaultStyle: { width: 400, height: 300 } },
 ];

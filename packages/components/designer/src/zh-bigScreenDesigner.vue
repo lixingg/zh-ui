@@ -12,7 +12,8 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue';
-import { useDesignerStore } from '@/stores/designer';
+//
+import { useDesignerStore } from '../../../../src/stores/designer';
 import DesignerToolbar from './DesignerToolbar.vue';
 import ComponentLibrary from './ComponentLibrary.vue';
 import DesignCanvas from './DesignCanvas.vue';

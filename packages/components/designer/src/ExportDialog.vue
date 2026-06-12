@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useDesignerStore } from '@/stores/designer';
+import { useDesignerStore } from '../../../../src/stores/designer';
 import { generateVueCode } from './exportHelper';
 
 const props = defineProps<{ visible: boolean }>();

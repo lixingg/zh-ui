@@ -100,7 +100,7 @@
 
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
-import { useDesignerStore } from '@/stores/designer';
+import { useDesignerStore } from '../../../../src/stores/designer';
 import { storeToRefs } from 'pinia';
 import { ElMessageBox } from 'element-plus';
 

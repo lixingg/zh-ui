@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 import { ref, inject } from 'vue';
-import { useDesignerStore } from '@/stores/designer';
+import { useDesignerStore } from '../../../../src/stores/designer';
 import { Widget } from './models/Widget';
 import WidgetRenderer from './WidgetRenderer.vue';
 
