@@ -19,7 +19,7 @@
 import { useDesignerStore } from '../../../../src/stores/designer';
 import { ElMessage } from 'element-plus';
 
-const store:any = useDesignerStore();
+const store = useDesignerStore();
 
 function saveTemplate() {
   const data = store.widgets.map((w) => w.toJSON());
