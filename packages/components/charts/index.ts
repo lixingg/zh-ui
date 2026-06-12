@@ -7,6 +7,7 @@ import ZhPictorialBar from './src/zh-pictorialBar.vue'
 import ZhLineBarChart from './src/zh-lineBarChart.vue'
 import ZhScatterChart from './src/zh-scatterChart.vue'
 import ZhRadarChart from './src/zh-radarChart.vue'
+import ZhCircleChart from "./src/zh-circleChart.vue";
 import {App} from 'vue'
 
 export default {
@@ -20,6 +21,7 @@ export default {
         app.component('ZhLineBarChart', ZhLineBarChart)
         app.component('ZhScatterChart', ZhScatterChart)
         app.component('ZhRadarChart', ZhRadarChart)
+        app.component('ZhCircleChart', ZhCircleChart)
     }
 }
 export {
@@ -31,5 +33,6 @@ export {
     ZhPictorialBar,
     ZhLineBarChart,
     ZhScatterChart,
-    ZhRadarChart
+    ZhRadarChart,
+    ZhCircleChart
 }

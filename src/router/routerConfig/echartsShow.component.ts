@@ -18,6 +18,11 @@ export const echartsShowComponent: RouteRecordRaw[] = [
     component: () => import('@/docs/charts/piechart/README.md')
   },
   {
+    path: 'circle-chart',
+    meta: { title: '环形图' },
+    component: () => import('@/docs/charts/circlechart/README.md')
+  },
+  {
     path: 'line-bar-chart',
     meta: { title: '折线柱状图' },
     component: () => import('@/docs/charts/linebarchart/README.md')

@@ -13,6 +13,11 @@ export const dataShowComponent: RouteRecordRaw[] = [
     component: () => import('@/docs/image/README.md')
   },
   {
+    path: 'mediaSwiper',
+    meta: { title: 'mediaSwiper 媒体轮播' },
+    component: () => import('@/docs/mediaSwiper/README.md')
+  },
+  {
     path: 'qrcode',
     meta: { title: 'qrcode 二维码' },
     component: () => import('@/docs/qrcode/README.md')

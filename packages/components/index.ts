@@ -45,6 +45,7 @@ export * from '../utils/hooks'
 export * from "./editor"
 export * from './three'
 export * from './designer'
+export * from './mediaSwiper'
 
 import button from './button'
 import icon from './icon'
@@ -75,6 +76,7 @@ import videoPlayer from "./videoPlayer"
 import editor from "./editor"
 import threes from "./three"
 import designer from "./designer"
+import mediaSwiper from "./mediaSwiper"
 
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
@@ -108,7 +110,8 @@ const components = [
     videoPlayer,
     editor,
     threes,
-    designer
+    designer,
+    mediaSwiper
 ]
 
 const install = (app: App, options?: any) => {
