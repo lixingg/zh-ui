@@ -1,5 +1,7 @@
 <script setup>
 import baseIcon from './baseIcon.vue';
+import customIcon from './customIcon.vue';
+import IconDoc from './IconDoc.vue';
 </script>
 
 # Icon 图标
@@ -22,9 +24,14 @@ import baseIcon from './baseIcon.vue';
 <baseIcon></baseIcon>
 </show-code>
 
+<show-code showPath="icon/customIcon">
+<customIcon></customIcon>
+</show-code>
+
 ## 图标集合
 和element plus 所提供图标名称一致，具体请查看：
 [图标集合](https://element-plus.org/zh-CN/component/icon.html#%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8-svg-%E5%9B%BE%E6%A0%87)
+<IconDoc />
 > **Tip**<br>
 > 注意：例如element ui所复制的代码为 `<el-icon><Aim /></el-icon>` 只需要去 `Aim` 作为 `name` 属性即可
 

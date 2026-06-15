@@ -7,6 +7,7 @@ export { echarts };
 import * as THREE from 'three'
 export { THREE }
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import * as customIcon from './icon/src/icons'
 export * from '@element-plus/icons-vue'
 export { default as dayjs } from 'dayjs'
 
@@ -117,6 +118,9 @@ const components = [
 const install = (app: App, options?: any) => {
     if(options?.useGlobalIcons){
         for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
+            app.component(key, component)
+        }
+        for (const [key, component] of Object.entries<any>(customIcon)) {
             app.component(key, component)
         }
     }

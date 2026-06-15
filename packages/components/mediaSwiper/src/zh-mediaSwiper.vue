@@ -49,6 +49,27 @@ const swiperIndex = ref(0);
 let swiper = ref<any>(null);
 const videoList = ref<any>([]);
 const imgList = ref<any>([]);
+const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp', '.ico'];
+const videoExtensions = [
+  '.mp4',
+  '.webm',
+  '.ogg',
+  '.mov',
+  '.avi',
+  '.wmv',
+  '.flv',
+  '.mkv',
+  '.m3u8',
+  '.m4v',
+  '.3gp',
+  '.3g2',
+  '.f4v',
+  '.f4p',
+  '.f4a',
+  '.f4b',
+  '.m4p',
+  '.m4b',
+];
 
 function swipterChange(index: number) {
   swiperIndex.value = index;
@@ -64,50 +85,10 @@ function swiperPrev() {
 
 let headLenght = computed(() => {
   for (let k in props.list) {
-    const item = props.list[k]
-    if (item.endsWith('.mp4') ||
-        item.endsWith('.webm') ||
-        item.endsWith('.ogg') ||
-        item.endsWith('.m3u8') ||
-        item.endsWith('.wmv') ||
-        item.endsWith('.avi') ||
-        item.endsWith('.flv') ||
-        item.endsWith('.mov') ||
-        item.endsWith('.mkv') ||
-        item.endsWith('.mpg') ||
-        item.endsWith('.mpeg') ||
-        item.endsWith('.3gp') ||
-        item.endsWith('.3g2') ||
-        item.endsWith('.m4v') ||
-        item.endsWith('.f4v') ||
-        item.endsWith('.f4p') ||
-        item.endsWith('.f4a') ||
-        item.endsWith('.f4b')) {
+    const path = props.list[k].split('?')[0].split('#')[0].toLowerCase();
+    if (videoExtensions.some(ext => path.endsWith(ext))) {
       videoList.value.push(props.list[k])
-    } else if (item.endsWith('.jpg') ||
-        item.endsWith('.jpeg') ||
-        item.endsWith('.png') ||
-        item.endsWith('.gif') ||
-        item.endsWith('.bmp') ||
-        item.endsWith('.tiff') ||
-        item.endsWith('.webp') ||
-        item.endsWith('.svg') ||
-        item.endsWith('.ico') ||
-        item.endsWith('.cur') ||
-        item.endsWith('.ani') ||
-        item.endsWith('.tif') ||
-        item.endsWith('.tga') ||
-        item.endsWith('.psd') ||
-        item.endsWith('.heic') ||
-        item.endsWith('.heif') ||
-        item.endsWith('.dng') ||
-        item.endsWith('.raw') ||
-        item.endsWith('.nef') ||
-        item.endsWith('.cr2') ||
-        item.endsWith('.orf') ||
-        item.endsWith('.arw') ||
-        item.endsWith('.rw2') ||
-        item.endsWith('.dcr') ) {
+    } else if (imageExtensions.some(ext => path.endsWith(ext))) {
       imgList.value.push(props.list[k])
     }
   }
@@ -134,7 +115,7 @@ watch(() => props.images, (val: any) => {
       imgList.value = val.split(',');
     }
   }
-},{immediate: true})
+}, {immediate: true})
 </script>
 
 <style lang="scss" scoped>

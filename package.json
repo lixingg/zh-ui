@@ -14,10 +14,11 @@
   "scripts": {
     "dev": "vite --host --mode development --config ./config/dev.config.ts",
     "build:doc": "vue-tsc --noEmit --skipLibCheck && vite build --mode production --config ./config/prod.doc.config.ts && node ./config/copyDocs.js && shx cp docs/index.html docs/404.html",
-    "build:com": "npm run generate-resolver && vue-tsc --noEmit --skipLibCheck && vite build --mode production --config ./config/prod.com.config.ts && node ./config/copyDist.js",
+    "build:com": "npm run generate:icons && npm run generate-resolver && vue-tsc --noEmit --skipLibCheck && vite build --mode production --config ./config/prod.com.config.ts && node ./config/copyDist.js",
     "preview": "vite preview",
     "build:types": "vue-tsc --declaration --emitDeclarationOnly --outDir ZHUI/dist",
     "generate-resolver": "tsx scripts/generate-resolver.ts",
+    "generate:icons": "tsx scripts/generateIcons.ts",
     "publish": "node ./config/publicPush.js"
   },
   "dependencies": {
