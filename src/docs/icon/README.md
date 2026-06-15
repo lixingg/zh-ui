@@ -7,17 +7,18 @@ import IconDoc1 from './IconDoc1.vue';
 
 # Icon 图标
 
-从 Element Plus 直接拿过来了一套常用的图标集合。
+已集成Element Plus 和 本组件库的图标集合，可以使用element plus图标 也可以使用本组件库图标。
 
 ## 使用图标
-1. 如果你想像用例一样直接使用，你需要全局注册组件，才能够直接在项目里使用。
-2. 如若想查看所有可用的 SVG 图标请查阅 @element-plus/icons-vue 和 element-plus-icons 的源代码或当前页的 Icon Collection
+1、如果你想像用例一样直接使用，你需要全局注册组件，才能够直接在项目里使用。
+
+2、如若想查看elenment plus 所有可用的 SVG 图标请查阅 @element-plus/icons-vue 和 element-plus-icons 的源代码或当前页的 Icon Collection
 
 
 ## 注册图标
-1、按需导入您需要从` zhui-plus` 中导入所用图标。
+1、按需导入您需要从`zhui-plus` 中导入所用图标（这里已经将element plus图标内置，可以从zhui-plus库中导入）。
 
-2、全局导入安装时候配置 useGlobalIcons 设置为true 即可
+2、全局导入安装时候配置 useGlobalIcons 设置为true 即可（这里安装的时候会将element plus图标一并安装）
 
 ## 基础用法
 
@@ -37,9 +38,11 @@ import IconDoc1 from './IconDoc1.vue';
 > - 3、您可以点击图标复制代码
 
 ### 彩色图标(不可更改颜色 只能更改大小)
+
 <IconDoc1 />
 
 ### 普通图标（可改变颜色和大小）
+
 <IconDoc />
 
 > **Tip**<br>

@@ -25,7 +25,6 @@
       width: size
     }
   })
-  console.log('sizeComputed',props.name,sizeComputed.value)
 </script>
 
 <template>

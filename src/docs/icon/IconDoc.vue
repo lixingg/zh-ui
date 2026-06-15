@@ -42,37 +42,21 @@ import { ref, computed, onMounted } from 'vue'
 import * as Icons from '../../../packages/components/icon/src/icons'
 import {ElMessage} from "element-plus";   // 根据实际路径调整，指向生成的 icons/index.ts
 
-// 类型定义
-interface IconItem {
-  name: string
-  component: any
-}
-
-// 获取所有图标组件（过滤掉非组件导出）
-const getAllIcons = (): IconItem[] => {
-  return Object.entries(Icons)
-      .filter(([key, value]) => key !== 'default' && value)
-      .map(([name, component]) => ({ name, component }))
-}
-
-const allIcons = ref<IconItem[]>([])
-onMounted(() => {
-  allIcons.value = getAllIcons()
-})
+const allIcons = Object.entries(Icons)
+    .filter(([key, value]) => key !== 'default' && value)
+    .map(([name, component]) => ({ name, component }))
 
 // 搜索过滤
 const searchText = ref('')
 const filteredIcons = computed(() => {
-  if (!searchText.value) return allIcons.value
-  const lowerSearch = searchText.value.toLowerCase()
-  return allIcons.value.filter(icon =>
-      icon.name.toLowerCase().includes(lowerSearch)
-  )
+  if (!searchText.value) return allIcons
+  const lower = searchText.value.toLowerCase()
+  return allIcons.filter(icon => icon.name.toLowerCase().includes(lower))
 })
 
 // 尺寸与颜色
 const size = ref(32)
-const color = ref('#409eff')
+const color = ref('default')
 
 // 复制名称
 const copyName = async (name: string) => {

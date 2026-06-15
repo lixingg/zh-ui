@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 像普通组件一样使用，支持属性传递 -->
-    <Videofill :color="iconColor" :size="iconSize"/>
+    <Baby :color="iconColor" :size="iconSize"/>
 <!--    使用zh-icon组件形式 -->
-    <zh-icon name="Videofill"  :color="iconColor" size="48px"/>
+    <zh-icon name="OfdFill"  size="48px"/>
   </div>
 </template>
 <script setup lang="ts">
