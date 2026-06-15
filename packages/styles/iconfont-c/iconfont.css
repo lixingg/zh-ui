@@ -1,0 +1,85 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 5195922 */
+  /* Color fonts */
+  src: 
+       url('iconfont.woff2?t=1781509782807') format('woff2'),
+       url('iconfont.woff?t=1781509782807') format('woff'),
+       url('iconfont.ttf?t=1781509782807') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-car:before {
+  content: "\e664";
+}
+
+.icon-upload:before {
+  content: "\e619";
+}
+
+.icon-pdf-fill:before {
+  content: "\e733";
+}
+
+.icon-download:before {
+  content: "\e639";
+}
+
+.icon-zhihui:before {
+  content: "\e65b";
+}
+
+.icon-ppt:before {
+  content: "\e62b";
+}
+
+.icon-excel:before {
+  content: "\e808";
+}
+
+.icon-pdf:before {
+  content: "\e809";
+}
+
+.icon-ofd:before {
+  content: "\e82b";
+}
+
+.icon-dissatisfied:before {
+  content: "\e61e";
+}
+
+.icon-general:before {
+  content: "\e61f";
+}
+
+.icon-very-satisfied:before {
+  content: "\e620";
+}
+
+.icon-satisfaction:before {
+  content: "\e622";
+}
+
+.icon-ppt-fill:before {
+  content: "\e6a3";
+}
+
+.icon-ofd-fill:before {
+  content: "\e7c1";
+}
+
+.icon-word-fill:before {
+  content: "\e62a";
+}
+
+.icon-excel-fill:before {
+  content: "\e628";
+}
+

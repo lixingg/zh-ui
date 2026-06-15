@@ -1,0 +1,20 @@
+// 本文件由 scripts/generateIcons.ts 自动生成，请勿手动修改
+import { createIcon } from '../createIcon'
+
+export const Car = createIcon('car')
+export const Upload = createIcon('upload')
+export const PdfFill = createIcon('pdf-fill')
+export const Download = createIcon('download')
+export const Zhihui = createIcon('zhihui')
+export const Ppt = createIcon('ppt')
+export const Excel = createIcon('excel')
+export const Pdf = createIcon('pdf')
+export const Ofd = createIcon('ofd')
+export const Dissatisfied = createIcon('dissatisfied')
+export const General = createIcon('general')
+export const VerySatisfied = createIcon('very-satisfied')
+export const Satisfaction = createIcon('satisfaction')
+export const PptFill = createIcon('ppt-fill')
+export const OfdFill = createIcon('ofd-fill')
+export const WordFill = createIcon('word-fill')
+export const ExcelFill = createIcon('excel-fill')

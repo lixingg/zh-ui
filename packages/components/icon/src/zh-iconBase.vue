@@ -38,5 +38,7 @@ const iconStyle = computed(() => {
   display: inline-block;
   line-height: 1;
   font-style: normal;
+  all: initial;   /* 所有属性（包括不可继承的）恢复初始值 */
+  //all: revert;    /* 恢复浏览器默认样式 */
 }
 </style>

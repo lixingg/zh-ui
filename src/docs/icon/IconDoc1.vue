@@ -13,10 +13,6 @@
         <el-slider v-model="size" :min="16" :max="64" style="width: 160px" />
         <span class="value">{{ size }}px</span>
       </div>
-      <div class="control-group">
-        <span>颜色：</span>
-        <el-color-picker v-model="color" show-alpha />
-      </div>
     </div>
 
     <div class="icon-grid">
@@ -39,7 +35,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import * as Icons from '../../../packages/components/icon/src/icons'
+import * as Icons from '../../../packages/components/icon/src/icons/index1'
 import {ElMessage} from "element-plus";   // 根据实际路径调整，指向生成的 icons/index.ts
 
 // 类型定义
@@ -72,7 +68,7 @@ const filteredIcons = computed(() => {
 
 // 尺寸与颜色
 const size = ref(32)
-const color = ref('#409eff')
+const color = ref('default')
 
 // 复制名称
 const copyName = async (name: string) => {

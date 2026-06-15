@@ -1,6 +1,6 @@
 // ============================================
 // 🤖 自动生成的全局类型声明
-// 生成时间: 2026-06-15T01:19:12.875Z
+// 生成时间: 2026-06-15T05:20:20.817Z
 // ============================================
 
 import type { Component, ComponentPublicInstance } from 'vue'
@@ -76,6 +76,7 @@ declare module '@vue/runtime-core' {
  ZhForm: typeof import('../dist/components/index.d.ts')['ZhForm']
  ZhHideNumber: typeof import('../dist/components/index.d.ts')['ZhHideNumber']
  ZhIcon: typeof import('../dist/components/index.d.ts')['ZhIcon']
+ ZhIconbase: typeof import('../dist/components/index.d.ts')['ZhIconbase']
  ZhImage: typeof import('../dist/components/index.d.ts')['ZhImage']
  ZhInput: typeof import('../dist/components/index.d.ts')['ZhInput']
  ZhAmap: typeof import('../dist/components/index.d.ts')['ZhAmap']

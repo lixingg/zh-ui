@@ -25,8 +25,13 @@
       width: size
     }
   })
+  console.log('sizeComputed',props.name,sizeComputed.value)
 </script>
 
 <template>
-  <component :is="name" :style="{ ...sizeComputed, color: color }" class="inline"></component>
+  <component :is="name"
+             :style="{ ...sizeComputed, color: color }"
+             :size="size"
+             :color="color"
+             class="inline"/>
 </template>
