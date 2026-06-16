@@ -2,9 +2,9 @@
 import { createIcon } from '../createIcon'
 
 export const Car = createIcon('car')
-export const Upload = createIcon('upload')
+export const UploadZ = createIcon('upload-z')
 export const PdfFill = createIcon('pdf-fill')
-export const Download = createIcon('download')
+export const DownloadIc = createIcon('download-ic')
 export const Zhihui = createIcon('zhihui')
 export const Ppt = createIcon('ppt')
 export const Excel = createIcon('excel')
