@@ -15,7 +15,7 @@
     {
       "icon_id": "5712913",
       "name": "上传",
-      "font_class": "upload",
+      "font_class": "upload-z",
       "unicode": "e619",
       "unicode_decimal": 58905
     },
@@ -29,7 +29,7 @@
     {
       "icon_id": "7418973",
       "name": "下载",
-      "font_class": "download",
+      "font_class": "download-ic",
       "unicode": "e639",
       "unicode_decimal": 58937
     },

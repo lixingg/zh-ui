@@ -57,7 +57,7 @@ const exportStatements1 = iconNames1.map(name => {
 
 const indexContent = `// 本文件由 scripts/generateIcons.ts 自动生成，请勿手动修改
 import { createIcon } from '../createIcon'
-
+export * from './index1'
 ${exportStatements}
 `
 const indexContent1 = `// 本文件由 scripts/generateIcons.ts 自动生成，请勿手动修改

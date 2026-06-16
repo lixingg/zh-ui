@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 5195653 */
-  src: url('iconfont.woff2?t=1781510271585') format('woff2'),
-       url('iconfont.woff?t=1781510271585') format('woff'),
-       url('iconfont.ttf?t=1781510271585') format('truetype');
+  src: url('iconfont.woff2?t=1781573679169') format('woff2'),
+       url('iconfont.woff?t=1781573679169') format('woff'),
+       url('iconfont.ttf?t=1781573679169') format('truetype');
 }
 
 .iconfont {
@@ -21,7 +21,7 @@
   content: "\e67d";
 }
 
-.icon-camera:before {
+.icon-camera-z:before {
   content: "\e665";
 }
 
@@ -45,11 +45,11 @@
   content: "\e626";
 }
 
-.icon-more:before {
+.icon-more-z:before {
   content: "\e627";
 }
 
-.icon-filter:before {
+.icon-filter-z:before {
   content: "\e649";
 }
 
@@ -61,7 +61,7 @@
   content: "\e68d";
 }
 
-.icon-bell:before {
+.icon-bell-z:before {
   content: "\e658";
 }
 
@@ -109,7 +109,7 @@
   content: "\e606";
 }
 
-.icon-position:before {
+.icon-position-z:before {
   content: "\e607";
 }
 
@@ -129,7 +129,7 @@
   content: "\e60b";
 }
 
-.icon-shopping-cart:before {
+.icon-shopping-cart-z:before {
   content: "\e60c";
 }
 
@@ -141,7 +141,7 @@
   content: "\e60e";
 }
 
-.icon-full-screen:before {
+.icon-full-screen-z:before {
   content: "\e60f";
 }
 
@@ -185,7 +185,7 @@
   content: "\e7aa";
 }
 
-.icon-user:before {
+.icon-user-z:before {
   content: "\e621";
 }
 
@@ -197,7 +197,7 @@
   content: "\e617";
 }
 
-.icon-message:before {
+.icon-message-z:before {
   content: "\e8c5";
 }
 
@@ -213,7 +213,7 @@
   content: "\e6cd";
 }
 
-.icon-collection:before {
+.icon-star-z:before {
   content: "\e629";
 }
 

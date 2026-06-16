@@ -2,9 +2,9 @@
   font-family: "iconfont"; /* Project id 5195922 */
   /* Color fonts */
   src: 
-       url('iconfont.woff2?t=1781509782807') format('woff2'),
-       url('iconfont.woff?t=1781509782807') format('woff'),
-       url('iconfont.ttf?t=1781509782807') format('truetype');
+       url('iconfont.woff2?t=1781573756547') format('woff2'),
+       url('iconfont.woff?t=1781573756547') format('woff'),
+       url('iconfont.ttf?t=1781573756547') format('truetype');
 }
 
 .iconfont {
@@ -19,7 +19,7 @@
   content: "\e664";
 }
 
-.icon-upload:before {
+.icon-upload-z:before {
   content: "\e619";
 }
 
@@ -27,7 +27,7 @@
   content: "\e733";
 }
 
-.icon-download:before {
+.icon-download-ic:before {
   content: "\e639";
 }
 

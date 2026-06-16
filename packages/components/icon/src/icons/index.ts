@@ -1,6 +1,6 @@
 // 本文件由 scripts/generateIcons.ts 自动生成，请勿手动修改
 import { createIcon } from '../createIcon'
-
+export * from './index1'
 export const Settings = createIcon('settings')
 export const Scan = createIcon('scan')
 export const Camera = createIcon('camera')

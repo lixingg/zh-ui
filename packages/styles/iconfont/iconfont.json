@@ -22,7 +22,7 @@
     {
       "icon_id": "630128",
       "name": "照相机",
-      "font_class": "camera",
+      "font_class": "camera-z",
       "unicode": "e665",
       "unicode_decimal": 58981
     },
@@ -64,14 +64,14 @@
     {
       "icon_id": "17135394",
       "name": "更多",
-      "font_class": "more",
+      "font_class": "more-z",
       "unicode": "e627",
       "unicode_decimal": 58919
     },
     {
       "icon_id": "23311946",
       "name": "滤镜",
-      "font_class": "filter",
+      "font_class": "filter-z",
       "unicode": "e649",
       "unicode_decimal": 58953
     },
@@ -92,7 +92,7 @@
     {
       "icon_id": "4784112",
       "name": "提醒",
-      "font_class": "bell",
+      "font_class": "bell-z",
       "unicode": "e658",
       "unicode_decimal": 58968
     },
@@ -176,7 +176,7 @@
     {
       "icon_id": "25429748",
       "name": "定位",
-      "font_class": "position",
+      "font_class": "position-z",
       "unicode": "e607",
       "unicode_decimal": 58887
     },
@@ -211,7 +211,7 @@
     {
       "icon_id": "31453831",
       "name": "购物车",
-      "font_class": "shopping-cart",
+      "font_class": "shopping-cart-z",
       "unicode": "e60c",
       "unicode_decimal": 58892
     },
@@ -232,7 +232,7 @@
     {
       "icon_id": "33346076",
       "name": "全屏",
-      "font_class": "full-screen",
+      "font_class": "full-screen-z",
       "unicode": "e60f",
       "unicode_decimal": 58895
     },
@@ -309,7 +309,7 @@
     {
       "icon_id": "7258212",
       "name": "用户",
-      "font_class": "user",
+      "font_class": "user-z",
       "unicode": "e621",
       "unicode_decimal": 58913
     },
@@ -330,7 +330,7 @@
     {
       "icon_id": "11372768",
       "name": "评论",
-      "font_class": "message",
+      "font_class": "message-z",
       "unicode": "e8c5",
       "unicode_decimal": 59589
     },
@@ -358,7 +358,7 @@
     {
       "icon_id": "19954256",
       "name": "收 藏",
-      "font_class": "collection",
+      "font_class": "star-z",
       "unicode": "e629",
       "unicode_decimal": 58921
     },
