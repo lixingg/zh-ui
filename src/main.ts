@@ -21,7 +21,7 @@ const app = createApp(App).use(router).use(ZHUI,{
 app.use(pinia)
 // 注册全局预览组件
 app.component('ShowCode', ShowCode)
-console.log(app)
+// console.log(app)
 // for (const [key, component] of Object.entries<any>(ElementPlusIconsVue)) {
 //   app.component(key, component)
 // }
