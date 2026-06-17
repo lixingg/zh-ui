@@ -16,7 +16,7 @@ const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 const app = createApp(App).use(router).use(ZHUI,{
   locale: zhCn,
-  useGlobalIcons:true
+  // useGlobalIcons:true
 })
 app.use(pinia)
 // 注册全局预览组件
