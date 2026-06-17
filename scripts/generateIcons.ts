@@ -72,11 +72,11 @@ export * from './special'
 const indexPath = path.join(ICONS_OUTPUT_DIR, 'index.ts')
 fs.writeFileSync(indexPath, indexContent, 'utf-8')
 console.log(`生成 ${indexPath} 完成`)
-
+// 写入 ordinary.ts
 const indexPath2 = path.join(ICONS_OUTPUT_DIR, 'ordinary.ts')
 fs.writeFileSync(indexPath2, indexContent2, 'utf-8')
 console.log(`生成 ${indexPath2} 完成`)
-// 写入 index1.ts
+// 写入 special.ts
 const indexPath1 = path.join(ICONS_OUTPUT_DIR, 'special.ts')
 fs.writeFileSync(indexPath1, indexContent1, 'utf-8')
 console.log(`生成 ${indexPath1} 完成`)
