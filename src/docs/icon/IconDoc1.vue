@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import * as Icons from '../../../packages/components/icon/src/icons/icon'
+import * as Icons from '../../../packages/components/icon/src/icons/special'
 import {ElMessage} from "element-plus";   // 根据实际路径调整，指向生成的 icons/index.ts
 
 const allIcons = Object.entries(Icons)
