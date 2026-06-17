@@ -55,9 +55,8 @@ const exportStatements1 = iconNames1.map(name => {
     return `export const ${componentName} = createIcon('${name}')`
 }).join('\n')
 
-const indexContent = `// 本文件由 scripts/generateIcons.ts 自动生成，请勿手动修改
+const indexContent2 = `// 本文件由 scripts/generateIcons.ts 自动生成，请勿手动修改
 import { createIcon } from '../createIcon'
-export * from './index1'
 ${exportStatements}
 `
 const indexContent1 = `// 本文件由 scripts/generateIcons.ts 自动生成，请勿手动修改
@@ -65,20 +64,27 @@ import { createIcon } from '../createIcon'
 
 ${exportStatements1}
 `
-
+const indexContent = `// 本文件由 scripts/generateIcons.ts 自动生成，请勿手动修改
+export * from './colorIcon'
+export * from './icon'
+`
 // 写入 index.ts
 const indexPath = path.join(ICONS_OUTPUT_DIR, 'index.ts')
 fs.writeFileSync(indexPath, indexContent, 'utf-8')
 console.log(`生成 ${indexPath} 完成`)
+
+const indexPath2 = path.join(ICONS_OUTPUT_DIR, 'colorIcon.ts')
+fs.writeFileSync(indexPath2, indexContent2, 'utf-8')
+console.log(`生成 ${indexPath2} 完成`)
 // 写入 index1.ts
-const indexPath1 = path.join(ICONS_OUTPUT_DIR, 'index1.ts')
+const indexPath1 = path.join(ICONS_OUTPUT_DIR, 'icon.ts')
 fs.writeFileSync(indexPath1, indexContent1, 'utf-8')
 console.log(`生成 ${indexPath1} 完成`)
 
 // 可选：删除之前生成的独立 .ts 文件（如果有）
 const files = fs.readdirSync(ICONS_OUTPUT_DIR)
 for (const file of files) {
-    if (file !== 'index.ts'  && file !== 'index1.ts' && file.endsWith('.ts')) {
+    if (file !== 'index.ts'  && file !== 'colorIcon.ts'  && file !== 'icon.ts' && file.endsWith('.ts')) {
         fs.unlinkSync(path.join(ICONS_OUTPUT_DIR, file))
         console.log(`删除旧文件: ${file}`)
     }
