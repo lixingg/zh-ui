@@ -2,8 +2,8 @@ import fs from 'fs'
 import path from 'path'
 
 const PROJECT_ROOT = process.cwd()
-const CSS_PATH = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont/iconfont.css')
-const CSS_PATH1 = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont-c/iconfont.css')
+const CSS_PATH = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont/iconfonts.css')
+const CSS_PATH1 = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont-c/iconfonts.css')
 const ICONS_OUTPUT_DIR = path.resolve(PROJECT_ROOT, 'packages/components/icon/src/icons')
 
 // 确保输出目录存在
@@ -30,10 +30,10 @@ while ((match = iconRegex.exec(cssContent1)) !== null) {
 }
 
 if (iconNames.length === 0) {
-    throw new Error('未在 iconfont.css 中找到任何 .icon-xxx:before 规则')
+    throw new Error('未在 iconfonts.css 中找到任何 .icon-xxx:before 规则')
 }
 if (iconNames1.length === 0) {
-    throw new Error('未在 iconfont.css 中找到任何 .icon-xxx:before 规则')
+    throw new Error('未在 iconfonts.css 中找到任何 .icon-xxx:before 规则')
 }
 console.log(`发现 ${iconNames.length} 个普通图标:`, iconNames)
 console.log(`发现 ${iconNames1.length} 个彩色图标:`, iconNames1)
