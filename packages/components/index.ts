@@ -83,7 +83,6 @@ import mediaSwiper from "./mediaSwiper"
 import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
 import '../styles/index.scss'
-
 const components = [
     button,
     icon,

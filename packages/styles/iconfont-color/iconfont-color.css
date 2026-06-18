@@ -2,9 +2,7 @@
   font-family: "zh-iconfont-color"; /* Project id 5195922 */
   /* Color fonts */
   src:
-       url('iconfont-color.woff2?t=1781746191059') format('woff2'),
-       url('iconfont-color.woff?t=1781746191059') format('woff'),
-       url('iconfont-color.ttf?t=1781746191059') format('truetype');
+       url('./iconfont-color.ttf?t=1781746191059') format('truetype');
 }
 
 .zh-iconfont-color {

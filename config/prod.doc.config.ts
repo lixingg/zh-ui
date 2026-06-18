@@ -49,16 +49,7 @@ export default defineConfig({
         // 分包
         chunkFileNames: 'static/js/[name]-[hash].js',
         entryFileNames: 'static/js/[name]-[hash].js',
-        assetFileNames:(assetInfo) => {
-          // 强制两个字体文件使用不同的名称，不进行哈希去重
-          if (assetInfo.name === 'iconfont-color.woff2') {
-            return 'static/iconfont-color.[hash][extname]';
-          }
-          if (assetInfo.name === 'iconfont-normal.woff2') {
-            return 'static/iconfont-normal.[hash][extname]';
-          }
-          return 'static/[ext]/[name]-[hash].[ext]';
-        }
+        assetFileNames:'static/[ext]/[name]-[hash].[ext]'
       }
     },
     minify: 'terser',

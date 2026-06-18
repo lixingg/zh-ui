@@ -1,8 +1,8 @@
 @font-face {
   font-family: "zh-iconfont-normal"; /* Project id 5195653 */
-  src: url('iconfont-normal.woff2?t=1781746986746') format('woff2'),
-       url('iconfont-normal.woff?t=1781746986746') format('woff'),
-       url('iconfont-normal.ttf?t=1781746986746') format('truetype');
+  src: url('./iconfont-normal.woff2?t=1781746986746') format('woff2'),
+       url('./iconfont-normal.woff?t=1781746986746') format('woff'),
+       url('./iconfont-normal.ttf?t=1781746986746') format('truetype');
 }
 
 .zh-iconfont-normal {
