@@ -1,12 +1,12 @@
 @font-face {
-  font-family: "iconfont-normal"; /* Project id 5195653 */
-  src: url('iconfont-normal.woff2?t=1781704251456') format('woff2'),
-       url('iconfont-normal.woff?t=1781704251456') format('woff'),
-       url('iconfont-normal.ttf?t=1781704251456') format('truetype');
+  font-family: "zh-iconfont-normal"; /* Project id 5195653 */
+  src: url('iconfont.woff2?t=1781746986746') format('woff2'),
+       url('iconfont.woff?t=1781746986746') format('woff'),
+       url('iconfont.ttf?t=1781746986746') format('truetype');
 }
 
-.iconfont-normal {
-  font-family: "iconfont-normal" !important;
+.zh-iconfont-normal {
+  font-family: "zh-iconfont-normal" !important;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
@@ -63,6 +63,10 @@
 
 .icon-bell-z:before {
   content: "\e658";
+}
+
+.icon-car:before {
+  content: "\e664";
 }
 
 .icon-wifi-left:before {
