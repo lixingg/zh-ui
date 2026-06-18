@@ -84,8 +84,6 @@ import 'dayjs/locale/zh-cn'
 import 'element-plus/dist/index.css'
 import '../styles/index.scss'
 
-import "../../public/iconfont-normal/iconfont.css";
-import "../../public/iconfont-color/iconfont.css";
 const components = [
     button,
     icon,

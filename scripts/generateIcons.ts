@@ -2,8 +2,8 @@ import fs from 'fs'
 import path from 'path'
 
 const PROJECT_ROOT = process.cwd()
-const CSS_PATH = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont-normal/iconfont.css')
-const CSS_PATH1 = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont-color/iconfont.css')
+const CSS_PATH = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont-normal/iconfont-normal.css')
+const CSS_PATH1 = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont-color/iconfont-color.css')
 const ICONS_OUTPUT_DIR = path.resolve(PROJECT_ROOT, 'packages/components/icon/src/icons')
 
 // 确保输出目录存在
