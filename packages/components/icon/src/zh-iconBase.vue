@@ -1,6 +1,6 @@
 <template>
   <i
-      class="iconfont zh-iconfont-normal zh-iconfont-color"
+      class="iconfont"
       :class="iconClass"
       :style="iconStyle"
       v-bind="$attrs"
@@ -19,7 +19,15 @@ const props = defineProps<{
   color?: string
 }>()
 
-const iconClass = computed(() => `icon-${props.name}`)
+const iconClass = computed(() => {
+  if(props.name.startsWith('n')){
+    return `zh-iconfont-normal icon-${props.name}`
+  }
+  if(props.name.startsWith('c')){
+    return `zh-iconfont-color icon-${props.name}`
+  }
+  return `icon-${props.name}`
+})
 
 const iconStyle = computed(() => {
   const style: Record<string, string> = {}

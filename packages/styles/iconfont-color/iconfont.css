@@ -1,8 +1,10 @@
 @font-face {
   font-family: "zh-iconfont-color"; /* Project id 5195922 */
   /* Color fonts */
-  src:
-       url('./iconfont-color.ttf?t=1781746191059') format('truetype');
+  src: 
+       url('iconfont.woff2?t=1781761620422') format('woff2'),
+       url('iconfont.woff?t=1781761620422') format('woff'),
+       url('iconfont.ttf?t=1781761620422') format('truetype');
 }
 
 .zh-iconfont-color {
@@ -13,71 +15,75 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-car:before {
+.icon-c-no-data:before {
+  content: "\e616";
+}
+
+.icon-c-car:before {
   content: "\e664";
 }
 
-.icon-upload-z:before {
+.icon-c-upload:before {
   content: "\e619";
 }
 
-.icon-pdf-fill:before {
+.icon-c-pdf-fill:before {
   content: "\e733";
 }
 
-.icon-download-ic:before {
+.icon-c-download:before {
   content: "\e639";
 }
 
-.icon-zhihui:before {
+.icon-c-zhihui:before {
   content: "\e65b";
 }
 
-.icon-ppt:before {
+.icon-c-ppt:before {
   content: "\e62b";
 }
 
-.icon-excel:before {
+.icon-c-excel:before {
   content: "\e808";
 }
 
-.icon-pdf:before {
+.icon-c-pdf:before {
   content: "\e809";
 }
 
-.icon-ofd:before {
+.icon-c-ofd:before {
   content: "\e82b";
 }
 
-.icon-dissatisfied:before {
+.icon-c-dissatisfied:before {
   content: "\e61e";
 }
 
-.icon-general:before {
+.icon-c-general:before {
   content: "\e61f";
 }
 
-.icon-very-satisfied:before {
+.icon-c-very-satisfied:before {
   content: "\e620";
 }
 
-.icon-satisfaction:before {
+.icon-c-satisfaction:before {
   content: "\e622";
 }
 
-.icon-ppt-fill:before {
+.icon-c-ppt-fill:before {
   content: "\e6a3";
 }
 
-.icon-ofd-fill:before {
+.icon-c-ofd-fill:before {
   content: "\e7c1";
 }
 
-.icon-word-fill:before {
+.icon-c-word-fill:before {
   content: "\e62a";
 }
 
-.icon-excel-fill:before {
+.icon-c-excel-fill:before {
   content: "\e628";
 }
 

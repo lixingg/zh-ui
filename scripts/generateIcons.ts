@@ -2,8 +2,8 @@ import fs from 'fs'
 import path from 'path'
 
 const PROJECT_ROOT = process.cwd()
-const CSS_PATH = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont-normal/iconfont-normal.css')
-const CSS_PATH1 = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont-color/iconfont-color.css')
+const CSS_PATH = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont-normal/iconfont.css')
+const CSS_PATH1 = path.resolve(PROJECT_ROOT, 'packages/styles/iconfont-color/iconfont.css')
 const ICONS_OUTPUT_DIR = path.resolve(PROJECT_ROOT, 'packages/components/icon/src/icons')
 
 // 确保输出目录存在
@@ -35,8 +35,8 @@ if (iconNames.length === 0) {
 if (iconNames1.length === 0) {
     throw new Error('未在 iconfont-color.css 中找到任何 .icon-xxx:before 规则')
 }
-console.log(`发现 ${iconNames.length} 个普通图标:`, iconNames)
-console.log(`发现 ${iconNames1.length} 个彩色图标:`, iconNames1)
+// console.log(`发现 ${iconNames.length} 个普通图标:`, iconNames)
+// console.log(`发现 ${iconNames1.length} 个彩色图标:`, iconNames1)
 
 // 工具函数：首字母大写
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
@@ -71,22 +71,22 @@ export * from './special'
 // 写入 index.ts
 const indexPath = path.join(ICONS_OUTPUT_DIR, 'index.ts')
 fs.writeFileSync(indexPath, indexContent, 'utf-8')
-console.log(`生成 ${indexPath} 完成`)
+// console.log(`生成 ${indexPath} 完成`)
 // 写入 ordinary.ts
 const indexPath2 = path.join(ICONS_OUTPUT_DIR, 'ordinary.ts')
 fs.writeFileSync(indexPath2, indexContent2, 'utf-8')
-console.log(`生成 ${indexPath2} 完成`)
+// console.log(`生成 ${indexPath2} 完成`)
 // 写入 special.ts
 const indexPath1 = path.join(ICONS_OUTPUT_DIR, 'special.ts')
 fs.writeFileSync(indexPath1, indexContent1, 'utf-8')
-console.log(`生成 ${indexPath1} 完成`)
+// console.log(`生成 ${indexPath1} 完成`)
 
 // 可选：删除之前生成的独立 .ts 文件（如果有）
 const files = fs.readdirSync(ICONS_OUTPUT_DIR)
 for (const file of files) {
     if (file !== 'index.ts'  && file !== 'special.ts'  && file !== 'ordinary.ts' && file.endsWith('.ts')) {
         fs.unlinkSync(path.join(ICONS_OUTPUT_DIR, file))
-        console.log(`删除旧文件: ${file}`)
+        // console.log(`删除旧文件: ${file}`)
     }
 /*    if (file !== 'index1.ts' && file.endsWith('.ts')) {
         fs.unlinkSync(path.join(ICONS_OUTPUT_DIR, file))
