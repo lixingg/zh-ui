@@ -4,7 +4,7 @@ import type { Component } from 'vue'
 
 /**
  * 工厂函数：快速创建单个图标组件
- * @param name 图标名称 (对应 iconfont 中的类名后缀)
+ * @param name 图标名称 (对应 iconfont-normal 中的类名后缀)
  * @returns 图标组件
  */
 export function createIcon(name: string): Component {

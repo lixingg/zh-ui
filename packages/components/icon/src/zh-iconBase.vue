@@ -1,6 +1,6 @@
 <template>
   <i
-      class="iconfont iconfont-normal"
+      class="iconfont zh-iconfont-normal zh-iconfont-color"
       :class="iconClass"
       :style="iconStyle"
       v-bind="$attrs"
@@ -34,9 +34,10 @@ const iconStyle = computed(() => {
 </script>
 
 <style scoped>
-.iconfont,.iconfont-normal {
+.iconfont,.zh-iconfont-normal,.zh-iconfont-color {
   display: inline-block;
   line-height: 1;
   font-style: normal;
 }
 </style>
+
