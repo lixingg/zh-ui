@@ -62,3 +62,4 @@ declare module 'ofd.js' {
 
   // 如果其他API，可以在这里继续补充
 }
+declare module 'mapbox-gl'

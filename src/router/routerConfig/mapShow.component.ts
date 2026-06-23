@@ -27,4 +27,14 @@ export const mapShowComponent: RouteRecordRaw[] = [
     meta: { title: 'openlayer地图' },
     component: () => import('@/docs/map/omap/README.md')
   },
+  {
+    path: 'map/mbmap',
+    meta: { title: 'mapBox地图' },
+    component: () => import('@/docs/map/mbmap/README.md')
+  },
+  {
+    path: 'map/cmap',
+    meta: { title: 'cesium 地图' },
+    component: () => import('@/docs/map/cmap/README.md')
+  },
 ]

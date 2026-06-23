@@ -6,6 +6,7 @@ interface ZHVueProps {
 }
 declare module 'echarts'
 declare module 'echarts-gl'
+declare module 'mapbox-gl'
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
