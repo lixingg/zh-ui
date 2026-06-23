@@ -104,7 +104,7 @@
     "unplugin-auto-import": "0.16.6",
     "unplugin-vue-components": "0.25.2",
     "unplugin-vue-define-options": "^0.6.1",
-    "vite": "8.0.5",
+    "vite": "4.0.0",
     "vite-plugin-cesium": "^1.2.23",
     "vite-plugin-dts": "^5.0.2",
     "vite-plugin-mockit": "^1.0.1",
