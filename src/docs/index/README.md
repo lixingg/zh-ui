@@ -25,5 +25,5 @@
 **图表组件:**
 `lineChart 折线图` `barChart 柱状图` `pieChart 饼图` `radarChart 雷达图` `scatterChart 散点图` `mapChart 地图`<br>
 ## 版本
-> **版本：1.0.97**<br>
+> **版本：1.0.98**<br>
 > 更新内容：首次发布

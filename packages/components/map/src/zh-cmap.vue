@@ -2,6 +2,32 @@
   <div class="cesium-container">
     <div ref="cesiumContainer" class="cesium-viewer"></div>
 
+    <!-- 轨迹控制面板 -->
+    <div class="track-control-panel" v-if="showTrackPanel && trackMode">
+      <div class="control-buttons">
+        <button @click="playTrack" :disabled="isPlaying" class="btn-play">▶ 播放</button>
+        <button @click="pauseTrack" :disabled="!isPlaying" class="btn-pause">⏸ 暂停</button>
+        <button @click="stopTrack" class="btn-stop">⏹ 停止</button>
+        <button @click="resetTrack" class="btn-reset">🔄 重置</button>
+        <button @click="toggleCorrection" :class="{ active: enableCorrection }" class="btn-correction">
+          🧹 纠偏 {{ enableCorrection ? "开" : "关" }}
+        </button>
+        <button @click="toggleFollowCar" :class="{ active: followCarMode }" class="btn-follow">
+          🚗 跟随 {{ followCarMode ? "开" : "关" }}
+        </button>
+      </div>
+      <div class="progress-bar">
+        <span>进度: {{ progressPercent }}%</span>
+        <input type="range" v-model.number="progressPercent" @input="seekTo" min="0" max="100" step="1" />
+      </div>
+      <div class="track-info">
+        <span>{{ currentIndex + 1 }} / {{ displayPoints.length }}</span>
+        <span>剩余: {{ remainingDistance.toFixed(0) }}m</span>
+        <span>总: {{ totalDistance.toFixed(0) }}m</span>
+        <span v-if="correctionInfo.corrected">已纠偏 {{ correctionInfo.correctedCount }}点</span>
+      </div>
+    </div>
+
     <!-- 自定义UI插槽 -->
     <div class="custom-ui-slot">
       <slot name="customUI" :viewer="viewer" :isReady="isReady" :trackInfo="trackInfo"></slot>
@@ -15,32 +41,83 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch, shallowRef, computed, nextTick } from 'vue';
 import * as Cesium from 'cesium';
-import type { Viewer } from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
-import carSvg from "@/assets/images/car.svg"
+
 // ==================== 类型定义 ====================
-export interface LngLat { lng: number; lat: number }
-export interface TrackPoint extends LngLat { speed?: number; time?: number }
+export interface LngLat {
+  lng: number;
+  lat: number;
+}
+export interface TrackPoint extends LngLat {
+  speed?: number;
+  time?: number;
+}
 export type RawTrackPoint = [number, number] | [number, number, number] | LngLat;
-export interface MarkerOptions { id?: string; position: [number, number]; title?: string; icon?: string; iconSize?: { width: number; height: number }; label?: string; draggable?: boolean; autoShowInfo?: boolean; infoContent?: string; properties?: Record<string, any> }
-export interface PolylineOptions { id?: string; path: [number, number][]; color?: string; width?: number; opacity?: number; properties?: Record<string, any> }
-export interface PolygonOptions { id?: string; paths: [number, number][][]; fillColor?: string; fillOpacity?: number; strokeColor?: string; strokeWidth?: number; properties?: Record<string, any> }
-export interface CircleOptions { id?: string; center: [number, number]; radius: number; fillColor?: string; fillOpacity?: number; strokeColor?: string; strokeWidth?: number; properties?: Record<string, any> }
-export interface HeatmapDataPoint { lng: number; lat: number; weight?: number }
-export interface TrackInfo { currentIndex: number; totalPoints: number; progress: number; remainingDistance: number; totalDistance: number; isPlaying: boolean }
+
+export interface MarkerOptions {
+  id?: string;
+  position: [number, number];
+  title?: string;
+  icon?: string;
+  iconSize?: { width: number; height: number };
+  label?: string;
+  draggable?: boolean;
+  autoShowInfo?: boolean;
+  infoContent?: string;
+  properties?: Record<string, any>;
+}
+export interface PolylineOptions {
+  id?: string;
+  path: [number, number][];
+  color?: string;
+  width?: number;
+  opacity?: number;
+  properties?: Record<string, any>;
+}
+export interface PolygonOptions {
+  id?: string;
+  paths: [number, number][][];
+  fillColor?: string;
+  fillOpacity?: number;
+  strokeColor?: string;
+  strokeWidth?: number;
+  properties?: Record<string, any>;
+}
+export interface CircleOptions {
+  id?: string;
+  center: [number, number];
+  radius: number;
+  fillColor?: string;
+  fillOpacity?: number;
+  strokeColor?: string;
+  strokeWidth?: number;
+  properties?: Record<string, any>;
+}
+export interface HeatmapDataPoint {
+  lng: number;
+  lat: number;
+  weight?: number;
+}
+export interface TrackInfo {
+  currentIndex: number;
+  totalPoints: number;
+  progress: number;
+  remainingDistance: number;
+  totalDistance: number;
+  isPlaying: boolean;
+}
 
 // ==================== Props ====================
 const props = defineProps({
-  // Cesium Ion token（若使用在线服务）
+  // Cesium Ion token（如需使用在线服务）
   accessToken: { type: String, default: '' },
   // 底图类型：'osm' | 'gaode' | 'bing' | 'mapbox'
   baseMap: { type: String as () => 'osm' | 'gaode' | 'bing' | 'mapbox', default: 'osm' },
   // 高德Key（若baseMap为gaode）
   gaodeKey: { type: String, default: '' },
-  carIcon: { type: String, default: '' },
-  // 地图选项
+  // Viewer 选项（不包含 imageryProvider，由组件内部根据 baseMap 自动设置）
   viewerOptions: {
-    type: Object as () => Partial<any>,
+    type: Object as () => Record<string, any>,
     default: () => ({
       timeline: false,
       animation: false,
@@ -52,12 +129,12 @@ const props = defineProps({
       terrainProvider: new Cesium.EllipsoidTerrainProvider(),
     }),
   },
-  // 初始视角
+  // 初始相机位置
   cameraOptions: {
     type: Object as () => { destination?: [number, number, number] | [number, number]; orientation?: { heading: number; pitch: number; roll: number } },
     default: () => ({
       destination: [116.397428, 39.90923, 10000],
-      orientation: { heading: 0, pitch: 1, roll: 0 },
+      orientation: { heading: 0, pitch: -0.3, roll: 0 },
     }),
   },
   // 默认样式
@@ -94,15 +171,15 @@ const props = defineProps({
 
 // ==================== Emits ====================
 const emit = defineEmits<{
-  (e: "ready", payload: { viewer: Cesium.Viewer }): void;
-  (e: "click", payload: { lng: number; lat: number }): void;
-  (e: "markerClick", payload: { id: string; position: [number, number]; properties?: Record<string, any> }): void;
-  (e: "polylineClick", payload: { id: string; properties?: Record<string, any> }): void;
-  (e: "polygonClick", payload: { id: string; properties?: Record<string, any> }): void;
-  (e: "circleClick", payload: { id: string; properties?: Record<string, any> }): void;
-  (e: "popupClose"): void;
-  (e: "trackComplete", payload: { totalDistance: number; totalPoints: number }): void;
-  (e: "trackPointChange", payload: { index: number; point: TrackPoint; remainingDistance: number }): void;
+  (e: 'ready', payload: { viewer: Cesium.Viewer }): void;
+  (e: 'click', payload: { lng: number; lat: number }): void;
+  (e: 'markerClick', payload: { id: string; position: [number, number]; properties?: Record<string, any> }): void;
+  (e: 'polylineClick', payload: { id: string; properties?: Record<string, any> }): void;
+  (e: 'polygonClick', payload: { id: string; properties?: Record<string, any> }): void;
+  (e: 'circleClick', payload: { id: string; properties?: Record<string, any> }): void;
+  (e: 'popupClose'): void;
+  (e: 'trackComplete', payload: { totalDistance: number; totalPoints: number }): void;
+  (e: 'trackPointChange', payload: { index: number; point: TrackPoint; remainingDistance: number }): void;
 }>();
 
 // ==================== 响应式数据 ====================
@@ -148,14 +225,13 @@ const trackInfo = computed<TrackInfo>(() => ({
 }));
 
 // ==================== 工具函数 ====================
-// 坐标转换 WGS84 -> GCJ-02（若需要）
+// WGS84 → GCJ-02（用于高德底图，若不需要可保留为原值）
 const wgs84ToGcj02 = (lng: number, lat: number): [number, number] => {
-  // 同前，省略具体实现（可使用库或简化）
+  // 这里可引入外部库，或直接返回原值（本示例简单返回）
   return [lng, lat];
 };
 
 const calculateDistance = (p1: LngLat, p2: LngLat): number => {
-  // Haversine 公式
   const R = 6371000;
   const lat1 = (p1.lat * Math.PI) / 180;
   const lat2 = (p2.lat * Math.PI) / 180;
@@ -182,10 +258,11 @@ const normalizePoint = (point: RawTrackPoint | any): TrackPoint => {
   return { lng: point.lng, lat: point.lat, speed: (point as any).speed || 30, time: (point as any).time || 0 };
 };
 
-// 道格拉斯-普克抽稀（同之前）
+// 道格拉斯-普克抽稀
 const douglasPeucker = (points: TrackPoint[], tolerance: number): TrackPoint[] => {
   if (points.length <= 2) return points;
-  let maxDist = 0, maxIdx = 0;
+  let maxDist = 0,
+      maxIdx = 0;
   const perpendicularDistance = (p: TrackPoint, p1: TrackPoint, p2: TrackPoint): number => {
     const area = Math.abs((p2.lng - p1.lng) * (p1.lat - p.lat) - (p1.lng - p.lng) * (p2.lat - p1.lat));
     const bottom = Math.hypot(p2.lng - p1.lng, p2.lat - p1.lat);
@@ -193,7 +270,10 @@ const douglasPeucker = (points: TrackPoint[], tolerance: number): TrackPoint[] =
   };
   for (let i = 1; i < points.length - 1; i++) {
     const dist = perpendicularDistance(points[i], points[0], points[points.length - 1]);
-    if (dist > maxDist) { maxDist = dist; maxIdx = i; }
+    if (dist > maxDist) {
+      maxDist = dist;
+      maxIdx = i;
+    }
   }
   if (maxDist > tolerance) {
     const left = douglasPeucker(points.slice(0, maxIdx + 1), tolerance);
@@ -203,9 +283,11 @@ const douglasPeucker = (points: TrackPoint[], tolerance: number): TrackPoint[] =
   return [points[0], points[points.length - 1]];
 };
 
+// 卡尔曼滤波平滑
 const kalmanFilter = (points: TrackPoint[]): TrackPoint[] => {
   if (points.length < 3) return points;
-  const Q = 0.01, R = 0.1;
+  const Q = 0.01,
+      R = 0.1;
   const filtered: TrackPoint[] = [points[0]];
   for (let i = 1; i < points.length - 1; i++) {
     const prev = filtered[i - 1];
@@ -267,93 +349,23 @@ const processTrackData = async (): Promise<void> => {
   remainingDistance.value = totalDistance.value;
 };
 
-// ==================== Cesium 初始化 ====================
-const initCesium = () => {
-  if (!cesiumContainer.value) return;
-
-  // 设置 token（若提供）
-  if (props.accessToken) {
-    Cesium.Ion.defaultAccessToken = props.accessToken;
-  }
-
-  // 创建 Viewer
-  const viewerInstance = new Cesium.Viewer(cesiumContainer.value, {
-    ...props.viewerOptions,
-    // 底图：根据 baseMap 选择
-    imageryProvider: getBaseImageryProvider(),
-  } as any);
-
-  viewer.value = viewerInstance;
-
-  // 设置相机初始位置
-  const { destination, orientation } = props.cameraOptions;
-  if (destination) {
-    if (destination.length === 3) {
-      // [lng, lat, height]
-      viewerInstance.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(destination[0], destination[1], destination[2]),
-        orientation: orientation || { heading: 0, pitch: -0.3, roll: 0 },
-        duration: 1,
-      });
-    } else if (destination.length === 2) {
-      // [lng, lat]，高度默认 10000
-      viewerInstance.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(destination[0], destination[1], 10000),
-        orientation: orientation || { heading: 0, pitch: -0.3, roll: 0 },
-        duration: 1,
-      });
-    }
-  }
-
-  // 添加点击事件
-  viewerInstance.screenSpaceEventHandler.setInputAction((click: any) => {
-    const ray = viewerInstance.camera.getPickRay(click.position);
-    if (!ray) return;
-    const cartesian = viewerInstance.scene.globe.pick(ray, viewerInstance.scene);
-    if (cartesian) {
-      const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-      const lng = Cesium.Math.toDegrees(cartographic.longitude);
-      const lat = Cesium.Math.toDegrees(cartographic.latitude);
-      emit("click", { lng, lat });
-    }
-  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-
-  // 标记就绪
-  isReady.value = true;
-  emit("ready", { viewer: viewerInstance });
-
-  // 处理轨迹
-  if (props.trackMode) {
-    processTrackData().then(() => {
-      drawTrackLine();
-      if (props.showStartEndMarkers) addStartEndMarkers();
-      addCarEntity();
-      if (props.autoFitBounds) fitTrackBounds();
-      if (props.autoPlay) nextTick(() => playTrack());
-    });
-  }
-};
-
-// 根据 baseMap 获取影像提供器
-const getBaseImageryProvider = (): any => {
+// ==================== 底图提供器 ====================
+const getBaseImageryProvider = (): Cesium.ImageryProvider => {
   switch (props.baseMap) {
     case 'osm':
       return new Cesium.OpenStreetMapImageryProvider({
         url: 'https://tile.openstreetmap.org/',
       });
-    case 'gaode':
+    case 'gaode': {
       const key = props.gaodeKey || '';
-      const subdomains = ['01', '02', '03', '04'];
-      const sub = subdomains[Math.floor(Math.random() * subdomains.length)];
+      const sub = ['01', '02', '03', '04'][Math.floor(Math.random() * 4)];
       const url = `https://webrd${sub}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}&key=${key}`;
-      return new Cesium.UrlTemplateImageryProvider({
-        url,
-        subdomains: ['01', '02', '03', '04'],
-      });
+      return new Cesium.UrlTemplateImageryProvider({ url });
+    }
     case 'bing':
       if (!props.accessToken) {
-        console.warn('Bing Maps requires access token');
-        return new Cesium.OpenStreetMapImageryProvider({url: 'https://tile.openstreetmap.org/'});
+        console.warn('Bing Maps requires access token, fallback to OSM');
+        return new Cesium.OpenStreetMapImageryProvider({url: 'https://tile.openstreetmap.org/' });
       }
       return new Cesium.BingMapsImageryProvider({
         mapLayer: 'https://dev.virtualearth.net',
@@ -362,15 +374,80 @@ const getBaseImageryProvider = (): any => {
       });
     case 'mapbox':
       if (!props.accessToken) {
-        console.warn('Mapbox requires access token');
-        return new Cesium.OpenStreetMapImageryProvider({url: 'https://tile.openstreetmap.org/'});
+        console.warn('Mapbox requires access token, fallback to OSM');
+        return new Cesium.OpenStreetMapImageryProvider({
+          url: 'https://tile.openstreetmap.org/',
+        });
       }
       return new Cesium.MapboxImageryProvider({
         mapId: 'mapbox.satellite',
         accessToken: props.accessToken,
       });
     default:
-      return new Cesium.OpenStreetMapImageryProvider({url: 'https://tile.openstreetmap.org/'});
+      return new Cesium.OpenStreetMapImageryProvider({
+        url: 'https://tile.openstreetmap.org/',
+      });
+  }
+};
+
+// ==================== Cesium 初始化 ====================
+const initCesium = () => {
+  if (!cesiumContainer.value) return;
+
+  // 设置 Ion token（若有）
+  if (props.accessToken) {
+    Cesium.Ion.defaultAccessToken = props.accessToken;
+  }
+
+  const viewerOptions = {
+    ...props.viewerOptions,
+    imageryProvider: getBaseImageryProvider(),
+  };
+
+  const viewerInstance = new Cesium.Viewer(cesiumContainer.value, viewerOptions as any);
+  viewer.value = viewerInstance;
+
+  // 设置相机初始位置
+  const { destination, orientation } = props.cameraOptions;
+  if (destination) {
+    let destCartesian: Cesium.Cartesian3;
+    if (destination.length === 3) {
+      destCartesian = Cesium.Cartesian3.fromDegrees(destination[0], destination[1], destination[2]);
+    } else {
+      destCartesian = Cesium.Cartesian3.fromDegrees(destination[0], destination[1], 10000);
+    }
+    viewerInstance.camera.flyTo({
+      destination: destCartesian,
+      orientation: orientation || { heading: 0, pitch: -0.3, roll: 0 },
+      duration: 1,
+    });
+  }
+
+  // 点击事件（获取地理坐标）
+  viewerInstance.screenSpaceEventHandler.setInputAction((click: any) => {
+    const ray = viewerInstance.camera.getPickRay(click.position);
+    if (!ray) return;
+    const cartesian = viewerInstance.scene.globe.pick(ray, viewerInstance.scene);
+    if (cartesian) {
+      const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+      const lng = Cesium.Math.toDegrees(cartographic.longitude);
+      const lat = Cesium.Math.toDegrees(cartographic.latitude);
+      emit('click', { lng, lat });
+    }
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+  isReady.value = true;
+  emit('ready', { viewer: viewerInstance });
+
+  // 轨迹初始化
+  if (props.trackMode) {
+    processTrackData().then(() => {
+      drawTrackLine();
+      if (props.showStartEndMarkers) addStartEndMarkers();
+      addCarEntity();
+      if (props.autoFitBounds) fitTrackBounds();
+      if (props.autoPlay) nextTick(() => playTrack());
+    });
   }
 };
 
@@ -388,7 +465,7 @@ const drawTrackLine = (): void => {
   trackPolyline = viewer.value.entities.add({
     polyline: {
       positions: positions,
-      material: new Cesium.ColorMaterialProperty(  // ✅ 使用 ColorMaterialProperty
+      material: new Cesium.ColorMaterialProperty(
           Cesium.Color.fromCssColorString(props.trackColor)
       ),
       width: props.trackWidth,
@@ -398,8 +475,11 @@ const drawTrackLine = (): void => {
 
 const addStartEndMarkers = (): void => {
   if (!viewer.value || !displayPoints.value.length) return;
-  if (startEntity) { viewer.value.entities.remove(startEntity); startEntity = null; }
-  if (endEntity) { viewer.value.entities.remove(endEntity); endEntity = null; }
+  if (startEntity) { viewer.value.entities.remove(startEntity);
+    startEntity = null; }
+  if (endEntity) { viewer.value.entities.remove(endEntity);
+    endEntity = null; }
+
   const start = displayPoints.value[0];
   const end = displayPoints.value[displayPoints.value.length - 1];
 
@@ -437,12 +517,12 @@ const addStartEndMarkers = (): void => {
 
 const addCarEntity = (): void => {
   if (!viewer.value || !displayPoints.value.length) return;
-  if (carEntity) { viewer.value.entities.remove(carEntity); carEntity = null; }
+  if (carEntity) { viewer.value.entities.remove(carEntity);
+    carEntity = null; }
 
   const startPos = displayPoints.value[0];
   const position = Cesium.Cartesian3.fromDegrees(startPos.lng, startPos.lat);
 
-  // 如果提供了模型URL，使用模型，否则使用Billboard
   if (props.carModelUrl) {
     carEntity = viewer.value.entities.add({
       position: position,
@@ -450,14 +530,14 @@ const addCarEntity = (): void => {
         uri: props.carModelUrl,
         minimumPixelSize: 64,
         // maximumPixelSize: 128,
-        scale: 12,
+        scale: 1,
       },
     });
   } else {
     carEntity = viewer.value.entities.add({
       position: position,
       billboard: {
-        image: props?.carIcon|| carSvg,
+        image: 'https://cdn-icons-png.flaticon.com/512/3096/3096982.png',
         scale: 0.6,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         rotation: props.autoRotateCar && segmentAngles.value[0] ? Cesium.Math.toRadians(segmentAngles.value[0]) : 0,
@@ -474,19 +554,17 @@ const updateCarPosition = (idx: number): void => {
 
   if (props.autoRotateCar && idx < segmentAngles.value.length) {
     const bearing = segmentAngles.value[idx];
-    if (props.carModelUrl) {
-      // 模型旋转通过 orientation 实现
-      // 简化：设置角度
-    } else {
+    if (!props.carModelUrl) {
       carEntity.billboard.rotation = Cesium.Math.toRadians(bearing);
+    } else {
+      // 若使用模型，可通过 orientation 属性控制朝向，此处简化
     }
   }
 
-  // 更新剩余距离
   let remaining = 0;
   for (let i = idx; i < distances.value.length; i++) remaining += distances.value[i];
   remainingDistance.value = remaining;
-  emit("trackPointChange", { index: idx, point, remainingDistance:remainingDistance.value });
+  emit('trackPointChange', { index: idx, point, remainingDistance: remainingDistance.value});
 };
 
 const fitTrackBounds = (): void => {
@@ -494,19 +572,6 @@ const fitTrackBounds = (): void => {
   const positions = displayPoints.value.map(p =>
       Cesium.Cartesian3.fromDegrees(p.lng, p.lat)
   );
-  const boundingSphere = Cesium.BoundingSphere.fromPoints(positions);
-  const center = boundingSphere.center;
-  const radius = boundingSphere.radius;
-  // 计算相机距离（至少 1000 米，防止过近）
-  const distance = Math.max(radius * 1.5, 1000);
-  const offset = new Cesium.Cartesian3(0, 0, distance);
-  const destination = Cesium.Cartesian3.add(center, offset, new Cesium.Cartesian3());
-  viewer.value.camera.flyTo({ destination, duration: 1 });
-};
-
-const fitBounds = (points: [number, number][], padding = 50): void => {
-  if (!viewer.value || !points.length) return;
-  const positions = points.map(p => Cesium.Cartesian3.fromDegrees(p[0], p[1]));
   const boundingSphere = Cesium.BoundingSphere.fromPoints(positions);
   const center = boundingSphere.center;
   const radius = boundingSphere.radius;
@@ -520,10 +585,7 @@ const followCar = (): void => {
   if (!viewer.value || !carEntity || !followCarMode.value) return;
   const pos = carEntity.position.getValue(Cesium.JulianDate.now());
   if (pos) {
-    viewer.value.camera.flyTo({
-      destination: pos,
-      duration: 0.3,
-    });
+    viewer.value.camera.flyTo({ destination: pos, duration: 0.3 });
   }
 };
 
@@ -558,7 +620,7 @@ const playTrack = (): void => {
       progressPercent.value = (currentIndex.value / (displayPoints.value.length - 1)) * 100;
       if (followCarMode.value) followCar();
     }
-    // 平滑插值位置
+    // 插值位置
     const fractional = progress * (totalLength - 1);
     const floorIdx = Math.floor(fractional);
     const ceilIdx = Math.min(floorIdx + 1, totalLength - 1);
@@ -570,13 +632,9 @@ const playTrack = (): void => {
       const lat = p1.lat + (p2.lat - p1.lat) * frac;
       const pos = Cesium.Cartesian3.fromDegrees(lng, lat);
       carEntity.position = pos;
-      if (props.autoRotateCar) {
+      if (props.autoRotateCar && !props.carModelUrl) {
         const bearing = calculateBearing(p1, p2);
-        if (props.carModelUrl) {
-          // 设置模型朝向
-        } else {
-          carEntity.billboard.rotation = Cesium.Math.toRadians(bearing);
-        }
+        carEntity.billboard.rotation = Cesium.Math.toRadians(bearing);
       }
     }
     if (progress < 1) {
@@ -586,7 +644,7 @@ const playTrack = (): void => {
       currentIndex.value = displayPoints.value.length - 1;
       progressPercent.value = 100;
       updateCarPosition(currentIndex.value);
-      emit("trackComplete", { totalDistance: totalDistance.value, totalPoints: displayPoints.value.length });
+      emit('trackComplete', { totalDistance: totalDistance.value, totalPoints: displayPoints.value.length });
     }
   };
   animationId = requestAnimationFrame(animate);
@@ -669,8 +727,7 @@ const addMarker = (options: MarkerOptions): void => {
     properties: options.properties,
   });
   entities.value.push(entity);
-  // 点击事件：Cesium 没有直接点击实体的事件，需通过 screenSpaceEventHandler 判断，简化：使用 label 或 billboard 的 pick
-  // 略
+  // 点击事件（简化，未实现拾取）
 };
 
 const clearMarkers = (): void => {
@@ -721,7 +778,6 @@ const addPolygon = (options: PolygonOptions): void => {
 const addCircle = (options: CircleOptions): void => {
   if (!viewer.value) return;
   const center = convertToGcj(options.center);
-  // Cesium 使用 Ellipse
   const entity = viewer.value.entities.add({
     position: Cesium.Cartesian3.fromDegrees(center[0], center[1]),
     ellipse: {
@@ -741,37 +797,26 @@ const addCircle = (options: CircleOptions): void => {
 
 const clearAllOverlays = (): void => {
   clearMarkers();
-  // 清除轨迹相关
-  if (trackPolyline) { viewer.value?.entities.remove(trackPolyline); trackPolyline = null; }
-  if (startEntity) { viewer.value?.entities.remove(startEntity); startEntity = null; }
-  if (endEntity) { viewer.value?.entities.remove(endEntity); endEntity = null; }
-  if (carEntity) { viewer.value?.entities.remove(carEntity); carEntity = null; }
+  if (trackPolyline) { viewer.value?.entities.remove(trackPolyline);
+    trackPolyline = null; }
+  if (startEntity) { viewer.value?.entities.remove(startEntity);
+    startEntity = null; }
+  if (endEntity) { viewer.value?.entities.remove(endEntity);
+    endEntity = null; }
+  if (carEntity) { viewer.value?.entities.remove(carEntity);
+    carEntity = null; }
 };
 
-// ==================== 热力图（使用 heatmap.js 叠加） ====================
-let heatmapLayer: any = null;
-
+// ==================== 热力图（暂未实现） ====================
 const addHeatmap = (data: HeatmapDataPoint[], options: { radius?: number; opacity?: number } = {}): void => {
-  if (!viewer.value) return;
-  // 动态加载 heatmap.js (需安装)
-  // 此处简化实现，略
-  console.warn('Heatmap not implemented in Cesium yet');
+  console.warn('Heatmap not implemented in this version');
 };
-
-const removeHeatmap = (): void => {
-  if (heatmapLayer) {
-    // 移除
-    heatmapLayer = null;
-  }
-};
+const removeHeatmap = (): void => { };
 
 // ==================== 弹窗 ====================
 const openPopup = (position: [number, number], content: string | HTMLElement, options: { autoClose?: boolean } = {}): void => {
-  if (!viewer.value) return;
-  // Cesium 无内置弹窗，使用 HTML 覆盖，通过 viewer 容器添加绝对定位元素
-  // 简单实现：在容器中添加 div
-  const container = cesiumContainer.value;
-  if (!container) return;
+  if (!cesiumContainer.value) return;
+  closePopup();
   const popupDiv = document.createElement('div');
   popupDiv.style.cssText = `
     position: absolute;
@@ -786,7 +831,7 @@ const openPopup = (position: [number, number], content: string | HTMLElement, op
     pointer-events: auto;
   `;
   popupDiv.innerHTML = typeof content === 'string' ? content : content.outerHTML;
-  container.appendChild(popupDiv);
+  cesiumContainer.value.appendChild(popupDiv);
   popupInstance.value = popupDiv;
   isPopupOpen.value = true;
   popupPosition.value = { lng: position[0], lat: position[1] };
@@ -801,12 +846,11 @@ const closePopup = (): void => {
   popupInstance.value = null;
   isPopupOpen.value = false;
   popupData.value = null;
-  emit("popupClose");
+  emit('popupClose');
 };
 
-// ==================== 逆地理编码 ====================
+// ==================== 地理编码 ====================
 const reGeoCode = async (position: [number, number]): Promise<{ formattedAddress: string }> => {
-  // 使用第三方 API
   const pos = convertToGcj(position);
   const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos[1]}&lon=${pos[0]}&zoom=18&addressdetails=1`;
   const response = await fetch(url);
@@ -860,6 +904,17 @@ const getZoom = (): number | null => {
   return cartographic.height;
 };
 
+const fitBounds = (points: [number, number][], padding = 50): void => {
+  if (!viewer.value || !points.length) return;
+  const positions = points.map(p => Cesium.Cartesian3.fromDegrees(p[0], p[1]));
+  const boundingSphere = Cesium.BoundingSphere.fromPoints(positions);
+  const center = boundingSphere.center;
+  const radius = boundingSphere.radius;
+  const distance = Math.max(radius * 1.5, 1000);
+  const offset = new Cesium.Cartesian3(0, 0, distance);
+  const destination = Cesium.Cartesian3.add(center, offset, new Cesium.Cartesian3());
+  viewer.value.camera.flyTo({ destination, duration: 1 });
+};
 
 const getViewer = (): Cesium.Viewer | null => viewer.value;
 
@@ -876,32 +931,54 @@ onBeforeUnmount(() => {
   }
 });
 
-watch(() => props.originalTrackData, async () => {
-  if (isReady.value && props.trackMode) {
-    await processTrackData();
-    drawTrackLine();
-    addStartEndMarkers();
-    addCarEntity();
-    updateCarPosition(currentIndex.value);
-    if (props.autoFitBounds) fitTrackBounds();
-  }
-}, { deep: true });
+watch(
+    () => props.originalTrackData,
+    async () => {
+      if (isReady.value && props.trackMode) {
+        await processTrackData();
+        drawTrackLine();
+        addStartEndMarkers();
+        addCarEntity();
+        updateCarPosition(currentIndex.value);
+        if (props.autoFitBounds) fitTrackBounds();
+      }
+    },
+    { deep: true }
+);
 
 // ==================== 对外暴露 ====================
 defineExpose({
-  setCenter, getCenter, setZoom, getZoom, fitBounds, getViewer,
-  addMarker, clearMarkers,
+  setCenter,
+  getCenter,
+  setZoom,
+  getZoom,
+  fitBounds,
+  getViewer,
+  addMarker,
+  clearMarkers,
   addPolyline,
-  addPolygon, addCircle,
+  addPolygon,
+  addCircle,
   clearAllOverlays,
-  addHeatmap, removeHeatmap,
-  reGeoCode, geoCode,
-  openPopup, closePopup,
-  playTrack, pauseTrack, stopTrack, resetTrack, fitTrackBounds, followCar, toggleFollowCar, toggleCorrection,
+  addHeatmap,
+  removeHeatmap,
+  reGeoCode,
+  geoCode,
+  openPopup,
+  closePopup,
+  playTrack,
+  pauseTrack,
+  stopTrack,
+  resetTrack,
+  fitTrackBounds,
+  followCar,
+  toggleFollowCar,
+  toggleCorrection,
   getTrackPoints: () => displayPoints.value,
   getCurrentPosition: () => displayPoints.value[currentIndex.value],
   getTrackInfo: () => trackInfo.value,
-  isPlaying, isReady,
+  isPlaying,
+  isReady,
 } as any);
 </script>
 
@@ -915,6 +992,89 @@ defineExpose({
 .cesium-viewer {
   width: 100%;
   height: 100%;
+}
+.track-control-panel {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 12px 20px;
+  color: white;
+  z-index: 10;
+  font-size: 14px;
+}
+.control-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.control-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+.control-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-play {
+  background: #4caf50;
+  color: white;
+}
+.btn-pause {
+  background: #ff9800;
+  color: white;
+}
+.btn-stop {
+  background: #f44336;
+  color: white;
+}
+.btn-reset {
+  background: #2196f3;
+  color: white;
+}
+.btn-correction {
+  background: #9c27b0;
+  color: white;
+}
+.btn-correction.active {
+  background: #4caf50;
+}
+.btn-follow {
+  background: #607d8b;
+  color: white;
+}
+.btn-follow.active {
+  background: #4caf50;
+}
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+.progress-bar span {
+  min-width: 60px;
+}
+.progress-bar input {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.track-info {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  color: #ccc;
+  flex-wrap: wrap;
 }
 .custom-ui-slot {
   position: absolute;
