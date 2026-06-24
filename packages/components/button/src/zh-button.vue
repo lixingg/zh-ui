@@ -90,7 +90,7 @@ const disabledComputed = computed(() => {
 const groupInjectComputed = computed(() => {
   const sizeInject = inject<Ref<number | undefined>>("button-group-size", ref(undefined));
   const typeInject = inject<Ref<string | undefined>>("button-group-type", ref(undefined));
-  const classData = <string []>[];
+  const classData:any =[];
   if (sizeInject.value) {
     const size = (props.size ? props.size : sizeInject.value) ?? "";
     classData.push(`zh-is-${size}`);
