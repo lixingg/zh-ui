@@ -9,7 +9,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   transform: {
     '\\.[jt]sx?$': 'babel-jest',
-    '\\.vue?$': 'vue-jest',
+    '\\.vue?$': '@vue/vue3-jest',
     '\\.tsx$': 'ts-jest',
     '\\+.ts$': 'ts-jest'
   },
