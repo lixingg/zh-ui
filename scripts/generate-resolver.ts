@@ -5,8 +5,8 @@ import { resolve, join, relative, basename, extname } from 'path';
 // ===== 配置（按需修改） =====
 const COMPONENTS_SRC_DIR = resolve(process.cwd(), 'packages/components');
 const OUTPUT_FILE = resolve(process.cwd(), 'types/components.d.ts');          // 生成的声明文件
-const DIST_ENTRY = '../dist/components/index.js';                    // 打包后的组件入口（相对输出文件）
-const DIST_TYPES_ENTRY = '../dist/components/index.d.ts';           // 打包后的类型入口
+const DIST_ENTRY = '../dist/packages/components/index.js';                    // 打包后的组件入口（相对输出文件）
+const DIST_TYPES_ENTRY = '../dist/packages/components/index.d.ts';           // 打包后的类型入口
 const COMPONENT_PREFIX = '';                                       // 组件前缀
 const PACKAGE_DEFAULT_EXPORT_NAME = 'ZhuiPlus';                      // 默认导出名
 
