@@ -1,6 +1,7 @@
 // 本文件由 scripts/generateIcons.ts 自动生成，请勿手动修改
 import { createIcon } from '../createIcon'
 
+export const CAirplane = createIcon('c-airplane')
 export const CNoData = createIcon('c-no-data')
 export const CCar = createIcon('c-car')
 export const CUpload = createIcon('c-upload')

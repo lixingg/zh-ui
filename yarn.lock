@@ -3557,7 +3557,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/geojson@^7946.0.10", "@types/geojson@^7946.0.14", "@types/geojson@^7946.0.16":
+"@types/geojson@*", "@types/geojson@^7946.0.10", "@types/geojson@^7946.0.14", "@types/geojson@^7946.0.16":
   version "7946.0.16"
   resolved "https://registry.npmmirror.com/@types/geojson/-/geojson-7946.0.16.tgz#8ebe53d69efada7044454e3305c19017d97ced2a"
   integrity sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==
@@ -3576,6 +3576,13 @@
   integrity sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==
   dependencies:
     "@types/node" "*"
+
+"@types/heatmap.js@^2.0.41":
+  version "2.0.41"
+  resolved "https://registry.yarnpkg.com/@types/heatmap.js/-/heatmap.js-2.0.41.tgz#0489f07b054e624afc09917435371fb63250f961"
+  integrity sha512-3oHffxC+N+1EKXjeC65klk1kHnLJ5i6tEKFNb/04J+qSfQuCliacsNBWDpt59JfG2vBXRRn+ICbzRZj48j6HfQ==
+  dependencies:
+    "@types/leaflet" "^0"
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1", "@types/istanbul-lib-coverage@^2.0.6":
   version "2.0.6"
@@ -3626,6 +3633,13 @@
   version "3.0.5"
   resolved "https://registry.npmmirror.com/@types/kdbush/-/kdbush-3.0.5.tgz#7c308f18d364ac5623a15b85d7da0a635cf5516e"
   integrity sha512-tdJz7jaWFu4nR+8b2B+CdPZ6811ighYylWsu2hpsivapzW058yP0KdfZuNY89IiRe5jbKvBGXN3LQdN2KPXVdQ==
+
+"@types/leaflet@^0":
+  version "0.7.40"
+  resolved "https://registry.yarnpkg.com/@types/leaflet/-/leaflet-0.7.40.tgz#ed2436ef2772827c8d33c35640df74bb6f0a9b6d"
+  integrity sha512-R2UwXOKwnKZi9zNm37WbPTAVuqHmysE6NVihkc5DUrovTirUxFSbZzvXrlwv0n5sibe0w8VF1bWu0ta4kZlAaA==
+  dependencies:
+    "@types/geojson" "*"
 
 "@types/linkify-it@^3":
   version "3.0.5"
@@ -6284,6 +6298,11 @@ header-case@^2.0.4:
   dependencies:
     capital-case "^1.0.4"
     tslib "^2.0.3"
+
+heatmap.js@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/heatmap.js/-/heatmap.js-2.0.5.tgz#466d3b86513f5d49112a49d25700ab2730149153"
+  integrity sha512-CG2gYFP5Cv9IQCXEg3ZRxnJDyAilhWnQlAuHYGuWVzv6mFtQelS1bR9iN80IyDmFECbFPbg6I0LR5uAFHgCthw==
 
 hex-color-regex@^1.1.0:
   version "1.1.0"

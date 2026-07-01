@@ -35,6 +35,20 @@
 | customUI      | 自定义UI控件 | {map, BMap, isMapReady} |
 | customOverlay | 自定义覆盖物  | {map, BMap, isMapReady} |
 
+> Cesium 官网：https://cesium.com/
+
+> Cesium 官网 API：https://cesium.com/learn/cesiumjs/ref-doc/
+
+>Cesium 中文API： http://cesium.xin/cesium/cn/Documentation1.62/
+
+>Cesium 官方案例：https://sandcastle.cesium.com/?
+
+>Cesium 技能树：https://www.wenjiangs.com/doc/egyaeyav
+
+>Cesium 中文社区：http://cesium.xin/
+
+>3D 模型下载网站：https://sketchfab.com/feed
+
 ## 源代码
 
 [gitee map](https://gitee.com/lixindekongjian/zh-ui/tree/master/packages/components/map)
