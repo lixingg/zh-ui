@@ -44,7 +44,7 @@ const baseMaps = [{
   id: 'amap',
   name: '高德地图',
   type: 'url',
-  options: {url: 'http://webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}'}
+  options: {url: 'https://webrd04.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}'}
 }]
 
 const markers = ref<any[]>([])
