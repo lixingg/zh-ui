@@ -1,3 +1,4 @@
+<!-- ==================== MapboxContainer.vue（完整修复版） ==================== -->
 <template>
   <div class="mapbox-container">
     <div ref="mapContainer" class="map-container"></div>
@@ -39,26 +40,68 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch, shallowRef, computed, nextTick } from "vue";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import type { Map, MapboxOptions } from "mapbox-gl";
+import { ref, onMounted, onBeforeUnmount, watch, shallowRef, computed, nextTick } from 'vue';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import type { Map, MapboxOptions } from 'mapbox-gl';
 import type { Feature, LineString, Polygon, Point, FeatureCollection } from 'geojson';
-import carSvg from "@/assets/images/car.svg"
 
 // ==================== 类型定义 ====================
 export interface LngLatType { lng: number; lat: number }
 export interface TrackPoint extends LngLatType { speed?: number; time?: number }
 export type RawTrackPoint = [number, number] | [number, number, number] | LngLatType;
 
-export interface MarkerOptions { id?: string; position: [number, number]; title?: string; icon?: string; iconSize?: { width: number; height: number }; label?: string; draggable?: boolean; autoShowInfo?: boolean; infoContent?: string; properties?: Record<string, any> }
-export interface PolylineOptions { id?: string; path: [number, number][]; color?: string; width?: number; opacity?: number; dashArray?: number[]; properties?: Record<string, any> }
-export interface PolygonOptions { id?: string; paths: [number, number][][]; fillColor?: string; fillOpacity?: number; strokeColor?: string; strokeWidth?: number; properties?: Record<string, any> }
-export interface CircleOptions { id?: string; center: [number, number]; radius: number; fillColor?: string; fillOpacity?: number; strokeColor?: string; strokeWidth?: number; properties?: Record<string, any> }
+export interface MarkerOptions {
+  id?: string;
+  position: [number, number];
+  title?: string;
+  icon?: string;
+  iconSize?: { width: number; height: number };
+  label?: string;
+  draggable?: boolean;
+  autoShowInfo?: boolean;
+  infoContent?: string;
+  properties?: Record<string, any>;
+}
+export interface PolylineOptions {
+  id?: string;
+  path: [number, number][];
+  color?: string;
+  width?: number;
+  opacity?: number;
+  dashArray?: number[];
+  properties?: Record<string, any>;
+}
+export interface PolygonOptions {
+  id?: string;
+  paths: [number, number][][];
+  fillColor?: string;
+  fillOpacity?: number;
+  strokeColor?: string;
+  strokeWidth?: number;
+  properties?: Record<string, any>;
+}
+export interface CircleOptions {
+  id?: string;
+  center: [number, number];
+  radius: number;
+  fillColor?: string;
+  fillOpacity?: number;
+  strokeColor?: string;
+  strokeWidth?: number;
+  properties?: Record<string, any>;
+}
 export interface HeatmapDataPoint { lng: number; lat: number; weight?: number }
 export interface ClusterPoint { position: [number, number]; title?: string; properties?: Record<string, any> }
 export interface ClusterStyle { color?: string; radius?: number; textColor?: string; textSize?: number }
-export interface TrackInfo { currentIndex: number; totalPoints: number; progress: number; remainingDistance: number; totalDistance: number; isPlaying: boolean }
+export interface TrackInfo {
+  currentIndex: number;
+  totalPoints: number;
+  progress: number;
+  remainingDistance: number;
+  totalDistance: number;
+  isPlaying: boolean;
+}
 
 // ==================== Props ====================
 const props = defineProps({
@@ -66,11 +109,10 @@ const props = defineProps({
   mapType: { type: String as () => 'gaode' | 'gaode_satellite' | 'gaode_satellite_annot' | 'osm' | 'mapbox', default: 'gaode' },
   customTileUrl: { type: String, default: '' },
   gaodeKey: { type: String, default: '' },
-  mapboxStyle: { type: String || Object, default: 'mapbox://styles/mapbox/streets-v12' },
-  mapStyle:{type:Object || undefined,default:undefined},
+  mapboxStyle: { type: String, default: 'mapbox://styles/mapbox/streets-v12' },
   mapOptions: {
-    type: Object as () => Partial<any>,
-    default: () => ({ center: [116.397428, 39.90923], zoom: 1, pitch: 0, bearing: 0, minZoom: 3, maxZoom: 20 })
+    type: Object as () => Partial<MapboxOptions>,
+    default: () => ({ center: [116.397428, 39.90923], zoom: 12, pitch: 0, bearing: 0, minZoom: 3, maxZoom: 20 })
   },
   controls: {
     type: Object as () => { navigation?: boolean; scale?: boolean; fullscreen?: boolean; geolocate?: boolean },
@@ -85,9 +127,9 @@ const props = defineProps({
     },
     default: () => ({
       marker: { icon: undefined, size: 12 },
-      polyline: { color: "#3366FF", width: 4, opacity: 0.8 },
-      polygon: { fillColor: "#00b0ff", fillOpacity: 0.4, strokeColor: "#0088ff", strokeWidth: 2 },
-      cluster: { color: "#FF9800", radius: 20, textColor: "#fff", textSize: 14 }
+      polyline: { color: '#3366FF', width: 4, opacity: 0.8 },
+      polygon: { fillColor: '#00b0ff', fillOpacity: 0.4, strokeColor: '#0088ff', strokeWidth: 2 },
+      cluster: { color: '#FF9800', radius: 20, textColor: '#fff', textSize: 14 }
     })
   },
   trackMode: { type: Boolean, default: false },
@@ -98,9 +140,9 @@ const props = defineProps({
   simplifyTolerance: { type: Number, default: 5 },
   autoFitBounds: { type: Boolean, default: true },
   autoRotateCar: { type: Boolean, default: true },
-  carIcon: { type: String, default: carSvg },
-  carIconSize: { type: Object as () => { width: number; height: number }, default: () => ({ width: 80, height: 80 }) },
-  trackColor: { type: String, default: "#FF6B6B" },
+  carIcon: { type: String, default: 'https://cdn-icons-png.flaticon.com/512/3096/3096982.png' },
+  carIconSize: { type: Object as () => { width: number; height: number }, default: () => ({ width: 40, height: 40 }) },
+  trackColor: { type: String, default: '#FF6B6B' },
   trackWidth: { type: Number, default: 5 },
   showStartEndMarkers: { type: Boolean, default: true },
   autoPlay: { type: Boolean, default: false },
@@ -109,21 +151,21 @@ const props = defineProps({
 
 // ==================== Emits ====================
 const emit = defineEmits<{
-  (e: "ready", payload: { map: any }): void;
-  (e: "click", payload: LngLatType): void;
-  (e: "markerClick", payload: { id: string; position: [number, number]; properties?: Record<string, any> }): void;
-  (e: "polylineClick", payload: { id: string; properties?: Record<string, any> }): void;
-  (e: "polygonClick", payload: { id: string; properties?: Record<string, any> }): void;
-  (e: "circleClick", payload: { id: string; properties?: Record<string, any> }): void;
-  (e: "clusterClick", payload: { clusterId: number; coordinates: [number, number]; pointCount: number }): void;
-  (e: "popupClose"): void;
-  (e: "trackComplete", payload: { totalDistance: number; totalPoints: number }): void;
-  (e: "trackPointChange", payload: { index: number; point: TrackPoint; remainingDistance: number }): void;
+  (e: 'ready', payload: { map: Map }): void;
+  (e: 'click', payload: LngLatType): void;
+  (e: 'markerClick', payload: { id: string; position: [number, number]; properties?: Record<string, any> }): void;
+  (e: 'polylineClick', payload: { id: string; properties?: Record<string, any> }): void;
+  (e: 'polygonClick', payload: { id: string; properties?: Record<string, any> }): void;
+  (e: 'circleClick', payload: { id: string; properties?: Record<string, any> }): void;
+  (e: 'clusterClick', payload: { clusterId: number; coordinates: [number, number]; pointCount: number }): void;
+  (e: 'popupClose'): void;
+  (e: 'trackComplete', payload: { totalDistance: number; totalPoints: number }): void;
+  (e: 'trackPointChange', payload: { index: number; point: TrackPoint; remainingDistance: number }): void;
 }>();
 
 // ==================== 响应式数据 ====================
 const mapContainer = ref<HTMLElement | null>(null);
-const map = shallowRef<any>(null);
+const map = shallowRef<Map | null>(null);
 const isMapReady = ref(false);
 const isInitializing = ref(false);
 
@@ -131,7 +173,11 @@ const sourceIds = ref<string[]>([]);
 const layerIds = ref<string[]>([]);
 const markers = ref<any[]>([]);
 const popupInstance = ref<any>(null);
+const isPopupOpen = ref(false);
+const popupPosition = ref<LngLatType>({ lng: 0, lat: 0 });
+const popupData = ref<any>(null);
 
+// 轨迹相关
 const displayPoints = ref<TrackPoint[]>([]);
 const distances = ref<number[]>([]);
 const totalDistance = ref(0);
@@ -143,8 +189,8 @@ const progressPercent = ref(0);
 const isPlaying = ref(false);
 const followCarMode = ref(props.defaultFollowCar);
 
-let trackSourceId = "track-source";
-let trackLayerId = "track-layer";
+let trackSourceId = 'track-source';
+let trackLayerId = 'track-layer';
 let carMarker: any = null;
 let startMarker: any = null;
 let endMarker: any = null;
@@ -153,10 +199,6 @@ let animationStartTime = 0;
 let animationDuration = 0;
 let animationStartIndex = 0;
 let animationPath: any[] = [];
-
-const isPopupOpen = ref(false);
-const popupPosition = ref<LngLatType>({ lng: 0, lat: 0 });
-const popupData = ref<any>(null);
 
 const trackInfo = computed<TrackInfo>(() => ({
   currentIndex: currentIndex.value,
@@ -168,36 +210,6 @@ const trackInfo = computed<TrackInfo>(() => ({
 }));
 
 // ==================== 工具函数 ====================
-// 坐标转换 WGS84 → GCJ-02（用于高德底图）
-const wgs84ToGcj02 = (lng: number, lat: number): [number, number] => {
-  const a = 6378245.0;
-  const ee = 0.00669342162296594323;
-  const transformLat = (x: number, y: number) => {
-    let ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
-    ret += (20.0 * Math.sin(6.0 * x * Math.PI) + 20.0 * Math.sin(2.0 * x * Math.PI)) * 2.0 / 3.0;
-    ret += (20.0 * Math.sin(y * Math.PI) + 40.0 * Math.sin(y / 3.0 * Math.PI)) * 2.0 / 3.0;
-    ret += (160.0 * Math.sin(y / 12.0 * Math.PI) + 320 * Math.sin(y * Math.PI / 30.0)) * 2.0 / 3.0;
-    return ret;
-  };
-  const transformLng = (x: number, y: number) => {
-    let ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
-    ret += (20.0 * Math.sin(6.0 * x * Math.PI) + 20.0 * Math.sin(2.0 * x * Math.PI)) * 2.0 / 3.0;
-    ret += (20.0 * Math.sin(x * Math.PI) + 40.0 * Math.sin(x / 3.0 * Math.PI)) * 2.0 / 3.0;
-    ret += (150.0 * Math.sin(x / 12.0 * Math.PI) + 300.0 * Math.sin(x / 30.0 * Math.PI)) * 2.0 / 3.0;
-    return ret;
-  };
-
-  const outLat = transformLat(lng - 105.0, lat - 35.0);
-  const outLng = transformLng(lng - 105.0, lat - 35.0);
-  const radLat = lat / 180.0 * Math.PI;
-  let magic = Math.sin(radLat);
-  magic = 1 - ee * magic * magic;
-  const sqrtMagic = Math.sqrt(magic);
-  const dLat = (outLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * Math.PI);
-  const dLng = (outLng * 180.0) / (a / sqrtMagic * Math.cos(radLat) * Math.PI);
-  return [lng + dLng, lat + dLat];
-};
-
 const calculateDistance = (p1: LngLatType, p2: LngLatType): number => {
   const R = 6371000;
   const lat1 = (p1.lat * Math.PI) / 180;
@@ -218,17 +230,16 @@ const calculateBearing = (p1: LngLatType, p2: LngLatType): number => {
   return (bearing + 360) % 360;
 };
 
-const normalizePoint = (point: RawTrackPoint | any): TrackPoint => {
-  if (Array.isArray(point)) {
-    return { lng: point[0], lat: point[1], speed: point[2] || 30, time: point[3] || 0 };
-  }
+const normalizePoint = (point: RawTrackPoint): TrackPoint => {
+  if (Array.isArray(point)) return { lng: point[0], lat: point[1], speed: point[2] || 30, time: point[3] || 0 };
   return { lng: point.lng, lat: point.lat, speed: (point as any).speed || 30, time: (point as any).time || 0 };
 };
 
-// 道格拉斯-普克抽稀
+// 抽稀、平滑等（为精简只保留关键纠偏）
 const douglasPeucker = (points: TrackPoint[], tolerance: number): TrackPoint[] => {
   if (points.length <= 2) return points;
-  let maxDist = 0, maxIdx = 0;
+  let maxDist = 0,
+      maxIdx = 0;
   const perpendicularDistance = (p: TrackPoint, p1: TrackPoint, p2: TrackPoint): number => {
     const area = Math.abs((p2.lng - p1.lng) * (p1.lat - p.lat) - (p1.lng - p.lng) * (p2.lat - p1.lat));
     const bottom = Math.hypot(p2.lng - p1.lng, p2.lat - p1.lat);
@@ -246,10 +257,10 @@ const douglasPeucker = (points: TrackPoint[], tolerance: number): TrackPoint[] =
   return [points[0], points[points.length - 1]];
 };
 
-// 卡尔曼滤波平滑
 const kalmanFilter = (points: TrackPoint[]): TrackPoint[] => {
   if (points.length < 3) return points;
-  const Q = 0.01, R = 0.1;
+  const Q = 0.01,
+      R = 0.1;
   const filtered: TrackPoint[] = [points[0]];
   for (let i = 1; i < points.length - 1; i++) {
     const prev = filtered[i - 1];
@@ -266,7 +277,6 @@ const kalmanFilter = (points: TrackPoint[]): TrackPoint[] => {
   return filtered;
 };
 
-// 轨迹纠偏
 const correctTrack = (points: TrackPoint[]): TrackPoint[] => {
   if (!props.enableCorrection) return points;
   let corrected = [...points];
@@ -312,7 +322,7 @@ const processTrackData = async (): Promise<void> => {
   remainingDistance.value = totalDistance.value;
 };
 
-// ==================== 获取高德瓦片URL ====================
+// ==================== 底图瓦片 URL ====================
 const getTileUrl = (): string => {
   if (props.customTileUrl) return props.customTileUrl;
   const key = props.gaodeKey ? `&key=${props.gaodeKey}` : '';
@@ -326,103 +336,60 @@ const getTileUrl = (): string => {
     case 'gaode_satellite_annot':
       return `https://webst${sub}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}${key}`;
     case 'osm':
-      return `https://tile.openstreetmap.org/{z}/{x}/{y}.png`;
+      return 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
     default:
       return `https://webrd${sub}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}${key}`;
   }
 };
 
-// ==================== 地图初始化 ====================
+// ==================== 地图初始化（核心修复） ====================
 const initMap = (retryCount = 0): void => {
-  if (!mapContainer.value) return;
-  if (isInitializing.value) return;
-
-  // 检查容器尺寸，若为0则延迟重试
+  if (!mapContainer.value || isInitializing.value) return;
   const rect = mapContainer.value.getBoundingClientRect();
   if (rect.width === 0 || rect.height === 0) {
     if (retryCount < 10) {
-      console.warn(`容器尺寸为零 (尝试 ${retryCount + 1})，重试中...`);
       setTimeout(() => initMap(retryCount + 1), 200);
-    } else {
-      console.error('容器尺寸始终为零，请检查CSS布局');
-    }
-    return;
-  }
-
-  isInitializing.value = true;
-
-  // 设置token
-  if (props.mapType !== 'mapbox') {
-    mapboxgl.accessToken = '';
-  } else {
-    if (!props.accessToken) {
-      console.error('使用 Mapbox 样式需要提供 accessToken');
-      isInitializing.value = false;
       return;
     }
-    mapboxgl.accessToken = props.accessToken;
+    console.error('容器尺寸始终为零');
+    return;
   }
+  isInitializing.value = true;
 
-  const options: any = {
+  mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_v柴53B8J8wH_fXas-1w';
+
+  // 空样式对象
+  const emptyStyle = { version: 8, sources: {}, layers: [] };
+
+  const options: MapboxOptions = {
     container: mapContainer.value,
-    style: props.mapType === 'mapbox' ? props.mapboxStyle : props.mapStyle,
+    style: emptyStyle,
     center: props.mapOptions.center as [number, number],
     zoom: props.mapOptions.zoom,
     pitch: props.mapOptions.pitch || 0,
     bearing: props.mapOptions.bearing || 0,
     minZoom: props.mapOptions.minZoom || 2,
     maxZoom: props.mapOptions.maxZoom || 20,
-    projection: props.mapOptions.projection || 'globe', // 默认使用墨卡托投影
   };
-  // if (props.mapType !== 'mapbox') options.style = undefined;
 
   const mapInstance = new mapboxgl.Map(options);
   map.value = mapInstance;
 
-  // 错误监听 - 捕获矩阵求逆错误并恢复
-  mapInstance.on('error', (e) => {
-    const errorMsg = e.error?.message || '';
-    if (errorMsg.includes('invert matrix')) {
-      console.warn('检测到矩阵求逆错误，尝试恢复...');
-      const center = props.mapOptions.center || [116.397428, 39.90923];
-      const zoom = props.mapOptions.zoom || 12;
-      mapInstance.jumpTo({ center, zoom, pitch: 0, bearing: 0 });
-      requestAnimationFrame(() => {
-        mapInstance.resize();
-      });
-    }
-  });
+  mapInstance.on('error', (e) => console.debug('地图错误（可忽略）:', e));
 
-  // 添加控件
-  if (props.controls.navigation) mapInstance.addControl(new mapboxgl.NavigationControl(), "top-right");
-  if (props.controls.scale) mapInstance.addControl(new mapboxgl.ScaleControl(), "bottom-right");
-  if (props.controls.fullscreen) mapInstance.addControl(new mapboxgl.FullscreenControl(), "top-right");
-  if (props.controls.geolocate) mapInstance.addControl(new mapboxgl.GeolocateControl(), "top-right");
+  if (props.controls.navigation) mapInstance.addControl(new mapboxgl.NavigationControl(), 'top-right');
+  if (props.controls.scale) mapInstance.addControl(new mapboxgl.ScaleControl(), 'bottom-right');
 
-  mapInstance.on("load", () => {
-    // 加载完成后再次确保尺寸正确
+  // 加载完成后添加瓦片
+  let baseLayerAdded = false;
+  mapInstance.on('load', () => {
+    console.log('✅ 地图 load 事件触发');
     mapInstance.resize();
-
- /*   if (props.mapType !== 'mapbox') {
-      const tileUrl = getTileUrl();
-      if (tileUrl) {
-        mapInstance.addSource('base-tile', {
-          type: 'raster',
-          tiles: [tileUrl],
-          tileSize: 256,
-        });
-        mapInstance.addLayer({
-          id: 'base-tile-layer',
-          type: 'raster',
-          source: 'base-tile',
-          paint: { 'raster-opacity': 1 },
-        });
-      }
-    }*/
-
+    addBaseLayer(mapInstance);
+    baseLayerAdded = true;
     isMapReady.value = true;
     isInitializing.value = false;
-    emit("ready", { map: mapInstance });
+    emit('ready', { map: mapInstance });
 
     if (props.trackMode) {
       processTrackData().then(() => {
@@ -435,80 +402,97 @@ const initMap = (retryCount = 0): void => {
     }
   });
 
-  mapInstance.on("click", (e) => {
-    emit("click", { lng: e.lngLat.lng, lat: e.lngLat.lat });
-  });
-
-  // 监听 resize 事件，确保容器尺寸变化时地图正确更新
-  mapInstance.on('resize', () => {
-    const rect2 = mapContainer.value?.getBoundingClientRect();
-    if (rect2 && (rect2.width === 0 || rect2.height === 0)) {
-      console.warn('地图resize后尺寸为零，尝试恢复...');
-      setTimeout(() => { if (map.value) map.value.resize(); }, 100);
+  // 监听 styledata，如果图层丢失则重新添加
+  mapInstance.on('styledata', () => {
+    if (!baseLayerAdded) return;
+    const source = mapInstance.getSource('base-tile');
+    const layer = mapInstance.getLayer('base-tile-layer');
+    if (!source || !layer) {
+      console.warn('检测到底图图层丢失，重新添加...');
+      addBaseLayer(mapInstance);
     }
   });
 
-  window.addEventListener('resize', () => { if (map.value) map.value.resize(); });
+  // 点击事件
+  mapInstance.on('click', (e) => emit('click', { lng: e.lngLat.lng, lat: e.lngLat.lat }));
+
+  // resize 事件
+  mapInstance.on('resize', () => {
+    const rect2 = mapContainer.value?.getBoundingClientRect();
+    if (rect2 && (rect2.width === 0 || rect2.height === 0)) {
+      setTimeout(() => mapInstance.resize(), 100);
+    }
+  });
+
+  window.addEventListener('resize', () => mapInstance.resize());
+};
+
+// 添加底图图层
+const addBaseLayer = (mapInstance: Map) => {
+  if (props.mapType === 'mapbox') return;
+  const tileUrl = getTileUrl();
+  if (!tileUrl) return;
+  try {
+    if (!mapInstance.getSource('base-tile')) {
+      mapInstance.addSource('base-tile', { type: 'raster', tiles: [tileUrl], tileSize: 256 });
+    }
+    if (!mapInstance.getLayer('base-tile-layer')) {
+      mapInstance.addLayer({
+        id: 'base-tile-layer',
+        type: 'raster',
+        source: 'base-tile',
+        paint: { 'raster-opacity': 1 },
+      });
+    }
+    console.log('✅ 底图图层已添加');
+  } catch (err) {
+    console.warn('添加底图失败:', err);
+  }
 };
 
 // ==================== 轨迹方法 ====================
 const drawTrackLine = (): void => {
-  const mapInstance = map.value;
-  if (!mapInstance || !displayPoints.value.length) return;
-  if (mapInstance.getLayer(trackLayerId)) mapInstance.removeLayer(trackLayerId);
-  if (mapInstance.getSource(trackSourceId)) mapInstance.removeSource(trackSourceId);
+  if (!map.value || !displayPoints.value.length) return;
+  if (map.value.getLayer(trackLayerId)) map.value.removeLayer(trackLayerId);
+  if (map.value.getSource(trackSourceId)) map.value.removeSource(trackSourceId);
   const geojson: Feature<LineString> = {
-    type: "Feature",
-    geometry: {
-      type: "LineString",
-      coordinates: displayPoints.value.map(p => [p.lng, p.lat]),
-    },
+    type: 'Feature',
+    geometry: { type: 'LineString', coordinates: displayPoints.value.map(p => [p.lng, p.lat]) },
     properties: {},
   };
-  mapInstance.addSource(trackSourceId, { type: "geojson", data: geojson });
-  mapInstance.addLayer({
+  map.value.addSource(trackSourceId, { type: 'geojson', data: geojson });
+  map.value.addLayer({
     id: trackLayerId,
-    type: "line",
+    type: 'line',
     source: trackSourceId,
-    paint: {
-      "line-color": props.trackColor,
-      "line-width": props.trackWidth,
-      "line-opacity": 0.9,
-    },
+    paint: { 'line-color': props.trackColor, 'line-width': props.trackWidth, 'line-opacity': 0.9 },
   });
 };
 
 const addStartEndMarkers = (): void => {
-  const mapInstance = map.value;
-  if (!mapInstance || !displayPoints.value.length) return;
+  if (!map.value || !displayPoints.value.length) return;
   if (startMarker) startMarker.remove();
   if (endMarker) endMarker.remove();
   const start = displayPoints.value[0];
   const end = displayPoints.value[displayPoints.value.length - 1];
-  startMarker = new mapboxgl.Marker({ color: "#4CAF50" })
+  startMarker = new mapboxgl.Marker({ color: '#4CAF50' })
       .setLngLat([start.lng, start.lat])
-      .setPopup(new mapboxgl.Popup().setText("起点"))
-      .addTo(mapInstance);
-  endMarker = new mapboxgl.Marker({ color: "#F44336" })
+      .setPopup(new mapboxgl.Popup().setText('起点'))
+      .addTo(map.value);
+  endMarker = new mapboxgl.Marker({ color: '#F44336' })
       .setLngLat([end.lng, end.lat])
-      .setPopup(new mapboxgl.Popup().setText("终点"))
-      .addTo(mapInstance);
+      .setPopup(new mapboxgl.Popup().setText('终点'))
+      .addTo(map.value);
 };
 
 const addCarMarker = (): void => {
-  const mapInstance = map.value;
-  if (!mapInstance || !displayPoints.value.length) return;
+  if (!map.value || !displayPoints.value.length) return;
   if (carMarker) carMarker.remove();
-  const el = document.createElement("div");
-  el.style.backgroundImage = `url(${props.carIcon})`;
-  el.style.backgroundSize = "contain";
-  el.style.width = `${props.carIconSize.width}px`;
-  el.style.height = `${props.carIconSize.height}px`;
-  el.style.backgroundRepeat = "no-repeat";
-  el.style.backgroundPosition = "center";
-  carMarker = new mapboxgl.Marker({ element: el, rotationAlignment: "map" })
+  const el = document.createElement('div');
+  el.style.cssText = `background-image:url(${props.carIcon});background-size:contain;width:${props.carIconSize.width}px;height:${props.carIconSize.height}px;background-repeat:no-repeat;background-position:center;`;
+  carMarker = new mapboxgl.Marker({ element: el, rotationAlignment: 'map' })
       .setLngLat([displayPoints.value[0].lng, displayPoints.value[0].lat])
-      .addTo(mapInstance);
+      .addTo(map.value);
   if (props.autoRotateCar && segmentAngles.value[0]) carMarker.setRotation(segmentAngles.value[0]);
 };
 
@@ -520,15 +504,17 @@ const updateCarPosition = (idx: number): void => {
   let remaining = 0;
   for (let i = idx; i < distances.value.length; i++) remaining += distances.value[i];
   remainingDistance.value = remaining;
-  emit("trackPointChange", { index: idx, point, remainingDistance:remainingDistance.value });
+  emit('trackPointChange', { index: idx, point, remainingDistance });
 };
 
 const fitTrackBounds = (): void => {
-  const mapInstance = map.value;
-  if (!mapInstance || !displayPoints.value.length) return;
+  if (!map.value || !displayPoints.value.length) return;
   const coordinates = displayPoints.value.map(p => [p.lng, p.lat]);
-  const bounds = coordinates.reduce((b, coord) => b.extend(coord as [number, number]), new mapboxgl.LngLatBounds(coordinates[0] as [number, number], coordinates[0] as [number, number]));
-  mapInstance.fitBounds(bounds, { padding: 50 });
+  const bounds = coordinates.reduce(
+      (b, coord) => b.extend(coord as [number, number]),
+      new mapboxgl.LngLatBounds(coordinates[0] as [number, number], coordinates[0] as [number, number])
+  );
+  map.value.fitBounds(bounds, { padding: 50 });
 };
 
 const followCar = (): void => {
@@ -580,13 +566,14 @@ const playTrack = (): void => {
         carMarker?.setRotation(bearing);
       }
     }
-    if (progress < 1) animationId = requestAnimationFrame(animate);
-    else {
+    if (progress < 1) {
+      animationId = requestAnimationFrame(animate);
+    } else {
       isPlaying.value = false;
       currentIndex.value = displayPoints.value.length - 1;
       progressPercent.value = 100;
       updateCarPosition(currentIndex.value);
-      emit("trackComplete", { totalDistance: totalDistance.value, totalPoints: displayPoints.value.length });
+      emit('trackComplete', { totalDistance: totalDistance.value, totalPoints: displayPoints.value.length });
     }
   };
   animationId = requestAnimationFrame(animate);
@@ -640,39 +627,20 @@ const toggleCorrection = (): void => {
 const toggleFollowCar = (): void => { followCarMode.value = !followCarMode.value; };
 
 // ==================== 通用地图方法 ====================
-// 坐标转换：传入的 WGS84 坐标转为 GCJ-02（用于高德底图打点）
-const convertToGcj = (pos: [number, number]): [number, number] => {
-/*  if (props.mapType.includes('gaode')) {
-    return wgs84ToGcj02(pos[0], pos[1]);
-  }*/
-  return pos;
-};
-
 const addMarker = (options: MarkerOptions): void => {
-  const mapInstance = map.value;
-  if (!mapInstance) return;
-  const pos = convertToGcj(options.position);
-  const el = document.createElement("div");
+  if (!map.value) return;
+  const el = document.createElement('div');
   if (options.icon) {
-    el.style.backgroundImage = `url(${options.icon})`;
-    el.style.backgroundSize = "contain";
-    el.style.width = `${options.iconSize?.width || 30}px`;
-    el.style.height = `${options.iconSize?.height || 30}px`;
-    el.style.backgroundRepeat = "no-repeat";
-    el.style.backgroundPosition = "center";
+    el.style.cssText = `background-image:url(${options.icon});background-size:contain;width:${options.iconSize?.width || 30}px;height:${options.iconSize?.height || 30}px;background-repeat:no-repeat;background-position:center;`;
   } else {
-    el.style.width = `${props.defaultStyles.marker.size || 12}px`;
-    el.style.height = `${props.defaultStyles.marker.size || 12}px`;
-    el.style.borderRadius = "50%";
-    el.style.backgroundColor = "#FF5722";
-    el.style.border = "2px solid white";
+    el.style.cssText = `width:${props.defaultStyles.marker.size || 12}px;height:${props.defaultStyles.marker.size || 12}px;border-radius:50%;background-color:#FF5722;border:2px solid white;`;
   }
   const marker = new mapboxgl.Marker({ element: el, draggable: options.draggable || false })
-      .setLngLat(pos)
+      .setLngLat(options.position)
       .setPopup(options.autoShowInfo && options.infoContent ? new mapboxgl.Popup().setHTML(options.infoContent) : undefined)
-      .addTo(mapInstance);
-  marker.getElement().addEventListener("click", () => {
-    emit("markerClick", { id: options.id || "marker", position: options.position, properties: options.properties });
+      .addTo(map.value);
+  marker.getElement().addEventListener('click', () => {
+    emit('markerClick', { id: options.id || 'marker', position: options.position, properties: options.properties });
   });
   markers.value.push(marker);
 };
@@ -680,84 +648,75 @@ const addMarker = (options: MarkerOptions): void => {
 const clearMarkers = (): void => { markers.value.forEach(m => m.remove()); markers.value = []; };
 
 const addPolyline = (options: PolylineOptions): void => {
-  const mapInstance = map.value;
-  if (!mapInstance) return;
-  const path = options.path.map(p => convertToGcj(p));
+  if (!map.value) return;
   const sourceId = `polyline-${options.id || Date.now()}`;
   const layerId = `polyline-layer-${options.id || Date.now()}`;
-  const geojson: Feature<LineString> | any= {
-    type: "Feature",
-    geometry: { type: "LineString", coordinates: path },
+  const geojson: Feature<LineString> = {
+    type: 'Feature',
+    geometry: { type: 'LineString', coordinates: options.path },
     properties: options.properties,
   };
-  mapInstance.addSource(sourceId, { type: "geojson", data: geojson });
-  mapInstance.addLayer({
+  map.value.addSource(sourceId, { type: 'geojson', data: geojson });
+  map.value.addLayer({
     id: layerId,
-    type: "line",
+    type: 'line',
     source: sourceId,
     paint: {
-      "line-color": options.color || props.defaultStyles.polyline.color,
-      "line-width": options.width || props.defaultStyles.polyline.width,
-      "line-opacity": options.opacity || props.defaultStyles.polyline.opacity,
-      "line-dasharray": options.dashArray,
+      'line-color': options.color || props.defaultStyles.polyline.color,
+      'line-width': options.width || props.defaultStyles.polyline.width,
+      'line-opacity': options.opacity || props.defaultStyles.polyline.opacity,
+      'line-dasharray': options.dashArray,
     },
   });
-  mapInstance.on("click", layerId, (e: any) => {
-    emit("polylineClick", { id: options.id || "polyline", properties: e.features?.[0]?.properties });
+  map.value.on('click', layerId, (e: any) => {
+    emit('polylineClick', { id: options.id || 'polyline', properties: e.features?.[0]?.properties });
   });
   sourceIds.value.push(sourceId);
   layerIds.value.push(layerId);
 };
 
 const clearPolylines = (): void => {
-  const mapInstance = map.value;
-  if (!mapInstance) return;
-  layerIds.value.filter(id => id.startsWith("polyline-layer-")).forEach(id => {
-    if (mapInstance.getLayer(id)) mapInstance.removeLayer(id);
+  if (!map.value) return;
+  layerIds.value.filter(id => id.startsWith('polyline-layer-')).forEach(id => {
+    if (map.value.getLayer(id)) map.value.removeLayer(id);
   });
-  sourceIds.value.filter(id => id.startsWith("polyline-")).forEach(id => {
-    if (mapInstance.getSource(id)) mapInstance.removeSource(id);
+  sourceIds.value.filter(id => id.startsWith('polyline-')).forEach(id => {
+    if (map.value.getSource(id)) map.value.removeSource(id);
   });
-  sourceIds.value = sourceIds.value.filter(id => !id.startsWith("polyline-"));
-  layerIds.value = layerIds.value.filter(id => !id.startsWith("polyline-layer-"));
+  sourceIds.value = sourceIds.value.filter(id => !id.startsWith('polyline-'));
+  layerIds.value = layerIds.value.filter(id => !id.startsWith('polyline-layer-'));
 };
 
 const addPolygon = (options: PolygonOptions): void => {
-  console.log(1111)
-  console.log(map.value)
-  const mapInstance = map.value;
-  if (!mapInstance) return;
-  const paths = options.paths.map(ring => ring.map(p => convertToGcj(p)));
-  console.log('paths',paths)
+  if (!map.value) return;
   const sourceId = `polygon-${options.id || Date.now()}`;
   const layerId = `polygon-layer-${options.id || Date.now()}`;
-  const geojson: Feature<Polygon> | any= {
-    type: "Feature",
-    geometry: { type: "Polygon", coordinates: paths },
+  const geojson: Feature<Polygon> = {
+    type: 'Feature',
+    geometry: { type: 'Polygon', coordinates: options.paths },
     properties: options.properties,
   };
-  mapInstance.addSource(sourceId, { type: "geojson", data: geojson });
-  mapInstance.addLayer({
+  map.value.addSource(sourceId, { type: 'geojson', data: geojson });
+  map.value.addLayer({
     id: layerId,
-    type: "fill",
+    type: 'fill',
     source: sourceId,
     paint: {
-      "fill-color": options.fillColor || props.defaultStyles.polygon.fillColor,
-      "fill-opacity": options.fillOpacity || props.defaultStyles.polygon.fillOpacity,
+      'fill-color': options.fillColor || props.defaultStyles.polygon.fillColor,
+      'fill-opacity': options.fillOpacity || props.defaultStyles.polygon.fillOpacity,
     },
   });
-  mapInstance.addLayer({
+  map.value.addLayer({
     id: `${layerId}-stroke`,
-    type: "line",
+    type: 'line',
     source: sourceId,
     paint: {
-      "line-color": options.strokeColor || props.defaultStyles.polygon.strokeColor,
-      "line-width": options.strokeWidth || props.defaultStyles.polygon.strokeWidth,
+      'line-color': options.strokeColor || props.defaultStyles.polygon.strokeColor,
+      'line-width': options.strokeWidth || props.defaultStyles.polygon.strokeWidth,
     },
   });
-  console.log(mapInstance)
-  mapInstance.on("click", layerId, (e: any) => {
-    emit("polygonClick", { id: options.id || "polygon", properties: e.features?.[0]?.properties });
+  map.value.on('click', layerId, (e: any) => {
+    emit('polygonClick', { id: options.id || 'polygon', properties: e.features?.[0]?.properties });
   });
   sourceIds.value.push(sourceId);
   layerIds.value.push(layerId);
@@ -765,24 +724,23 @@ const addPolygon = (options: PolygonOptions): void => {
 };
 
 const clearPolygons = (): void => {
-  const mapInstance = map.value;
-  if (!mapInstance) return;
-  layerIds.value.filter(id => id.startsWith("polygon-layer-")).forEach(id => {
-    if (mapInstance.getLayer(id)) mapInstance.removeLayer(id);
+  if (!map.value) return;
+  layerIds.value.filter(id => id.startsWith('polygon-layer-')).forEach(id => {
+    if (map.value.getLayer(id)) map.value.removeLayer(id);
   });
-  sourceIds.value.filter(id => id.startsWith("polygon-")).forEach(id => {
-    if (mapInstance.getSource(id)) mapInstance.removeSource(id);
+  sourceIds.value.filter(id => id.startsWith('polygon-')).forEach(id => {
+    if (map.value.getSource(id)) map.value.removeSource(id);
   });
-  sourceIds.value = sourceIds.value.filter(id => !id.startsWith("polygon-"));
-  layerIds.value = layerIds.value.filter(id => !id.startsWith("polygon-layer-"));
+  sourceIds.value = sourceIds.value.filter(id => !id.startsWith('polygon-'));
+  layerIds.value = layerIds.value.filter(id => !id.startsWith('polygon-layer-'));
 };
 
 const addCircle = (options: CircleOptions): void => {
   try {
-    const turf = require("@turf/turf");
-    const center = turf.point(convertToGcj(options.center));
-    const circle = turf.circle(center, options.radius, { steps: 64, units: "meters" });
-    const paths = (circle.geometry as Polygon | any).coordinates;
+    const turf = require('@turf/turf');
+    const center = turf.point(options.center);
+    const circle = turf.circle(center, options.radius, { steps: 64, units: 'meters' });
+    const paths = (circle.geometry as any).coordinates;
     addPolygon({
       id: options.id,
       paths,
@@ -793,7 +751,7 @@ const addCircle = (options: CircleOptions): void => {
       properties: options.properties,
     });
   } catch (e) {
-    console.warn("turf not available, circle not added");
+    console.warn('turf 未安装，圆形添加失败');
   }
 };
 
@@ -804,9 +762,9 @@ const clearAllOverlays = (): void => {
   clearPolylines();
   clearPolygons();
   clearCircles();
-  if (trackSourceId && map.value?.getSource(trackSourceId)) {
+  if (map.value) {
     if (map.value.getLayer(trackLayerId)) map.value.removeLayer(trackLayerId);
-    map.value.removeSource(trackSourceId);
+    if (map.value.getSource(trackSourceId)) map.value.removeSource(trackSourceId);
   }
   if (startMarker) startMarker.remove();
   if (endMarker) endMarker.remove();
@@ -821,84 +779,76 @@ let clusterLayer: string | null = null;
 let clusterCountLayer: string | null = null;
 
 const addMarkerCluster = (points: ClusterPoint[], options: { radius?: number; maxZoom?: number; styles?: ClusterStyle[] } = {}): void => {
-  const mapInstance = map.value;
-  if (!mapInstance) return;
+  if (!map.value) return;
   clearMarkerCluster();
-  const sourceId = "cluster-source";
-  const layerId = "cluster-layer";
-  const countLayerId = "cluster-count-layer";
-  const features = points.map(p => ({
-    type: "Feature" as const,
-    geometry: { type: "Point" as const, coordinates: convertToGcj(p.position) },
-    properties: { title: p.title, ...p.properties },
-  }));
-  const geojson: FeatureCollection<Point> = { type: "FeatureCollection", features };
-  mapInstance.addSource(sourceId, {
-    type: "geojson",
+  const sourceId = 'cluster-source';
+  const layerId = 'cluster-layer';
+  const countLayerId = 'cluster-count-layer';
+  const geojson: FeatureCollection<Point> = {
+    type: 'FeatureCollection',
+    features: points.map(p => ({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: p.position },
+      properties: { title: p.title, ...p.properties },
+    })),
+  };
+  map.value.addSource(sourceId, {
+    type: 'geojson',
     data: geojson,
     cluster: true,
     clusterMaxZoom: options.maxZoom || 14,
     clusterRadius: options.radius || 50,
   });
-  const clusterStyles = options.styles || [{ color: "#FF9800", radius: 20, textColor: "#fff", textSize: 14 }];
+  const clusterStyles = options.styles || [{ color: '#FF9800', radius: 20, textColor: '#fff', textSize: 14 }];
   const getClusterColor = (count: number): string => {
-    if (count < 10) return clusterStyles[0]?.color || "#FF9800";
-    if (count < 30) return clusterStyles[1]?.color || "#FF5722";
-    return clusterStyles[2]?.color || "#F44336";
+    if (count < 10) return clusterStyles[0]?.color || '#FF9800';
+    if (count < 30) return clusterStyles[1]?.color || '#FF5722';
+    return clusterStyles[2]?.color || '#F44336';
   };
   const getClusterRadius = (count: number): number => {
     if (count < 10) return clusterStyles[0]?.radius || 20;
     if (count < 30) return clusterStyles[1]?.radius || 25;
     return clusterStyles[2]?.radius || 30;
   };
-  mapInstance.addLayer({
+  map.value.addLayer({
     id: layerId,
-    type: "circle",
+    type: 'circle',
     source: sourceId,
-    filter: ["has", "point_count"],
+    filter: ['has', 'point_count'],
     paint: {
-      "circle-color": ["case", ["<", ["get", "point_count"], 10], getClusterColor(5), ["<", ["get", "point_count"], 30], getClusterColor(20), getClusterColor(50)],
-      "circle-radius": ["case", ["<", ["get", "point_count"], 10], getClusterRadius(5), ["<", ["get", "point_count"], 30], getClusterRadius(20), getClusterRadius(50)],
+      'circle-color': ['case', ['<', ['get', 'point_count'], 10], getClusterColor(5), ['<', ['get', 'point_count'], 30], getClusterColor(20), getClusterColor(50)],
+      'circle-radius': ['case', ['<', ['get', 'point_count'], 10], getClusterRadius(5), ['<', ['get', 'point_count'], 30], getClusterRadius(20), getClusterRadius(50)],
     },
   });
-  mapInstance.addLayer({
+  map.value.addLayer({
     id: countLayerId,
-    type: "symbol",
+    type: 'symbol',
     source: sourceId,
-    filter: ["has", "point_count"],
-    layout: {
-      "text-field": "{point_count_abbreviated}",
-      "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-      "text-size": 12,
-    },
-    paint: { "text-color": "#fff" },
+    filter: ['has', 'point_count'],
+    layout: { 'text-field': '{point_count_abbreviated}', 'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'], 'text-size': 12 },
+    paint: { 'text-color': '#fff' },
   });
-  mapInstance.addLayer({
-    id: "unclustered-point",
-    type: "circle",
+  map.value.addLayer({
+    id: 'unclustered-point',
+    type: 'circle',
     source: sourceId,
-    filter: ["!", ["has", "point_count"]],
-    paint: {
-      "circle-color": "#FF5722",
-      "circle-radius": 8,
-      "circle-stroke-width": 2,
-      "circle-stroke-color": "#fff",
-    },
+    filter: ['!', ['has', 'point_count']],
+    paint: { 'circle-color': '#FF5722', 'circle-radius': 8, 'circle-stroke-width': 2, 'circle-stroke-color': '#fff' },
   });
-  mapInstance.on("click", layerId, (e: any) => {
-    const features = mapInstance.queryRenderedFeatures(e.point, { layers: [layerId] });
+  map.value.on('click', layerId, (e: any) => {
+    const features = map.value!.queryRenderedFeatures(e.point, { layers: [layerId] });
     if (features.length) {
       const clusterId = features[0].properties?.cluster_id;
-      const source = mapInstance.getSource(sourceId);
+      const source = map.value!.getSource(sourceId) as mapboxgl.GeoJSONSource;
       if (source && clusterId !== undefined) {
         source.getClusterExpansionZoom(clusterId, (err, zoom) => {
           if (err) return;
-          mapInstance.easeTo({ center: (features[0].geometry as Point).coordinates as [number, number], zoom: zoom + 1 });
+          map.value!.easeTo({ center: (features[0].geometry as any).coordinates as [number, number], zoom: zoom + 1 });
         });
       }
-      emit("clusterClick", {
+      emit('clusterClick', {
         clusterId: clusterId,
-        coordinates: (features[0].geometry as Point).coordinates as [number, number],
+        coordinates: (features[0].geometry as any).coordinates as [number, number],
         pointCount: features[0].properties?.point_count || 0,
       });
     }
@@ -909,12 +859,11 @@ const addMarkerCluster = (points: ClusterPoint[], options: { radius?: number; ma
 };
 
 const clearMarkerCluster = (): void => {
-  const mapInstance = map.value;
-  if (!mapInstance) return;
-  if (clusterLayer && mapInstance.getLayer(clusterLayer)) mapInstance.removeLayer(clusterLayer);
-  if (clusterCountLayer && mapInstance.getLayer(clusterCountLayer)) mapInstance.removeLayer(clusterCountLayer);
-  if (mapInstance.getLayer("unclustered-point")) mapInstance.removeLayer("unclustered-point");
-  if (clusterSource && mapInstance.getSource(clusterSource)) mapInstance.removeSource(clusterSource);
+  if (!map.value) return;
+  if (clusterLayer && map.value.getLayer(clusterLayer)) map.value.removeLayer(clusterLayer);
+  if (clusterCountLayer && map.value.getLayer(clusterCountLayer)) map.value.removeLayer(clusterCountLayer);
+  if (map.value.getLayer('unclustered-point')) map.value.removeLayer('unclustered-point');
+  if (clusterSource && map.value.getSource(clusterSource)) map.value.removeSource(clusterSource);
   clusterSource = null;
   clusterLayer = null;
   clusterCountLayer = null;
@@ -925,29 +874,30 @@ let heatmapSource: string | null = null;
 let heatmapLayer: string | null = null;
 
 const addHeatmap = (data: HeatmapDataPoint[], options: { radius?: number; opacity?: number; gradient?: Record<number, string> } = {}): void => {
-  const mapInstance = map.value;
-  if (!mapInstance) return;
+  if (!map.value) return;
   removeHeatmap();
-  const sourceId = "heatmap-source";
-  const layerId = "heatmap-layer";
-  const features = data.map(d => ({
-    type: "Feature" as const,
-    geometry: { type: "Point" as const, coordinates: convertToGcj([d.lng, d.lat]) },
-    properties: { weight: d.weight || 1 },
-  }));
-  const geojson: FeatureCollection<Point> = { type: "FeatureCollection", features };
-  mapInstance.addSource(sourceId, { type: "geojson", data: geojson });
-  mapInstance.addLayer({
+  const sourceId = 'heatmap-source';
+  const layerId = 'heatmap-layer';
+  const geojson: FeatureCollection<Point> = {
+    type: 'FeatureCollection',
+    features: data.map(d => ({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [d.lng, d.lat] },
+      properties: { weight: d.weight || 1 },
+    })),
+  };
+  map.value.addSource(sourceId, { type: 'geojson', data: geojson });
+  map.value.addLayer({
     id: layerId,
-    type: "heatmap",
+    type: 'heatmap',
     source: sourceId,
     paint: {
-      "heatmap-radius": options.radius || 30,
-      "heatmap-opacity": options.opacity || 0.8,
-      "heatmap-weight": ["get", "weight"],
-      "heatmap-color": options.gradient
-          ? ["interpolate", ["linear"], ["heatmap-density"], ...Object.entries(options.gradient).flat()]
-          : ["interpolate", ["linear"], ["heatmap-density"], 0, "rgba(0,0,255,0)", 0.2, "blue", 0.4, "cyan", 0.6, "lime", 0.8, "yellow", 1, "red"],
+      'heatmap-radius': options.radius || 30,
+      'heatmap-opacity': options.opacity || 0.8,
+      'heatmap-weight': ['get', 'weight'],
+      'heatmap-color': options.gradient
+          ? ['interpolate', ['linear'], ['heatmap-density'], ...Object.entries(options.gradient).flat()]
+          : ['interpolate', ['linear'], ['heatmap-density'], 0, 'rgba(0,0,255,0)', 0.2, 'blue', 0.4, 'cyan', 0.6, 'lime', 0.8, 'yellow', 1, 'red'],
     },
   });
   heatmapSource = sourceId;
@@ -955,25 +905,22 @@ const addHeatmap = (data: HeatmapDataPoint[], options: { radius?: number; opacit
 };
 
 const removeHeatmap = (): void => {
-  const mapInstance = map.value;
-  if (!mapInstance) return;
-  if (heatmapLayer && mapInstance.getLayer(heatmapLayer)) mapInstance.removeLayer(heatmapLayer);
-  if (heatmapSource && mapInstance.getSource(heatmapSource)) mapInstance.removeSource(heatmapSource);
+  if (!map.value) return;
+  if (heatmapLayer && map.value.getLayer(heatmapLayer)) map.value.removeLayer(heatmapLayer);
+  if (heatmapSource && map.value.getSource(heatmapSource)) map.value.removeSource(heatmapSource);
   heatmapSource = null;
   heatmapLayer = null;
 };
 
 // ==================== 弹窗 ====================
 const openPopup = (position: [number, number], content: string | HTMLElement, options: { offset?: number; autoClose?: boolean } = {}): void => {
-  const mapInstance = map.value;
-  if (!mapInstance) return;
+  if (!map.value) return;
   closePopup();
-  const pos = convertToGcj(position);
   const popup = new mapboxgl.Popup({ offset: options.offset || [0, -20], closeButton: true, closeOnClick: false })
-      .setLngLat(pos)
-      .setHTML(typeof content === "string" ? content : content.outerHTML)
-      .addTo(mapInstance);
-  popup.on("close", () => { emit("popupClose"); isPopupOpen.value = false; });
+      .setLngLat(position)
+      .setHTML(typeof content === 'string' ? content : content.outerHTML)
+      .addTo(map.value);
+  popup.on('close', () => { emit('popupClose'); isPopupOpen.value = false; });
   popupInstance.value = popup;
   isPopupOpen.value = true;
   popupPosition.value = { lng: position[0], lat: position[1] };
@@ -982,57 +929,44 @@ const openPopup = (position: [number, number], content: string | HTMLElement, op
 };
 
 const closePopup = (): void => {
-  if (popupInstance.value) { popupInstance.value.remove(); popupInstance.value = null; }
+  if (popupInstance.value) { popupInstance.value.remove();
+    popupInstance.value = null; }
   isPopupOpen.value = false;
   popupData.value = null;
 };
 
 // ==================== 地理编码 ====================
-const reGeoCode = async (position: [number, number]): Promise<{ formattedAddress: string; placeName: string }> => {
-  const pos = convertToGcj(position);
-  if (props.accessToken) {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${pos[0]},${pos[1]}.json?access_token=${props.accessToken}`;
+const reGeoCode = async (position: [number, number]): Promise<{ formattedAddress: string }> => {
+  try {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position[1]}&lon=${position[0]}&zoom=18&addressdetails=1`;
     const response = await fetch(url);
     const data = await response.json();
-    if (data.features && data.features.length) return { formattedAddress: data.features[0].place_name, placeName: data.features[0].place_name };
-  }
-  // 降级：使用 OSM Nominatim
-  const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos[1]}&lon=${pos[0]}&zoom=18&addressdetails=1`);
-  const data = await response.json();
-  if (data && data.display_name) return { formattedAddress: data.display_name, placeName: data.display_name };
-  throw new Error("Reverse geocoding failed");
+    if (data && data.display_name) return { formattedAddress: data.display_name };
+  } catch (e) { /* ignore */ }
+  throw new Error('Reverse geocoding failed');
 };
 
 const geoCode = async (address: string): Promise<{ lng: number; lat: number }> => {
-  if (props.accessToken) {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?access_token=${props.accessToken}`;
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`;
     const response = await fetch(url);
     const data = await response.json();
-    if (data.features && data.features.length) {
-      const [lng, lat] = data.features[0].center;
-      // 将 GCJ-02 转为 WGS-84 输出（保持对外接口统一）
-      // 此处假设返回的是 WGS-84，若需精确可逆转换，但高德返回的是 GCJ-02，不做逆转换，直接输出（用户已知晓）
-      return { lng, lat };
-    }
-  }
-  const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`);
-  const data = await response.json();
-  if (data && data.length > 0) return { lng: parseFloat(data[0].lon), lat: parseFloat(data[0].lat) };
-  throw new Error("Geocoding failed");
+    if (data && data.length > 0) return { lng: parseFloat(data[0].lon), lat: parseFloat(data[0].lat) };
+  } catch (e) { /* ignore */ }
+  throw new Error('Geocoding failed');
 };
 
 // ==================== 地图控制 ====================
 const setCenter = (position: [number, number], animate = true): void => {
   if (!map.value) return;
-  const pos = convertToGcj(position);
-  if (animate) map.value.easeTo({ center: pos, duration: 500 });
-  else map.value.setCenter(pos);
+  if (animate) map.value.easeTo({ center: position, duration: 500 });
+  else map.value.setCenter(position);
 };
 
 const getCenter = (): [number, number] | null => {
   if (!map.value) return null;
-  const center = map.value.getCenter();
-  return [center.lng, center.lat];
+  const c = map.value.getCenter();
+  return [c.lng, c.lat];
 };
 
 const setZoom = (zoom: number): void => { map.value?.setZoom(zoom); };
@@ -1040,9 +974,8 @@ const getZoom = (): number | null => map.value?.getZoom() || null;
 
 const fitBounds = (points: [number, number][], padding = 50): void => {
   if (!map.value || !points.length) return;
-  const gcjPoints = points.map(p => convertToGcj(p));
-  const bounds = new mapboxgl.LngLatBounds(gcjPoints[0], gcjPoints[0]);
-  gcjPoints.forEach(p => bounds.extend(p));
+  const bounds = new mapboxgl.LngLatBounds(points[0], points[0]);
+  points.forEach(p => bounds.extend(p));
   map.value.fitBounds(bounds, { padding });
 };
 
@@ -1055,16 +988,14 @@ const refreshMap = (): void => {
   }
 };
 
-const getMap = (): any => map.value;
+const getMap = (): Map | null => map.value;
 
 // ==================== 生命周期 ====================
-onMounted(() => {
-  nextTick(() => initMap());
-});
-
+onMounted(() => { nextTick(() => initMap()); });
 onBeforeUnmount(() => {
   if (animationId) cancelAnimationFrame(animationId);
-  if (map.value) { map.value.remove(); map.value = null; }
+  if (map.value) { map.value.remove();
+    map.value = null; }
   markers.value.forEach(m => m.remove());
   markers.value = [];
   if (popupInstance.value) popupInstance.value.remove();
@@ -1084,20 +1015,43 @@ watch(() => props.originalTrackData, async () => {
 
 // ==================== 对外暴露 ====================
 defineExpose({
-  setCenter, getCenter, setZoom, getZoom, fitBounds, getMap, refreshMap,
-  addMarker, clearMarkers,
-  addPolyline, clearPolylines,
-  addPolygon, clearPolygons, addCircle, clearCircles,
+  setCenter,
+  getCenter,
+  setZoom,
+  getZoom,
+  fitBounds,
+  getMap,
+  refreshMap,
+  addMarker,
+  clearMarkers,
+  addPolyline,
+  clearPolylines,
+  addPolygon,
+  clearPolygons,
+  addCircle,
+  clearCircles,
   clearAllOverlays,
-  addMarkerCluster, clearMarkerCluster,
-  addHeatmap, removeHeatmap,
-  reGeoCode, geoCode,
-  openPopup, closePopup,
-  playTrack, pauseTrack, stopTrack, resetTrack, fitTrackBounds, followCar, toggleFollowCar, toggleCorrection,
+  addMarkerCluster,
+  clearMarkerCluster,
+  addHeatmap,
+  removeHeatmap,
+  reGeoCode,
+  geoCode,
+  openPopup,
+  closePopup,
+  playTrack,
+  pauseTrack,
+  stopTrack,
+  resetTrack,
+  fitTrackBounds,
+  followCar,
+  toggleFollowCar,
+  toggleCorrection,
   getTrackPoints: () => displayPoints.value,
   getCurrentPosition: () => displayPoints.value[currentIndex.value],
   getTrackInfo: () => trackInfo.value,
-  isPlaying, isMapReady,
+  isPlaying,
+  isMapReady,
 } as any);
 </script>
 
@@ -1110,9 +1064,7 @@ defineExpose({
   border-radius: 12px; padding: 12px 20px; color: white; z-index: 10; font-size: 14px;
 }
 .control-buttons { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-.control-buttons button {
-  padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;
-}
+.control-buttons button { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; }
 .control-buttons button:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-play { background: #4caf50; color: white; }
 .btn-pause { background: #ff9800; color: white; }

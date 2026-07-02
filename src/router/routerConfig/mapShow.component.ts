@@ -37,4 +37,9 @@ export const mapShowComponent: RouteRecordRaw[] = [
     meta: { title: 'cesium 地图' },
     component: () => import('@/docs/map/cmap/README.md')
   },
+  {
+    path: 'map/agmap',
+    meta: { title: 'arcgis 地图' },
+    component: () => import('@/docs/map/agmap/README.md')
+  },
 ]

@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
+    "@arcgis/core": "^5.1.7",
     "@bundled-es-modules/pdfjs-dist": "^3.6.172-alpha.1",
     "@element-plus/icons-vue": "^2.3.1",
     "@tinymce/tinymce-vue": "^6.3.0",
@@ -40,6 +41,7 @@
     "echarts-gl": "^2.0.9",
     "echarts-liquidfill": "^3.1.0",
     "element-plus": "^2.13.5",
+    "esri-loader": "^3.7.0",
     "fast-xml-parser": "^5.8.0",
     "github-markdown-css": "^5.1.0",
     "gsap": "^3.15.0",

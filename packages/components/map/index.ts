@@ -5,6 +5,7 @@ import ZhSmap from './src/zh-smap.vue'
 import ZhOmap from './src/zh-omap.vue'
 import ZhMbmap from "./src/zh-mbmap.vue";
 import ZhCmap from "./src/zh-cmap.vue";
+import ZhAgmap from "./src/zh-agmap.vue";
 import { App } from 'vue'
 
 export default {
@@ -16,7 +17,8 @@ export default {
     app.component('ZhOmap', ZhOmap)
     app.component('ZhMbmap', ZhMbmap)
     app.component('ZhCmap', ZhCmap)
+    app.component('ZhAgmap', ZhAgmap)
   }
 }
 
-export { ZhAmap,ZhBmap,ZhTmap,ZhSmap,ZhOmap,ZhMbmap,ZhCmap }
+export { ZhAmap,ZhBmap,ZhTmap,ZhSmap,ZhOmap,ZhMbmap,ZhCmap,ZhAgmap }
