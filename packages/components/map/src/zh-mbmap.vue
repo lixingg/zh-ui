@@ -43,7 +43,7 @@
 import { ref, onMounted, onBeforeUnmount, watch, shallowRef, computed, nextTick } from 'vue';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import type { Map, MapboxOptions } from 'mapbox-gl';
+import type {  GeoJSONSource } from 'mapbox-gl';
 import type { Feature, LineString, Polygon, Point, FeatureCollection } from 'geojson';
 
 // ==================== 类型定义 ====================
@@ -111,7 +111,7 @@ const props = defineProps({
   gaodeKey: { type: String, default: '' },
   mapboxStyle: { type: String, default: 'mapbox://styles/mapbox/streets-v12' },
   mapOptions: {
-    type: Object as () => Partial<MapboxOptions>,
+    type: Object as () => Partial<any>,
     default: () => ({ center: [116.397428, 39.90923], zoom: 12, pitch: 0, bearing: 0, minZoom: 3, maxZoom: 20 })
   },
   controls: {
@@ -151,7 +151,7 @@ const props = defineProps({
 
 // ==================== Emits ====================
 const emit = defineEmits<{
-  (e: 'ready', payload: { map: Map }): void;
+  (e: 'ready', payload: { map: any }): void;
   (e: 'click', payload: LngLatType): void;
   (e: 'markerClick', payload: { id: string; position: [number, number]; properties?: Record<string, any> }): void;
   (e: 'polylineClick', payload: { id: string; properties?: Record<string, any> }): void;
@@ -165,7 +165,7 @@ const emit = defineEmits<{
 
 // ==================== 响应式数据 ====================
 const mapContainer = ref<HTMLElement | null>(null);
-const map = shallowRef<Map | null>(null);
+const map = shallowRef<any>(null);
 const isMapReady = ref(false);
 const isInitializing = ref(false);
 
@@ -230,7 +230,7 @@ const calculateBearing = (p1: LngLatType, p2: LngLatType): number => {
   return (bearing + 360) % 360;
 };
 
-const normalizePoint = (point: RawTrackPoint): TrackPoint => {
+const normalizePoint = (point: RawTrackPoint | any): TrackPoint => {
   if (Array.isArray(point)) return { lng: point[0], lat: point[1], speed: point[2] || 30, time: point[3] || 0 };
   return { lng: point.lng, lat: point.lat, speed: (point as any).speed || 30, time: (point as any).time || 0 };
 };
@@ -361,7 +361,7 @@ const initMap = (retryCount = 0): void => {
   // 空样式对象
   const emptyStyle = { version: 8, sources: {}, layers: [] };
 
-  const options: MapboxOptions = {
+  const options: any = {
     container: mapContainer.value,
     style: emptyStyle,
     center: props.mapOptions.center as [number, number],
@@ -428,7 +428,7 @@ const initMap = (retryCount = 0): void => {
 };
 
 // 添加底图图层
-const addBaseLayer = (mapInstance: Map) => {
+const addBaseLayer = (mapInstance: any) => {
   if (props.mapType === 'mapbox') return;
   const tileUrl = getTileUrl();
   if (!tileUrl) return;
@@ -504,7 +504,7 @@ const updateCarPosition = (idx: number): void => {
   let remaining = 0;
   for (let i = idx; i < distances.value.length; i++) remaining += distances.value[i];
   remainingDistance.value = remaining;
-  emit('trackPointChange', { index: idx, point, remainingDistance });
+  emit('trackPointChange', { index: idx, point, remainingDistance:remainingDistance.value});
 };
 
 const fitTrackBounds = (): void => {
@@ -647,11 +647,11 @@ const addMarker = (options: MarkerOptions): void => {
 
 const clearMarkers = (): void => { markers.value.forEach(m => m.remove()); markers.value = []; };
 
-const addPolyline = (options: PolylineOptions): void => {
+const addPolyline = (options: PolylineOptions | any): void => {
   if (!map.value) return;
   const sourceId = `polyline-${options.id || Date.now()}`;
   const layerId = `polyline-layer-${options.id || Date.now()}`;
-  const geojson: Feature<LineString> = {
+  const geojson: Feature<LineString | any> = {
     type: 'Feature',
     geometry: { type: 'LineString', coordinates: options.path },
     properties: options.properties,
@@ -687,7 +687,7 @@ const clearPolylines = (): void => {
   layerIds.value = layerIds.value.filter(id => !id.startsWith('polyline-layer-'));
 };
 
-const addPolygon = (options: PolygonOptions): void => {
+const addPolygon = (options: PolygonOptions | any): void => {
   if (!map.value) return;
   const sourceId = `polygon-${options.id || Date.now()}`;
   const layerId = `polygon-layer-${options.id || Date.now()}`;
@@ -839,7 +839,7 @@ const addMarkerCluster = (points: ClusterPoint[], options: { radius?: number; ma
     const features = map.value!.queryRenderedFeatures(e.point, { layers: [layerId] });
     if (features.length) {
       const clusterId = features[0].properties?.cluster_id;
-      const source = map.value!.getSource(sourceId) as mapboxgl.GeoJSONSource;
+      const source = map.value!.getSource(sourceId) as any;
       if (source && clusterId !== undefined) {
         source.getClusterExpansionZoom(clusterId, (err, zoom) => {
           if (err) return;
@@ -988,7 +988,7 @@ const refreshMap = (): void => {
   }
 };
 
-const getMap = (): Map | null => map.value;
+const getMap = () => map.value;
 
 // ==================== 生命周期 ====================
 onMounted(() => { nextTick(() => initMap()); });

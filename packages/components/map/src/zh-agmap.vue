@@ -73,19 +73,19 @@ import carSvg from '@/assets/images/car.svg';
 esriConfig.assetsPath = '/arcgis-assets';
 
 // ==================== 类型定义 ====================
-export interface LngLat {
+interface LngLat {
   lng: number;
   lat: number;
 }
 
-export interface TrackPoint extends LngLat {
+interface TrackPoint extends LngLat {
   speed?: number;
   time?: number;
 }
 
-export type RawTrackPoint = [number, number] | [number, number, number] | LngLat;
+type RawTrackPoint = [number, number] | [number, number, number] | LngLat;
 
-export interface MarkerOptions {
+interface MarkerOptions {
   id?: string;
   position: [number, number];
   title?: string;
@@ -98,7 +98,7 @@ export interface MarkerOptions {
   properties?: Record<string, any>;
 }
 
-export interface PolylineOptions {
+interface PolylineOptions {
   id?: string;
   path: [number, number][];
   color?: string;
@@ -107,7 +107,7 @@ export interface PolylineOptions {
   properties?: Record<string, any>;
 }
 
-export interface PolygonOptions {
+interface PolygonOptions {
   id?: string;
   paths: [number, number][][];
   fillColor?: string;
@@ -117,7 +117,7 @@ export interface PolygonOptions {
   properties?: Record<string, any>;
 }
 
-export interface CircleOptions {
+interface CircleOptions {
   id?: string;
   center: [number, number] | any;
   radius: number;
@@ -128,27 +128,27 @@ export interface CircleOptions {
   properties?: Record<string, any>;
 }
 
-export interface HeatmapDataPoint {
+interface HeatmapDataPoint {
   lng: number;
   lat: number;
   weight?: number;
 }
 
-export interface ClusterPoint {
+interface ClusterPoint {
   id?: string;
   position: [number, number];
   title?: string;
   properties?: Record<string, any>;
 }
 
-export interface ClusterStyle {
+interface ClusterStyle {
   color?: string;
   radius?: number;
   textColor?: string;
   textSize?: number;
 }
 
-export interface TrackInfo {
+interface TrackInfo {
   currentIndex: number;
   totalPoints: number;
   progress: number;
@@ -157,9 +157,9 @@ export interface TrackInfo {
   isPlaying: boolean;
 }
 
-export type BaseMapType = 'osm' | 'gaode' | 'tianditu' | 'custom' | 'esri';
+type BaseMapType = 'osm' | 'gaode' | 'tianditu' | 'custom' | 'esri';
 
-export interface BaseMapConfig {
+interface BaseMapConfig {
   type: BaseMapType;
   url?: string;
   key?: string;
@@ -1045,7 +1045,7 @@ const addMarkerCluster = async (points: ClusterPoint[], options: {
         if (g.attributes && g.attributes.cluster_count) {
           const clusterId = g.attributes.cluster_id;
           const pointCount = g.attributes.cluster_count;
-          const coords = [g.geometry.longitude, g.geometry.latitude];
+          const coords:[number,number] = [g.geometry.longitude, g.geometry.latitude];
           emit('clusterClick', {clusterId, coordinates: coords, pointCount});
           view.value.goTo({center: coords, zoom: view.value.zoom + 2}, {duration: 500});
         } else {
