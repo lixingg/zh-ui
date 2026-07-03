@@ -32,11 +32,11 @@ export default defineConfig({
                 md.use(require('markdown-it-anchor'))
             }
         }),
-        // visualizer({
-        //     filename: 'stats.html',
-        //     gzipSize: true,
-        //     brotliSize: true,
-        // })
+        visualizer({
+            filename: 'stats.html',
+            gzipSize: true,
+            brotliSize: true,
+        })
 /*        copyPlugin({
             targets: [{ src: 'node_modules/@arcgis/core/assets/!*', dest: 'public/arcgis-assets' },
             ],
