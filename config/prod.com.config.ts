@@ -72,21 +72,7 @@ export default defineConfig({
                     vue: 'Vue',
                     tailwindcss: 'tailwindcss',
                     '@element-plus/icons-vue': '@element-plus/icons-vue'
-                },
-                manualChunks(id) {
-                    if (id.includes('@arcgis/core')) {
-                        // 根据路径拆分为多个 chunk
-                        if (id.includes('/widgets/')) return 'arcgis-widgets'
-                        if (id.includes('/layers/')) return 'arcgis-layers'
-                        if (id.includes('/geometry/')) return 'arcgis-geometry'
-                        if (id.includes('/symbols/')) return 'arcgis-symbols'
-                        if (id.includes('/renderers/')) return 'arcgis-renderers'
-                        if (id.includes('/tools/')) return 'arcgis-tools'
-                        if (id.includes('/support/')) return 'arcgis-support'
-                        // 其余归入 arcgis-core
-                        return 'arcgis-core'
-                    }
-                },
+                }
             }
         }
     }

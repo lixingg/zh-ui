@@ -1,6 +1,6 @@
 {
   "name": "zhui-plus",
-  "version": "1.0.100",
+  "version": "1.0.102",
   "description": "打造属于自己的个性化ui组件库",
   "main": "dist/zhui-plus.es.js",
   "types": "dist/packages/components/index.d.ts",
@@ -13,7 +13,6 @@
   },
   "peerDependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
-    "@arcgis/core": "^5.1.7",
     "@bundled-es-modules/pdfjs-dist": "^3.6.172-alpha.1",
     "@element-plus/icons-vue": "^2.3.1",
     "@tinymce/tinymce-vue": "^6.3.0",
@@ -42,8 +41,6 @@
     "jszip-utils": "^0.1.0",
     "mapbox-gl": "^3.25.0",
     "ol": "^10.9.0",
-    "pinia": "^3.0.4",
-    "pinia-plugin-persistedstate": "^4.7.1",
     "qrcode": "^1.5.4",
     "rollup-plugin-copy": "^3.5.0",
     "sass": "^1.80.6",
