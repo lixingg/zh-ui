@@ -9,7 +9,7 @@ export default defineConfig({
     ...baseConfig,
     // 打包配置
     build: {
-        minify: true,
+        minify: 'terser',
         chunkSizeWarningLimit: 3000,
         sourcemap: false, //不开启镜像
         outDir: 'ZHUI/dist',

@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
+    "@arcgis/core": "^5.1.9",
     "@bundled-es-modules/pdfjs-dist": "^3.6.172-alpha.1",
     "@element-plus/icons-vue": "^2.3.1",
     "@tinymce/tinymce-vue": "^6.3.0",
@@ -66,7 +67,6 @@
     "zh-tinymce": "^8.6.6"
   },
   "devDependencies": {
-    "@arcgis/core": "^5.0.17",
     "@babel/preset-env": "^7.17.10",
     "@babel/preset-typescript": "^7.16.7",
     "@testing-library/jest-dom": "^5.16.4",
