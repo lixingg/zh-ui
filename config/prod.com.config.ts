@@ -68,6 +68,13 @@ export default defineConfig({
             output: {
                 experimentalMinChunkSize: 500000, // 500KB
                 // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
+                chunkFileNames: (chunkInfo) => {
+                    // 判断是否是第三方依赖（如node_modules）
+                    if (chunkInfo.moduleIds.some(id => id.includes('node_modules'))) {
+                        return 'lib/[name]-[hash].js';
+                    }
+                    return '[name]-[hash].js';
+                },
                 globals: {
                     vue: 'Vue',
                     tailwindcss: 'tailwindcss',
