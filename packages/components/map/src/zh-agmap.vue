@@ -1,4 +1,3 @@
-<!-- ==================== ArcGISContainer.vue（完整版，修复所有已知问题） ==================== -->
 <template>
   <div class="arcgis-container">
     <div ref="mapContainer" class="map-view"></div>
@@ -70,7 +69,7 @@ import esriConfig from '@arcgis/core/config';
 // 导入本地小车图标
 import carSvg from '@/assets/images/car.svg';
 
-esriConfig.assetsPath = '/arcgis-assets';
+// esriConfig.assetsPath = '/arcgis-assets';
 
 // ==================== 类型定义 ====================
 interface LngLat {

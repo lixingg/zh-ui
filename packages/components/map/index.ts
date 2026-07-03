@@ -21,4 +21,4 @@ export default {
   }
 }
 
-export { ZhAmap,ZhBmap,ZhTmap,ZhSmap,ZhOmap,ZhMbmap,ZhCmap,ZhAgmap }
+export { ZhAmap,ZhBmap,ZhTmap,ZhSmap,ZhOmap,ZhMbmap,ZhCmap ,ZhAgmap}

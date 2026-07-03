@@ -4,6 +4,8 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import Markdown from 'vite-plugin-vue-markdown'
 import cesium from 'vite-plugin-cesium';
 import copyPlugin from 'rollup-plugin-copy'
+import glsl from 'vite-plugin-glsl';
+import { visualizer } from 'rollup-plugin-visualizer'
 
 const path = require('path')
 // https://vitejs.dev/config/
@@ -23,15 +25,21 @@ export default defineConfig({
         vue({include: [/\.vue$/, /\.md$/]}),
         cesium(),
         vueJsx(),
+        // glsl(),
         Markdown({
             markdownItSetup(md) {
                 // add anchor links to your H[x] tags
                 md.use(require('markdown-it-anchor'))
             }
         }),
-        copyPlugin({
-            targets: [{ src: 'node_modules/@arcgis/core/assets/*', dest: 'public/arcgis-assets' },
+        // visualizer({
+        //     filename: 'stats.html',
+        //     gzipSize: true,
+        //     brotliSize: true,
+        // })
+/*        copyPlugin({
+            targets: [{ src: 'node_modules/@arcgis/core/assets/!*', dest: 'public/arcgis-assets' },
             ],
-        }),
+        }),*/
     ],
 })
